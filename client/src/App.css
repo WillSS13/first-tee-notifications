@@ -59,7 +59,6 @@
 }
 
 
-
 .login-img {
   width: 100%;
   height: auto;
@@ -175,6 +174,16 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='25' viewBox='0 0 7.41 12'%3E%3Cpath d='M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z' transform='translate(-8.59 -6)' fill='%23fff'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.c-btn:hover, .send-button:hover, .view-button:hover {
+  background-color: #28A851;
+}
+
+.c-btn:active {
+  box-shadow: -1px -1px 1px #000;
 }
 
 .class-content {
@@ -205,12 +214,43 @@ hr {
   text-align: center;
   color: white;
   align-self: center;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.send-button:active {
+  box-shadow: -1px -1px 1px #000;
+}
+
+.view-button {
+  width: 75%;
+  margin-bottom: 20px;
+  line-height: 50px;
+  background-color: #152942;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
 
 }
+
+.view-button:active {
+  box-shadow: -1px -1px 1px #000;
+}
+
 
 form {
   display: flex;
   flex-direction: column;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #DEF9E6;
+  padding: 20px 10vw 20px 10vw;
+  box-sizing:border-box;
+
 }
 
 .top-bar {
@@ -218,24 +258,34 @@ form {
   padding: 20px 10vw 20px 10vw;
 }
 
-.top-bar-content {
+.top-bar-content, .bottom-bar-content {
   position: relative;
 }
 
-.top-bar-content img {
+.top-bar-content img, .bottom-bar-content img {
   width: 200px;
 }
 
-.top-bar button {
+.top-bar button, .bottom-bar-content button {
   position: absolute;
   padding: 5px 10px 5px 10px;
   border-radius: 5px;
   right: 0;
   background-color: #152942;
   color: white;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
-.top-bar a {
+.top-bar button:active {
+  box-shadow: -1px -1px 1px #000;
+}
+
+.top-bar button:hover {
+  background-color: #28A851;
+}
+
+
+.top-bar a, .bottom-bar a {
   position: absolute;
   padding: 5px 10px 5px 10px;
   right: 0;
@@ -246,6 +296,7 @@ form {
   position: absolute;
   right: 5vw;
   transform: translateX(-50%);
+  cursor: pointer;
 }
 
 .fa-envelope {
@@ -259,12 +310,13 @@ form {
 
 @media only screen and (max-width: 800px) {
   .gradient-bg {
-    background-image: url("./images/First-Tee-coaches.jpg");
-    background-size:  contain;
-    background-position: bottom;
+    background-image: url("./images/CoachesFirstTee.png");
+    background-size:  cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .signInWrapper {
-    height: 400px;
+    height: 50%;
     width: 100%;
     bottom: 0;
     border-radius: 120px 40px 0px 0px;
@@ -278,6 +330,11 @@ form {
   .main-login-content {
     width: 60%;
     margin-right: 50px;
+
+  }
+
+  .main-login-content img {
+    width: 200px;
 
   }
 

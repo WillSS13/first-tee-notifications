@@ -130,13 +130,17 @@ function ClassList() {
           <div>
           {/* <img src={user.picture}></img> */}
           <h1 className="name-header">Welcome {name}!</h1>
-          <button onClick={(e) => refreshPage()}>View Classes</button>
         </div>
         <div className="card-container margin-bottom-large">
           <h2 className="your-class-header">Your Classes</h2>
           <hr></hr>
           <div className="side-margins">
-
+          {JSON.stringify(session) === "[{}]" &&
+          <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
+            <button className="view-button poppins-regular" onClick={(e) => refreshPage()}>Click to View Classes</button>
+          </div>
+          }
+          {JSON.stringify(session) !== "[{}]" &&
           <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
             {
               session.map((data,key)=>{
@@ -161,12 +165,13 @@ function ClassList() {
               })
             }
           </div>
+          }
           </div>
         </div>
         </div>
       }
-      <div className="top-bar">
-        <div className="top-bar-content">
+      <div className="bottom-bar">
+        <div className="bottom-bar-content">
           <img src={require("../images/FirstTeeMain.png")} alt="FirstTeeLogo" />
           <a href="https://firsttee.my.site.com/parentRegistration/s/privacy-policy?language=en_US&website=www.firstteepittsburgh.org">
             <span>Privacy Policy</span>
