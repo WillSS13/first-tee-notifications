@@ -92,7 +92,7 @@ function App() {
       <div className="signInWrapper ">
         <div className ="main-login-content">
           <img src={require("./images/firstTeeLogo.png")} alt="FirstTeeLogo" />
-          <h1 className ="name-header poppins-medium ">Coach Login</h1>
+          <h1 className ="name-header poppins-bold">Coach Login</h1>
           <h1 className ="your-class-header poppins-light font-size-large padding-bottom-small">If you are registered as a coach for First Tee Pittsburgh, login below to view your classes and notify students with updates!</h1>
           <div id="signInDiv"></div>
         </div>
