@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Source+Sans+Pro&display=swap');
+
+.poppins-light {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+}
+.poppins-regular {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+.poppins-medium {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.font-size-medium {
+  font-size: 14px;
+}
+
+.font-size-large {
+  font-size: 20px;
+}
+
+.gradient-bg {
+  background: #DEF9E6;
+  width: 100%;
+  min-height:100vh;
+  background-size: cover; 
+    background-attachment: fixed;
+}
+
+.signInWrapper {
+  height: 500px;
+  width: 750px;
+  border-radius: 40px;
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  padding: 70px 50px 70px 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.main-login-content {
+  width: 60%;
+  margin-right: 50px;
+}
+
+.padding-bottom-small {
+  padding-bottom: 15px;
+}
+
+
+
+.login-img {
+  width: 100%;
+  height: auto;
+  margin: -70px -50px -70px 0;
+  border-radius: 0 40px 40px 0;
+  background-image: url("./images/First-Tee-coaches.jpg");
+  background-size:  cover;
+  background-position: center;
+
+}
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App {
+  position: relative;
+  width: 100%;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.side-margins {
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+.card-container {
+  box-shadow: 0 4px 10px 10px rgba(0,0,0,0.05);
+  padding: 8px 25px 25px 25px;
+  border-radius: 25px;
+  height: auto;
+}
+
+.card p, .card label, .card button, .card-container h2 {
+  font-size: 16px;
+}
+.main-margin {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  width: full;
+}
+
+#coach-sessions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.class-title {
+  padding-top: 7px;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.student-num {
+  padding-left: 10px;
+  padding-bottom: 7px;
+}
+
+.name-header {
+  color: #14A849;
+  font-weight: normal;
+}
+
+.your-class-header {
+  font-weight: normal;
+  color: gray;
+}
+
+.class-text {
+  float: left;
+  width: 50%;
+}
+
+.class-button {
+  position: absolute;
+  right: 0;
+  transform: translateX(-50%);
+}
+.c-btn{
+  border: none;
+  background-color: #152942;
+  padding: 35px;
+  border-radius: 50%;
+  color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='25' viewBox='0 0 7.41 12'%3E%3Cpath d='M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z' transform='translate(-8.59 -6)' fill='%23fff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.class-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.margin-bottom-large {
+  margin-bottom: 50px;
+}
+.margin-top-large {
+  margin-top: 50px;
+}
+
+hr {
+  margin-left: -25px;
+  margin-right: -25px;
+}
+
+.send-button {
+  width: 75%;
+  margin-bottom: 20px;
+  line-height: 50px;
+  background-color: #152942;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  align-self: center;
+
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  background-color: #DEF9E6;
+  padding: 20px 10vw 20px 10vw;
+}
+
+.top-bar-content {
+  position: relative;
+}
+
+.top-bar-content img {
+  width: 200px;
+}
+
+.top-bar button {
+  position: absolute;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  right: 0;
+  background-color: #152942;
+  color: white;
+}
+
+.top-bar a {
+  position: absolute;
+  padding: 5px 10px 5px 10px;
+  right: 0;
+  color: #14A849;
+}
+
+.email-button {
+  position: absolute;
+  right: 5vw;
+  transform: translateX(-50%);
+}
+
+.fa-envelope {
+  color: #152942;
+}
+
+.back-button {
+  text-decoration: none;
+  color: #152942;
+}
+
+@media only screen and (max-width: 800px) {
+  .gradient-bg {
+    background-image: url("./images/First-Tee-coaches.jpg");
+    background-size:  contain;
+    background-position: bottom;
+  }
+  .signInWrapper {
+    height: 400px;
+    width: 100%;
+    bottom: 0;
+    border-radius: 120px 40px 0px 0px;
+    top: initial;
+    left: initial;
+    transform: initial;
+    padding: 70px 70px 70px 70px;
+
+  }
+
+  .main-login-content {
+    width: 60%;
+    margin-right: 50px;
+
+  }
+
+  .login-img {
+    width: initial;
+    height: initial;
+    margin: initial;
+    border-radius: initial;
+    background-image: initial;
+    background-size:  initial;
+  }
+}
+
+
+/* message style */
+
