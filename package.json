@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "concurrently \"node server/index.js\" \"cd client && npm install && npm start\"",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install && npm run build",
+    "heroku-postbuild": "concurrently \"npm install && node server/index.js\" \"cd client && npm install && npm start\""
   },
   "keywords": [],
   "author": "",
