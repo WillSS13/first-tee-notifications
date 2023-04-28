@@ -17,12 +17,7 @@ app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
 
 // take the email of the coach and check if it's in the system 
 app.post("/checklogin",(req,res) => {
@@ -95,6 +90,13 @@ app.post("/sendmessage", (req,res) => {
 
     res.json({ message: "Message Successfully Sent" });
 })
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
