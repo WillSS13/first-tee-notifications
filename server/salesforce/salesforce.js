@@ -63,7 +63,7 @@ async function getCoachId(email, res){
 
 function sessionParticipants(id,res){
     conn.sobject("Session_Registration__c")
-        .select(`Id, Name, Contact__c, Contact__r.Name, Contact__r.Primary_Contact_s_Email__c, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c`)
+        .select(`Id, Name, Contact__c, Contact__r.Name, Contact__r.Primary_Contact_s_Email__c, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c, Contact__r.Participation_Status__c`)
         .where({
             Listing_Session__c: id
         })
@@ -72,6 +72,10 @@ function sessionParticipants(id,res){
             var participants = [];
             for (var record of records) {
                 // fill the json object and check if session current date is within the session start date and end date 
+                console.log(record.Contact__r.Name);
+                console.log(record.Contact__r.Contact_Type__c);
+                console.log(record.Contact__r.Participation_Status__c);
+                
                 if (record.Contact__r.Contact_Type__c == 'Participant'){
                     participants.push({
                         id: record.Id,
@@ -110,8 +114,8 @@ function coachSessions(id,res) {
         .select(`Id, Coach__c, Coach__r.Name, Name, Listing_Session__c,Session_End_Date__c, Session_Start_Date__c,Listing_Session__r.Name`)
         .where({
         Coach__c: id,
-        // Session_Start_Date__c: {$gte: jsforce.Date.YESTERDAY},
-        // Session_End_Date__c: {$lt: jsforce.Date.TOMORROW}
+        Session_Start_Date__c: {$lt: jsforce.Date.TODAY},
+        Session_End_Date__c: {$gte: jsforce.Date.TODAY}
         })
         .execute(function(err,records){
             if (err) { return console.error(err); }
