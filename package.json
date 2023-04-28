@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "concurrently \"node server/index.js\" \"cd client && npm install && npm start\"",
-    "build": "cd client && npm install && npm run build",
-    "heroku-postbuild": "concurrently \"npm install && node server/index.js\" \"cd client && npm install && npm start\""
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "postinstall": "npm run webpack",
+    "webpack": "webpack"
   },
   "keywords": [],
   "author": "",
