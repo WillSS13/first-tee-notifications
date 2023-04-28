@@ -43,8 +43,12 @@ function App() {
 
   useEffect(() => {
     /* global google */
+    // google.accounts.id.initialize({
+    //   client_id: "657936674200-1a1l2fobo18kk619kt5qs2od9m76p64e.apps.googleusercontent.com",
+    //   callback: handleCallbackResponse
+    // });
     google.accounts.id.initialize({
-      client_id: "657936674200-1a1l2fobo18kk619kt5qs2od9m76p64e.apps.googleusercontent.com",
+      client_id: "577503408571-t7b1p7kh2rppnoeooagkti8t1hnqh3nc.apps.googleusercontent.com",
       callback: handleCallbackResponse
     });
 
@@ -64,7 +68,6 @@ function App() {
       console.log(emailPrefix);
       console.log("setting user id");
       // encode user email within the get request 
-      console.log(`http://localhost:3000/coachId?id=${encodeURIComponent(emailPrefix)}`);
       fetch(`/coachId?id=${encodeURIComponent(emailPrefix)}`)
         .then((res) => res.json())
         .then((data) => localStorage.setItem('userId', JSON.stringify(data)));
