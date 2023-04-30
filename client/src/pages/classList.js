@@ -137,7 +137,7 @@ function ClassList() {
           <div className="side-margins">
           {JSON.stringify(session) === "[{}]" &&
           <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
-            <button className="view-button poppins-regular" onClick={(e) => refreshPage()}>Click to View Classes</button>
+            <button className="view-button poppins-regular" onClick={(e) => refreshPage()}>Click to View Classes&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
           </div>
           }
           {JSON.stringify(session) !== "[{}]" &&
