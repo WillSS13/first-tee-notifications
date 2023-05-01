@@ -13,15 +13,15 @@ const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
 var jsforce = require('jsforce');
 console.log("hi");
 var oauth2 = new jsforce.OAuth2({
-    clientId: "3MVG9uudbyLbNPZN8s8tSkgg9Sq2J3CNElUcXXf3QNVUMDbcYPYC2jfIV5OFqY6G8X71m49vqrTK7erZFlFvN",
-    clientSecret: "9DE23A303F2FD5AC0BE3280701CD093809CC01E9B5B2DDB49B595271A00997FF",
+    clientId: client_id,
+    clientSecret: client_secret,
     redirectUri: "/oauth2/auth"
 });
 var conn = new jsforce.Connection({
     oauth2: oauth2,
-    instanceUrl: "https://firsttee.my.salesforce.com",
-    accessToken: "00D36000000uXgY!AQQAQGSXNeayatrKLRCHtclYTQuJ9At6PJx5VDcpYnag6zUQJcN7PN98eRdF7AmQIGbk2VfHRlgTDQgAgkE.693hlJibvDix",
-    refreshToken: "5Aep861QbHyftz0nI9WixbcujBK.a4w09vFurPjPS97oi9Bp7z1a5tl8LoFnU7AQZfYfkJwBW5wpKIXBtdD5oo7"
+    instanceUrl: instance_url,
+    accessToken: access_token,
+    refreshToken: refresh_token
 });
 
 conn.on('refresh', function (accessToken, res) {
