@@ -320,26 +320,34 @@ form {
     background-repeat: no-repeat;
   }
   .signInWrapper {
-    height: 50%;
+    height: 65%;
     width: 100%;
     bottom: 0;
-    border-radius: 120px 40px 0px 0px;
+    border-radius: 60px 60px 0px 0px;
     top: initial;
     left: initial;
     transform: initial;
-    padding: 70px 70px 70px 70px;
+    box-sizing: border-box;
+    padding: initial;
+    padding-top: 40px;
+    justify-content: center;
 
   }
 
-  .main-login-content {
-    width: 75%;
-    margin-right: 50px;
-
-  }
 
   .main-login-content img {
     width: 200px;
 
+  }
+
+  .main-login-content h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .main-login-content .your-class-header {
+    font-size: 16px;
+    padding-top: 5px;
   }
 
   .login-img {
