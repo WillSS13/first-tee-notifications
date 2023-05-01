@@ -322,7 +322,8 @@ form {
     background-size:  cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    position: fixed;
+    overflow: hidden;
   }
   .signInWrapper {
     height: 65%;
@@ -334,7 +335,7 @@ form {
     transform: initial;
     box-sizing: border-box;
     padding: initial;
-    padding-top: 40px;
+    padding-top: 12vw;
     justify-content: center;
     overflow: scroll;
 
@@ -355,11 +356,11 @@ form {
 
   .main-login-content .your-class-header {
     font-size: 4vw;
-    padding-top: 2vw;
+    padding-top: 2.5vw;
   }
 
-  .signInDiv {
-    padding-top: 2vw;
+  #signInDiv {
+    padding-top: 4vw;
   }
 
   .login-img {
