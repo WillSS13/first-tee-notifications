@@ -121,7 +121,7 @@ function ClassList() {
         <div className="top-bar-content">
           <img src={require("../images/firstTeeLogo.png")} alt="FirstTeeLogo" />
           <button onClick={(e) => handleSignOut(e)}>
-            <span className="poppins-regular">Sign Out&nbsp;&nbsp;<i class="fa fa-sign-out"></i></span>
+            <span className="poppins-regular">Sign Out&nbsp;&nbsp;<i className="fa fa-sign-out"></i></span>
           </button>
         </div>
       </div>

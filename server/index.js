@@ -17,8 +17,6 @@ app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-
-
 // take the email of the coach and check if it's in the system 
 app.post("/checklogin",(req,res) => {
     res.json({ message: "Hello from server!" });
@@ -28,14 +26,11 @@ app.post("/checklogin",(req,res) => {
 app.get("/coachId",(req,res) => {
     // retrieve coach's email from the request query parameters 
     const coachEmail = req.query.id;
-    console.log(coachEmail);
-    console.log("here");
     // get coach id from email 
     tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
     salesforce.getCoachId(tempEmail,res);
-    // res.json({ message: "Hello from server!" });
     // res.json(sessions);
 });
 
@@ -49,7 +44,6 @@ app.get("/sessions",(req,res) => {
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
     salesforce.coachSessions(coachEmail,res);
-    // res.json({ message: "Hello from server!" });
     // res.json(sessions);
 });
 
@@ -74,19 +68,13 @@ app.post("/sendmessage", (req,res) => {
     const coachId = body.coachId;
 
     // decide if we get contact info from front-end or do another query here in backend 
-
-    // twilio.sendMessage('+14125515356',msg);
-    // sendgrid.sendEmail(msg);
     
     // use the salesforce functions to send notification instead 
     // need to get the coachId sent from front-end
     // const coachId = '0033600001KJ05SAAT'
-    
-    // commented out so the 
-    console.log("message id");
-    console.log(coachId);
+
     salesforce.sessionNumbers(coachId, twilio.sendMessage, msg)
-    salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject, 'Paul')
+    salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
 
     res.json({ message: "Message Successfully Sent" });
 })

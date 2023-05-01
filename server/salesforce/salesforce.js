@@ -1,32 +1,35 @@
 // need to get these to 
-SALESFORCE_CLIENT_ID="3MVG9uudbyLbNPZN8s8tSkgg9Sq2J3CNElUcXXf3QNVUMDbcYPYC2jfIV5OFqY6G8X71m49vqrTK7erZFlFvN"
-SALESFORCE_CLIENT_SECRET="9DE23A303F2FD5AC0BE3280701CD093809CC01E9B5B2DDB49B595271A00997FF"
-SALESFORCE_USERNAME="integration@firstteepittsburgh.org"
-SALESFORCE_PASSWORD="firstTeeP1ttsburgh!"
-SALESFORCE_SECURITY_TOKEN="cb5BSAG0MM5yJoIJNFQUyxdWj"
+const client_id = process.env.SALESFORCE_CLIENT_ID;
+const client_secret = process.env.SALESFORCE_CLIENT_SECRET;
+const username = process.env.SALESFORCE_USERNAME;
+const password = process.env.SALESFORCE_PASSWORD;
+const security_token = process.env.SALESFORCE_SECURITY_TOKEN;
 
-SALESFORCE_INSTANCE_URL="https://firsttee.my.salesforce.com"
-SALESFORCE_ACCESS_TOKEN="00D36000000uXgY!AQQAQGSXNeayatrKLRCHtclYTQuJ9At6PJx5VDcpYnag6zUQJcN7PN98eRdF7AmQIGbk2VfHRlgTDQgAgkE.693hlJibvDix"
-SALESFORCE_REFRESH_TOKEN="5Aep861QbHyftz0nI9WixbcujBK.a4w09vFurPjPS97oi9Bp7z1a5tl8LoFnU7AQZfYfkJwBW5wpKIXBtdD5oo7"
+const instance_url = process.env.SALESFORCE_INSTANCE_URL;
+const access_token = process.env.SALESFORCE_ACCESS_TOKEN;
+const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
+
 
 var jsforce = require('jsforce');
 console.log("hi");
 var oauth2 = new jsforce.OAuth2({
-    clientId:"3MVG9uudbyLbNPZN8s8tSkgg9Sq2J3CNElUcXXf3QNVUMDbcYPYC2jfIV5OFqY6G8X71m49vqrTK7erZFlFvN",
-    clientSecret:"9DE23A303F2FD5AC0BE3280701CD093809CC01E9B5B2DDB49B595271A00997FF",
+    clientId: "3MVG9uudbyLbNPZN8s8tSkgg9Sq2J3CNElUcXXf3QNVUMDbcYPYC2jfIV5OFqY6G8X71m49vqrTK7erZFlFvN",
+    clientSecret: "9DE23A303F2FD5AC0BE3280701CD093809CC01E9B5B2DDB49B595271A00997FF",
     redirectUri: "/oauth2/auth"
 });
 var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: "https://firsttee.my.salesforce.com",
-    accessToken:"00D36000000uXgY!AQQAQGSXNeayatrKLRCHtclYTQuJ9At6PJx5VDcpYnag6zUQJcN7PN98eRdF7AmQIGbk2VfHRlgTDQgAgkE.693hlJibvDix",
+    accessToken: "00D36000000uXgY!AQQAQGSXNeayatrKLRCHtclYTQuJ9At6PJx5VDcpYnag6zUQJcN7PN98eRdF7AmQIGbk2VfHRlgTDQgAgkE.693hlJibvDix",
     refreshToken: "5Aep861QbHyftz0nI9WixbcujBK.a4w09vFurPjPS97oi9Bp7z1a5tl8LoFnU7AQZfYfkJwBW5wpKIXBtdD5oo7"
 });
+
 conn.on('refresh', function (accessToken, res) {
     // Refresh event will be fired when renewed access token
     // to store it in your storage for next request
     console.log('Access Token Refreshed');
 });
+
 function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -47,8 +50,6 @@ async function getCoachId(email, res){
                     id: record.Id,
                 });  
             }
-            console.log("test coach id");
-            console.log(participants[0].id);
             res.send(JSON.stringify(participants[0].id));
         });
 }
@@ -182,7 +183,7 @@ function sessionNumbers(id,res, msg){
  */
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
-function sessionEmails(id,res, msg, subject, coach_name){
+function sessionEmails(id,res, msg, subject){
     conn.sobject("Session_Registration__c")
         .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Contact_Type__c`)
         .where({
@@ -207,7 +208,7 @@ function sessionEmails(id,res, msg, subject, coach_name){
                     unique.push(element);
                 }
             });
-            res(unique, msg, subject, coach_name);
+            res(unique, msg, subject);
         });
 }
 

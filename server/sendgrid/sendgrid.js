@@ -1,4 +1,4 @@
-const sendEmail = (emails, message, subject, name) => {
+const sendEmail = (emails, message, subject) => {
     // const sgMail = require('@sendgrid/mail')
     // sgMail.setApiKey('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')
     // const msg = {
@@ -15,9 +15,10 @@ const sendEmail = (emails, message, subject, name) => {
     //   })
     //   .catch((error) => {
     //     console.error(error)
-    //   })
+    //   }) 
+    const key = process.env.SENDGRID_API_KEY;
     const sgMail = require('@sendgrid/mail')
-    sgMail.setApiKey('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')
+    sgMail.setApiKey(key)
     const msg = {
       to: emails, // Change to your recipient
       from: 'notifications@thefirstteepittsburgh.org', // Change to your verified sender

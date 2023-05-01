@@ -42,6 +42,7 @@ function Message() {
       }
 
     function handleSubmit(){
+
         const requestOptions = {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -49,7 +50,7 @@ function Message() {
         };
         fetch('/sendmessage',requestOptions)
           .then(res => res.json())
-          .then(data => console.log(data.message));
+          .then(data => alert("Message sent successfully!"));
     }
     function handleSignOut(event) {
         navigate("../");
@@ -100,7 +101,7 @@ function Message() {
       <div className="top-bar-content">
         <img src={require("../images/firstTeeLogo.png")} alt="FirstTeeLogo" />
         <button onClick={(e) => handleSignOut(e)}>
-          <span className="poppins-regular">Sign Out&nbsp;&nbsp;<i class="fa fa-sign-out"></i></span>
+          <span className="poppins-regular">Sign Out&nbsp;&nbsp;<i className="fa fa-sign-out"></i></span>
         </button>
       </div>
     </div>
@@ -115,28 +116,9 @@ function Message() {
                 <hr></hr>
             <div className="card message side-margins">
                 <div id="message-form">
-                    <p className="your-class-header poppins-light" style={{color: 'black'}}>Notify all members of the class on important announcements <br/>Your message will be emailed and text messaged to all members of the class</p>
+                    <p className="your-class-header poppins-light" style={{color: 'black'}}>Notify all members of the class on important announcements <br/>Your message will be emailed and text messaged to all members of the class</p> 
+                           
                     <form onSubmit={handleSubmit}>
-                    {/* <label>
-                        <input type='radio' name="radAnswer" checked={msgCoach} onChange={()=>setMsgCoach(toggle)} />
-                        Coach
-                        <br></br>
-                    </label>
-                    
-                    <label>
-                        <input type='radio' name="radAnswer" checked={msgParticipant} onChange={()=>setMsgParticipant(toggle)} />
-                        Parents
-                        <br></br>
-                    </label>
-                    
-                    <label>
-                        <input type='radio' name="radAnswer" checked={msgAll} onChange={()=>setMsgAll(toggle)} />
-                        All
-                        <br></br>
-                    </label>
-                    <br></br> */}
-
-                    
                     <label className="your-class-header poppins-regular">
                         Subject <br></br>
                         <input type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{width:'100%'}} onChange={(e) => setMsgSubject(e.target.value)} />
@@ -149,7 +131,7 @@ function Message() {
                         <textarea rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{width:'100%'}} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)}></textarea><br></br><br></br>
                     </label>
                     
-                    <button variant="contained" type="submit" className="send-button poppins-regular">Send <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <button variant="contained" type="submit" className="send-button poppins-regular">Send <i className="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>
@@ -178,7 +160,7 @@ function Message() {
                             </div>
                             <div className= "email-button">
                                 <a href = {"mailto:" + data.primary_contact_email} className="email-icon">
-                                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
+                                    <i className="fa fa-envelope fa-2x" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>

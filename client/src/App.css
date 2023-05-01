@@ -312,6 +312,10 @@ form {
   color: #152942;
 }
 
+.success-msg {
+  color: #14A849;
+}
+
 @media only screen and (max-width: 800px) {
   .gradient-bg {
     background-image: url("./images/CoachesFirstTee.png");
