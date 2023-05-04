@@ -27,10 +27,10 @@ app.get("/coachId",(req,res) => {
     // retrieve coach's email from the request query parameters 
     const coachEmail = req.query.id;
     // get coach id from email 
-    tempEmail = 'pcoultas@firstteepittsburgh.org';
+    // tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
-    salesforce.getCoachId(tempEmail,res);
+    salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
 });
 

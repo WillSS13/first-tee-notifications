@@ -59,10 +59,10 @@ async function getCoachId(email, res){
                     id: record.Id,
                 });  
             }
-            if (participants.length === 0){
-                res.status(200).send(JSON.stringify(participants[0].id));
+            if (participants.length !== 0){
+                res.send(JSON.stringify(participants[0].id));
             } else {
-                res.status(204).send(JSON.stringify("None"));
+                res.send(JSON.stringify("None"));
             }
             
         });
