@@ -17,18 +17,19 @@ const sendEmail = (emails, message, subject) => {
     //     console.error(error)
     //   }) 
     const key = process.env.SENDGRID_API_KEY;
+    // const key = "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";
     const sgMail = require('@sendgrid/mail')
     sgMail.setApiKey(key)
     const msg = {
-      to: emails, // Change to your recipient
+      // to: emails, // Change to your recipient
+      to: "notifications@thefirstteepittsburgh.org",
+      bcc: emails,
       from: 'notifications@thefirstteepittsburgh.org', // Change to your verified sender
-      subject: subject,
-      text: 'First Tee Pittsburgh Notifications',
-      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
       templateId: 'd-8ed996d8a4fa48bbaa58259052643102',
       dynamic_template_data: {
-        mesg: message
+        mesg: message,
         // name: coach_name,
+        subject: subject
       },
     }
     sgMail

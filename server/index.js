@@ -55,28 +55,34 @@ app.get("/participants",(req,res) => {
     // res.json({ message: "Hello from server!" });
 });
 
+app.get("/coaches",(req,res) => {
+    const sessionId = req.query.session;
+    // const sessionId = 'a0H1R000013eaoxUAA';
+    console.log("retrieving coaches");
+    salesforce.sessionCoaches(sessionId,res);
+    // res.json({ message: "Hello from server!" });
+});
+
 // send the message after receiving list of phone numbers and emails 
 app.post("/sendmessage", (req,res) => {
     // getting the body of post request 
     const body = req.body;
-    console.log(body);
-    const sendCoach = body.sendCoach;
-    const sendParticipant = body.sendParticipant;
-    const sendAll = body.sendAll;
     const subject = body.subject;
     const msg = body.message;
     const coachId = body.coachId;
 
-    // decide if we get contact info from front-end or do another query here in backend 
-    
-    // use the salesforce functions to send notification instead 
-    // need to get the coachId sent from front-end
     // const coachId = '0033600001KJ05SAAT'
 
-    salesforce.sessionNumbers(coachId, twilio.sendMessage, msg)
+    // send message to participants
+    salesforce.sessionNumbers(coachId, twilio.sendMessage, msg);
     salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
 
-    res.json({ message: "Message Successfully Sent" });
+    // send message to coaches
+    salesforce.coachNumbers(coachId, twilio.sendMessage, msg);
+    salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
+
+    // res.json({ message: "Message Successfully Sent" });
+    res.status(200).send('Status: OK')
 })
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));

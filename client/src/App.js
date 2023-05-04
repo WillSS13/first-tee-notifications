@@ -28,7 +28,6 @@ function App() {
     localStorage.setItem('user',userObject);
     console.log(user);
     setUserEmail(userObject.email);
-
     console.log(userEmail);
     localStorage.setItem('userEmail',JSON.stringify(userObject.email));
     // navigate("/classList", {state:{userEmail: userEmail, user: user}});

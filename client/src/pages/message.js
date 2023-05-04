@@ -28,6 +28,7 @@ function Message() {
     const [sessionId, setSessionId] = useState([]);
     const [sessionName, setSessionName] = useState([]);
     const [participant, setParticipant] = useState([{}]);
+    const [coach, setCoach] = useState([{}]);
 
       // useState for forms 
     const [msgCoach, setMsgCoach] = useState(false);
@@ -42,11 +43,10 @@ function Message() {
       }
 
     function handleSubmit(){
-
         const requestOptions = {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({sendCoach: msgCoach, sendParticipant: msgParticipant, sendAll: msgAll ,subject: msgSubject, message: msgValue, coachId: sessionId})
+          body: JSON.stringify({subject: msgSubject, message: msgValue, coachId: sessionId})
         };
         fetch('/sendmessage',requestOptions)
           .then(res => res.json())
@@ -58,7 +58,6 @@ function Message() {
 
     function backToHome(event) {
         setParticipant([{}]);
-
     }
 
     useEffect(() => {
@@ -80,6 +79,10 @@ function Message() {
         if (userid) {
             setUserId(userid);
         }
+
+        // fetch(`/coaches?session=${encodeURIComponent("a0H1R00001F6809UAB")}`)
+        //       .then((res) => res.json())
+        //       .then((data) => setCoach(data))
         
       }, []);
 
@@ -93,6 +96,17 @@ function Message() {
         }
         
     }, [sessionId]);
+
+    useEffect(() => {
+      if(participant){
+          console.log("trying");
+          console.log(sessionId);
+          fetch(`/coaches?session=${encodeURIComponent(sessionId)}`)
+              .then((res) => res.json())
+              .then((data) => setCoach(data))
+      }
+      
+  }, [participant]);
 
     console.log(participant)
   return (
@@ -135,6 +149,43 @@ function Message() {
                     </form>
                 </div>
             </div>
+        </div>
+
+        {/*  coach members */}
+        <div className="card-container margin-bottom-large">
+        <h2 className="your-class-header poppins-regular">Coaching Staff</h2>
+            <hr></hr>
+        <div className="card message side-margins">
+            { coach &&
+                <div id='session-participants' style={{marginTop:'30px', width:'100%'}}>
+                    
+                {
+                    coach.map((data,key)=>{
+                    return (
+                        <Box color="black" bgcolor="lightgray" m={2} p={1} key={key} 
+                        sx={{
+                            borderRadius: '16px'
+                        }}>
+                            
+                        <div className="class-content">
+                            <div className = "class-text">
+                            <p className="class-title poppins-medium">{data.name}</p>
+                            <p className="student-num poppins-regular">{data.phone}</p>
+                            </div>
+                            <div className= "email-button">
+                                <a href = {"mailto:" + data.email} className="email-icon">
+                                    <i className="fa fa-envelope fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                        </Box>
+                    );
+                    })
+                }
+                </div>
+            }
+            
+        </div>
         </div>
 
         {/*  class members */}
