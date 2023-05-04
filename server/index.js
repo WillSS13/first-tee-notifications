@@ -38,7 +38,7 @@ app.get("/coachId",(req,res) => {
 app.get("/sessions",(req,res) => {
     // retrieve coach's email from the request query parameters 
     const coachEmail = req.query.session;
-    console.log(coachEmail);
+    // console.log(coachEmail);
     console.log("this should be the coach id");
     // get coach id from email 
     // const coachId = '0033600001KJ05SAAT'
