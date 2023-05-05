@@ -63,11 +63,13 @@ function App() {
   useEffect(() => {
     if(userEmail){
       const emailArray = userEmail.split("@");
-      const emailPrefix = emailArray[0];
-      console.log(emailPrefix);
-      console.log("setting user id");
-      // encode user email within the get request 
-      fetch(`/coachId?id=${encodeURIComponent(emailPrefix)}`)
+      // encode user email within the post request 
+      const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email: userEmail})
+      };
+      fetch('/coachId',requestOptions)
         .then((res) => res.json())
         .then((data) => localStorage.setItem('userId', JSON.stringify(data)));
     }

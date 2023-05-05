@@ -137,13 +137,15 @@ function sessionCoaches(id,res){
 }
 
 var records = [];
-conn.query("SELECT Id, Name FROM Contact WHERE Id = '0033600001KJ05SAAT'", function(err, result) {
+conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact WHERE Contact_Type__c = 'Coach'", function(err, result) {
   if (err) { return console.error(err); }
   console.log("total : " + result.totalSize);
   console.log("fetched : " + result.records.length);
   for (var record of result.records) {
     console.log(record.Id);
     console.log(record.Name);
+    console.log(record.Email);
+    console.log(record.Contact_Type__c);
   }
 });
 

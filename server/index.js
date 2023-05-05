@@ -24,20 +24,25 @@ app.post("/checklogin",(req,res) => {
 });
 
 // get all the sessions for a coach 
-app.get("/coachId",(req,res) => {
+app.post("/coachId",(req,res) => {
     // retrieve coach's email from the request query parameters 
-    let coachEmail = req.query.id;
+    let coachEmail = req.body.email;
     // get coach id from email 
-    console.log("here is the email logging in");
-    console.log(coachEmail);
-    if (coachEmail == "edithtan777" || coachEmail == "nmaher"){
-        coachEmail = 'pcoultas';
+
+    // add your email to the if statement below and alter your log in email to another coach's email
+    if (coachEmail == "edithtan777@gmail.com" || coachEmail == "nmaher@andrew.cmu.edu"){
+        coachEmail = 'pcoultas@firstteepittsburgh.org';
+        // coachEmail = 'lrussell@firstteepittsburgh.org';
+        // coachEmail = 'jroberts@thefirstteepittsburgh.org';
+        // coachEmail = 'brettbossblackwood@gmail.com';
+        // coachEmail = 'rhawkins@firstteepittsburgh.org';
+        // coachEmail = 'alindauer@firstteepittsburgh.org';
+        // 
     }
     tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
     console.log("second time through");
-    coachEmail = coachEmail + '@firstteepittsburgh.org';
     console.log(coachEmail);
     salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
