@@ -7,7 +7,7 @@ const sendMessage = (phone, message) => {
   console.log(phone);
   client.messages
     .create({
-       body: message + ' Reply STOP to stop receiving future notifications',
+       body: message + '\n \n Please DO NOT reply to this message unless you want to opt out. Then, reply STOP to stop receiving future notifications',
        from: '+19107189243',
        to: phone
      })
