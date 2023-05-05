@@ -28,12 +28,17 @@ app.get("/coachId",(req,res) => {
     // retrieve coach's email from the request query parameters 
     let coachEmail = req.query.id;
     // get coach id from email 
-    if (coachEmail == "edithtan777@gmail.com" || coachEmail == "nmaher@andrew.cmu.edu"){
-        coachEmail = 'pcoultas@firstteepittsburgh.org';
+    console.log("here is the email logging in");
+    console.log(coachEmail);
+    if (coachEmail == "edithtan777" || coachEmail == "nmaher"){
+        coachEmail = 'pcoultas';
     }
     tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
+    console.log("second time through");
+    coachEmail = coachEmail + '@firstteepittsburgh.org';
+    console.log(coachEmail);
     salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
 });
