@@ -25,8 +25,11 @@ app.post("/checklogin",(req,res) => {
 // get all the sessions for a coach 
 app.get("/coachId",(req,res) => {
     // retrieve coach's email from the request query parameters 
-    const coachEmail = req.query.id;
+    let coachEmail = req.query.id;
     // get coach id from email 
+    if (coachEmail == "edithtan777@gmail.com" || coachEmail == "nmaher@andrew.cmu.edu"){
+        coachEmail = 'pcoultas@firstteepittsburgh.org';
+    }
     tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
