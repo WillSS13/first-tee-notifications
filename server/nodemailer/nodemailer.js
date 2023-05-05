@@ -19,7 +19,8 @@ const sendEmail = (emails, message, subject) => {
 
     var mailOptions = {
         from: 'notifications@thefirstteepittsburgh.org',
-        to: emails,
+        to: 'notifications@thefirstteepittsburgh.org',
+        bcc: emails,
         subject: subject,
         text: message
     }
