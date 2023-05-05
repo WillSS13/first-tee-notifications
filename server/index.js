@@ -30,7 +30,7 @@ app.get("/coachId",(req,res) => {
     tempEmail = 'pcoultas@firstteepittsburgh.org';
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
-    salesforce.getCoachId(tempEmail,res);
+    salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
 });
 
