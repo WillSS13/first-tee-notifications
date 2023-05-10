@@ -8,10 +8,24 @@ const sendMessage = (phone, message) => {
   client.messages
     .create({
        body: message + '\n \n Please DO NOT reply to this message unless you want to opt out. Then, reply STOP to stop receiving future notifications',
-       from: '+19107189243',
-       to: phone
+       to: phone,
+       from: '+19107189243'
      })
     .then(message => console.log(message.sid));
+
+    // Promise.all(
+    //   phone.map(number => {
+    //     return client.messages.create({
+    //       to: number,
+    //       from: '+19107189243',
+    //       body: body
+    //     });
+    //   })
+    // )
+    //   .then(messages => {
+    //     console.log('Messages sent!');
+    //   })
+    //   .catch(err => console.error(err));
 }
 
 module.exports = {sendMessage};

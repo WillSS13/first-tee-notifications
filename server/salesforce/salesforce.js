@@ -43,12 +43,66 @@ function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// var records = [];
+// conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
+//   if (err) { return console.error(err); }
+//   console.log("total : " + result.totalSize);
+//   console.log("fetched : " + result.records.length);
+//   for (var record of result.records) {
+//     console.log(record.Id);
+//     console.log(record.Coach__r.Name);
+//     console.log(record.Coach__r.Email);
+//     console.log(record.Coach__r.Contact_Type__c);
+//   }
+// });
+
+var records = [];
+conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact", function(err, result) {
+  if (err) { return console.error(err); }
+  console.log("total : " + result.totalSize);
+  console.log("fetched : " + result.records.length);
+  for (var record of result.records) {
+    console.log(record.Id);
+    console.log(record.Name);
+    console.log(record.Email);
+    console.log(record.Contact_Type__c);
+  }
+});
+
+// async function getCoachId(email, res){
+//     conn.sobject("Coach_Assignment__c")
+//         .select(`Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c`)
+//         // .where({
+//         //     Email: email,
+//         //     Contact_Type__c: 'Coach'
+//         // })
+//         .execute(function(err,records){
+//             if (err) { return console.error(err); }
+//             var participants = [];
+//             for (var record of records) {
+//                 // fill the json object and check if session current date is within the session start date and end date
+//                 if (record.Coach__r.Email === email) {
+//                     participants.push({
+//                         id: record.Id,
+//                     });  
+//                 }
+                
+//             }
+//             if (participants.length !== 0){
+//                 res.send(JSON.stringify(participants[0].id));
+//             } else {
+//                 res.send(JSON.stringify("None"));
+//             }
+            
+//         });
+// }
+
 async function getCoachId(email, res){
     conn.sobject("Contact")
         .select(`Id, Name, Email`)
         .where({
             Email: email,
-            Contact_Type__c: 'Coach'
+            Contact_Type__c: 'Coach' 
         })
         .execute(function(err,records){
             if (err) { return console.error(err); }
@@ -137,15 +191,15 @@ function sessionCoaches(id,res){
 }
 
 var records = [];
-conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact WHERE Contact_Type__c = 'Coach'", function(err, result) {
+conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
   if (err) { return console.error(err); }
   console.log("total : " + result.totalSize);
   console.log("fetched : " + result.records.length);
   for (var record of result.records) {
     console.log(record.Id);
-    console.log(record.Name);
-    console.log(record.Email);
-    console.log(record.Contact_Type__c);
+    console.log(record.Coach__r.Name);
+    console.log(record.Coach__r.Email);
+    console.log(record.Coach__r.Contact_Type__c);
   }
 });
 
@@ -258,17 +312,26 @@ function sessionNumbers(id,res, msg){
             // removing format xxx-xxx-xxxx
             let final = [];
             unique.forEach(element => {
-                console.log("inside");
-                if (element[3] === '-' && element[7] === '-'){
-                    let tempNum = element.substring(0,3) + element.substring(4,7) + element.substring(8);
-                    final.push(tempNum);
-                } else {
-                    final.push(element);
+                 // Remove any non-digit characters from the input string
+                const digits = element.replace(/\D/g, '');
+
+                // Ensure the input string contains exactly 10 digits
+                if (digits.length !== 10) {
+                    throw new Error('Invalid phone number');
                 }
+                // Format the digits into the desired format
+                const areaCode = digits.substring(0, 3);
+                const prefix = digits.substring(3, 6);
+                const lineNum = digits.substring(6);
+                const formattedNumber = `(${areaCode}) ${prefix}-${lineNum}`;
+
+                final.push(formattedNumber);
             });
             if (final.length !== 0) {
                 console.log("can't be null here");
-                res(final,msg);
+                final.forEach(element => {
+                    res(element,msg);
+                }) 
             }
         });
 }
@@ -308,17 +371,25 @@ function coachNumbers(id,res, msg){
             // removing format xxx-xxx-xxxx
             let final = [];
             unique.forEach(element => {
-                console.log("inside");
-                if (element[3] === '-' && element[7] === '-'){
-                    let tempNum = element.substring(0,3) + element.substring(4,7) + element.substring(8);
-                    final.push(tempNum);
-                } else {
-                    final.push(element);
+                const digits = element.replace(/\D/g, '');
+
+                // Ensure the input string contains exactly 10 digits
+                if (digits.length !== 10) {
+                    throw new Error('Invalid phone number');
                 }
+                // Format the digits into the desired format
+                const areaCode = digits.substring(0, 3);
+                const prefix = digits.substring(3, 6);
+                const lineNum = digits.substring(6);
+                const formattedNumber = `(${areaCode}) ${prefix}-${lineNum}`;
+
+                final.push(formattedNumber);
             });
             if (final.length !== 0) {
                 console.log("can't be null here");
-                res(final,msg);
+                final.forEach(element => {
+                    res(element,msg);
+                }) 
             }
         });
 }
