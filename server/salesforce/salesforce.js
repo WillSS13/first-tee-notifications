@@ -43,21 +43,37 @@ function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+var records = [];
+conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
+  if (err) { return console.error(err); }
+  console.log("total : " + result.totalSize);
+  console.log("fetched : " + result.records.length);
+  for (var record of result.records) {
+    console.log(record.Id);
+    console.log(record.Coach__r.Name);
+    console.log(record.Coach__r.Email);
+    console.log(record.Coach__r.Contact_Type__c);
+  }
+});
+
 async function getCoachId(email, res){
-    conn.sobject("Contact")
-        .select(`Id, Name, Email`)
-        .where({
-            Email: email,
-            Contact_Type__c: 'Coach'
-        })
+    conn.sobject("Coach_Assignment__c")
+        .select(`Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c`)
+        // .where({
+        //     Email: email,
+        //     Contact_Type__c: 'Coach'
+        // })
         .execute(function(err,records){
             if (err) { return console.error(err); }
             var participants = [];
             for (var record of records) {
-                // fill the json object and check if session current date is within the session start date and end date 
-                participants.push({
-                    id: record.Id,
-                });  
+                // fill the json object and check if session current date is within the session start date and end date
+                if (record.Coach__r.Email === email) {
+                    participants.push({
+                        id: record.Id,
+                    });  
+                }
+                
             }
             if (participants.length !== 0){
                 res.send(JSON.stringify(participants[0].id));
@@ -67,6 +83,31 @@ async function getCoachId(email, res){
             
         });
 }
+
+// async function getCoachId(email, res){
+//     conn.sobject("Contact")
+//         .select(`Id, Name, Email`)
+//         .where({
+//             Email: email,
+//             Contact_Type__c: 'Coach'
+//         })
+//         .execute(function(err,records){
+//             if (err) { return console.error(err); }
+//             var participants = [];
+//             for (var record of records) {
+//                 // fill the json object and check if session current date is within the session start date and end date 
+//                 participants.push({
+//                     id: record.Id,
+//                 });  
+//             }
+//             if (participants.length !== 0){
+//                 res.send(JSON.stringify(participants[0].id));
+//             } else {
+//                 res.send(JSON.stringify("None"));
+//             }
+            
+//         });
+// }
 
 /**
  * Retrieves all participant information given a session id 
@@ -137,15 +178,15 @@ function sessionCoaches(id,res){
 }
 
 var records = [];
-conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact WHERE Contact_Type__c = 'Coach'", function(err, result) {
+conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
   if (err) { return console.error(err); }
   console.log("total : " + result.totalSize);
   console.log("fetched : " + result.records.length);
   for (var record of result.records) {
     console.log(record.Id);
-    console.log(record.Name);
-    console.log(record.Email);
-    console.log(record.Contact_Type__c);
+    console.log(record.Coach__r.Name);
+    console.log(record.Coach__r.Email);
+    console.log(record.Coach__r.Contact_Type__c);
   }
 });
 
