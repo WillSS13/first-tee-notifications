@@ -15,7 +15,7 @@ function Message() {
     const navigate = useNavigate();
 
     const {state} = useLocation();
-    const { name } = state; // Read values passed on state
+    // const { name } = state; // Read values passed on state
 
     // const { userEmail, sessionId, sessionName} = state;
     // if (state !== null) {
@@ -135,7 +135,7 @@ function Message() {
     
     <div className="main-margin">
         <div className = "margin-top-large">
-            <Link to="/classList" className="back-button poppins-light" state={{ userEmail: userEmail, name: name }}><FaArrowLeft/> &nbsp;Back to Classes</Link> 
+            <Link to="/classList" className="back-button poppins-light" state={{ userEmail: userEmail}}><FaArrowLeft/> &nbsp;Back to Classes</Link> 
             <h1 className="name-header poppins-medium">{sessionName}</h1>
         </div>
         <div className="card-container margin-bottom-large">
