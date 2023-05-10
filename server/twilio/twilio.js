@@ -8,8 +8,8 @@ const sendMessage = (phone, message) => {
   client.messages
     .create({
        body: message + '\n \n Please DO NOT reply to this message unless you want to opt out. Then, reply STOP to stop receiving future notifications',
-       from: '+19107189243',
-       to: phone
+       to: phone,
+       from: '+19107189243'
      })
     .then(message => console.log(message.sid));
 }
