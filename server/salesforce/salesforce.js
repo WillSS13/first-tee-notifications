@@ -258,13 +258,20 @@ function sessionNumbers(id,res, msg){
             // removing format xxx-xxx-xxxx
             let final = [];
             unique.forEach(element => {
-                console.log("inside");
-                if (element[3] === '-' && element[7] === '-'){
-                    let tempNum = element.substring(0,3) + element.substring(4,7) + element.substring(8);
-                    final.push(tempNum);
-                } else {
-                    final.push(element);
+                 // Remove any non-digit characters from the input string
+                const digits = element.replace(/\D/g, '');
+
+                // Ensure the input string contains exactly 10 digits
+                if (digits.length !== 10) {
+                    throw new Error('Invalid phone number');
                 }
+                // Format the digits into the desired format
+                const areaCode = digits.substring(0, 3);
+                const prefix = digits.substring(3, 6);
+                const lineNum = digits.substring(6);
+                const formattedNumber = `(${areaCode}) ${prefix}-${lineNum}`;
+
+                final.push(formattedNumber);``
             });
             if (final.length !== 0) {
                 console.log("can't be null here");
