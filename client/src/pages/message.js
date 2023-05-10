@@ -37,7 +37,7 @@ function Message() {
     const [msgParticipant, setMsgParticipant] = useState(false);
     const [msgAll, setMsgAll] = useState(false);
     const [msgSubject, setMsgSubject] = useState("Class Cancelled");
-    const [msgValue, setMsgValue] = useState("Due to weather, today's class is cancelled.");
+    const [msgValue, setMsgValue] = useState("");
     const [userId, setUserId] = useState("");
 
     function toggle(value) {
@@ -65,6 +65,8 @@ function Message() {
     function ClearFields() {
         document.getElementById("subject-message").value = "";
         document.getElementById("text-message").value = "";
+        setMsgValue("");
+        setMsgSubject("");
    }
 
     useEffect(() => {
@@ -115,7 +117,11 @@ function Message() {
       
   }, [participant]);
 
-    console.log(participant)
+  useEffect(() => {
+    setMsgValue("Due to weather, today's class is cancelled.");
+    setMsgSubject("Class Cancelled");
+}, []);
+
   return (
     <div className="App">
     <div className="top-bar">
