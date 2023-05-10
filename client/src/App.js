@@ -26,7 +26,7 @@ function App() {
     console.log(userObject);
     setUser(userObject);
     localStorage.setItem('user',userObject);
-    console.log(user);
+    console.log('THIS THE USER: ' + user.given_name);
     setUserEmail(userObject.email);
     console.log(userEmail);
     localStorage.setItem('userEmail',JSON.stringify(userObject.email));
@@ -35,7 +35,7 @@ function App() {
 
 
   if (userEmail !== ""){
-    navigate("/classList", {state:{userEmail: userEmail, user: user}});
+    navigate("/classList", {state:{userEmail: userEmail, user: user, name: user.given_name}});
   }
 
 
