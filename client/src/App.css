@@ -85,7 +85,10 @@
 .App {
   position: relative;
   width: 100%;
+
 }
+
+
 
 .App-header {
   background-color: #282c34;
@@ -237,6 +240,10 @@ hr {
 
 }
 
+.message-container {
+  padding-bottom: 40px;
+}
+
 .view-button:active {
   box-shadow: -1px -1px 1px #000;
 }
@@ -248,8 +255,7 @@ form {
 }
 
 .bottom-bar {
-  position: fixed;
-  bottom: 0;
+  margin-top: auto;
   width: 100%;
   background-color: #DEF9E6;
   padding: 20px 10vw 20px 10vw;
@@ -316,6 +322,15 @@ form {
   color: #14A849;
 }
 
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+
 @media only screen and (max-width: 800px) {
   .gradient-bg {
     background-image: url("./images/CoachesFirstTee.png");
@@ -370,6 +385,14 @@ form {
     border-radius: initial;
     background-image: initial;
     background-size:  initial;
+  }
+
+  .top-bar-content img, .bottom-bar-content img {
+    width: 125px;
+  }
+
+  .view-button {
+    font-size: 11px;
   }
 }
 

@@ -100,7 +100,7 @@ function ClassList() {
   }
 
   if (test !== ""){
-    navigate("/message");
+    navigate("/message", {state:{name: name}});
   }
 
   function getParticipantsLength(sessionId, data) {
@@ -117,6 +117,8 @@ function ClassList() {
 
   return (
     <div className="App">
+      <div className="flex-wrapper">
+      <body>
       <div className="top-bar">
         <div className="top-bar-content">
           <img src={require("../images/firstTeeLogo.png")} alt="FirstTeeLogo" />
@@ -128,48 +130,50 @@ function ClassList() {
       { session && 
         <div className="main-margin">
           <div>
-          {/* <img src={user.picture}></img> */}
-          <h1 className="name-header">Welcome {name}!</h1>
-        </div>
-        <div className="card-container margin-bottom-large">
-          <h2 className="your-class-header">Your Classes</h2>
-          <hr></hr>
-          <div className="side-margins">
-          {JSON.stringify(session) === "[{}]" &&
-          <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
-            <button className="view-button poppins-regular" onClick={(e) => refreshPage()}>Click to View Classes&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+            {/* <img src={user.picture}></img> */}
+            <h1 className="name-header">Welcome {name}!</h1>
           </div>
-          }
-          {JSON.stringify(session) !== "[{}]" &&
-          <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
-            {
-              session.map((data,key)=>{
-                console.log(data);
-                return (
-                  <Box color="black" bgcolor="lightgray" m={2} p={1} key={key} 
-                    sx={{
-                      borderRadius: '16px',
-                      width: '100%',
-                    }}>
-                      <div className="class-content">
-                        <div className = "class-text">
-                          <p className="class-title poppins-medium">{data.session_name}</p>
-                          <p className="student-num poppins-regular">Start: {data.start_date} <br/>End: {data.end_date}</p>
-                        </div>
-                        <div className= "class-button">
-                          <button onClick={(e)=>getParticipants(data.id, data.session_name)} className="c-btn"></button>
-                        </div>
-                      </div>
-                  </Box>
-                );
-              })
-            }
+          <div className="card-container margin-bottom-large">
+            <h2 className="your-class-header">Your Classes</h2>
+            <hr></hr>
+            <div className="side-margins">
+              {JSON.stringify(session) === "[{}]" &&
+                <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
+                  <button className="view-button poppins-regular" onClick={(e) => refreshPage()}>Click to View Classes&nbsp;&nbsp;<i className="fa fa-plus"></i></button>
+                </div>
+              }
+              {JSON.stringify(session) !== "[{}]" &&
+                <div id='coach-sessions' style={{marginTop:'30px',width:'100%'}}>
+                  {
+                    session.map((data,key)=>{
+                      console.log(data);
+                      return (
+                        <Box color="black" bgcolor="lightgray" m={2} p={1} key={key} 
+                          sx={{
+                            borderRadius: '16px',
+                            width: '100%',
+                          }}>
+                            <div className="class-content">
+                              <div className = "class-text">
+                                <p className="class-title poppins-medium">{data.session_name}</p>
+                                <p className="student-num poppins-regular">Start: {data.start_date} <br/>End: {data.end_date}</p>
+                              </div>
+                              <div className= "class-button">
+                                <button onClick={(e)=>getParticipants(data.id, data.session_name)} className="c-btn"></button>
+                              </div>
+                            </div>
+                        </Box>
+                      );
+                    })
+                  }
+                </div>
+              }
+            </div>
           </div>
-          }
-          </div>
-        </div>
         </div>
       }
+      </body>
+
       <div className="bottom-bar">
         <div className="bottom-bar-content">
           <img src={require("../images/FirstTeeMain.png")} alt="FirstTeeLogo" />
@@ -177,6 +181,7 @@ function ClassList() {
             <span>Privacy Policy</span>
           </a>
         </div>
+      </div>
       </div>
     </div>
   )

@@ -15,6 +15,8 @@ function Message() {
     const navigate = useNavigate();
 
     const {state} = useLocation();
+    const { name } = state; // Read values passed on state
+
     // const { userEmail, sessionId, sessionName} = state;
     // if (state !== null) {
     //     const {sessionId, sessionName} = state;
@@ -34,8 +36,8 @@ function Message() {
     const [msgCoach, setMsgCoach] = useState(false);
     const [msgParticipant, setMsgParticipant] = useState(false);
     const [msgAll, setMsgAll] = useState(false);
-    const [msgSubject, setMsgSubject] = useState("");
-    const [msgValue, setMsgValue] = useState("");
+    const [msgSubject, setMsgSubject] = useState("Class Cancelled");
+    const [msgValue, setMsgValue] = useState("Due to weather, today's class is cancelled.");
     const [userId, setUserId] = useState("");
 
     function toggle(value) {
@@ -59,6 +61,11 @@ function Message() {
     function backToHome(event) {
         setParticipant([{}]);
     }
+
+    function ClearFields() {
+        document.getElementById("subject-message").value = "";
+        document.getElementById("text-message").value = "";
+   }
 
     useEffect(() => {
         const emails = JSON.parse(localStorage.getItem('userEmail'));
@@ -122,7 +129,7 @@ function Message() {
     
     <div className="main-margin">
         <div className = "margin-top-large">
-            <Link to="/classList" className="back-button poppins-light" state={{ userEmail: userEmail }}><FaArrowLeft/> &nbsp;Back to Classes</Link> 
+            <Link to="/classList" className="back-button poppins-light" state={{ userEmail: userEmail, name: name }}><FaArrowLeft/> &nbsp;Back to Classes</Link> 
             <h1 className="name-header poppins-medium">{sessionName}</h1>
         </div>
         <div className="card-container margin-bottom-large">
@@ -135,14 +142,17 @@ function Message() {
                     <form onSubmit={handleSubmit}>
                     <label className="your-class-header poppins-regular">
                         Subject <br></br>
-                        <input type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{width:'100%'}} onChange={(e) => setMsgSubject(e.target.value)} />
+                        <input id="subject-message" type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{width:'100%'}} onChange={(e) => setMsgSubject(e.target.value)} />
                         <br></br><br></br>
                     </label>
 
                     
-                    <label className="your-class-header poppins-regular">
+                    <label className="your-class-header poppins-regular message-container">
                         Message <br></br>
-                        <textarea rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{width:'100%'}} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)}></textarea><br></br><br></br>
+                        <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{width:'100%'}} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)}></textarea><br></br><br></br>
+                        <input id="clear-button" type="button"
+                        value="Clear Text"
+                        onClick={ClearFields}/>
                     </label>
                     
                     <button variant="contained" type="submit" className="send-button poppins-regular">Send <i className="fa fa-paper-plane" aria-hidden="true"></i></button>
