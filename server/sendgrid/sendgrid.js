@@ -1,3 +1,5 @@
+// Connection to Twilio SendGrid Email API
+
 const sendEmail = (emails, message, subject) => {
     // const sgMail = require('@sendgrid/mail')
     // sgMail.setApiKey('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')

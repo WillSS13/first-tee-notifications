@@ -3,7 +3,6 @@
 var salesforce = require('./salesforce/salesforce');
 var twilio = require('./twilio/twilio');
 var sendgrid = require('./sendgrid/sendgrid');
-var nodemailer = require('./nodemailer/nodemailer')
 
 const express = require("express");
 const path = require('path');
@@ -89,13 +88,11 @@ app.post("/sendmessage", (req,res) => {
 
     // send message to participants
     salesforce.sessionNumbers(coachId, twilio.sendMessage, msg);
-    // salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
-    salesforce.sessionEmails(coachId, nodemailer.sendEmail, msg, subject)
+    salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
 
     // send message to coaches
     salesforce.coachNumbers(coachId, twilio.sendMessage, msg);
-    // salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
-    salesforce.coachEmails(coachId, nodemailer.sendEmail, msg, subject)
+    salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
 
     // res.json({ message: "Message Successfully Sent" });
     res.status(200).send('Status: OK')

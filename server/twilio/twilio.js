@@ -1,3 +1,5 @@
+// Connection to Twilio Programmable Messaging API
+
 // const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const accountSid = "AC73a23557bc6b1d47f5a9cbebeeb25c02";
 // const authToken = process.env.TWILIO_AUTH_TOKEN;

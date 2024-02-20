@@ -1,23 +1,15 @@
 // need to get these to 
-// const client_id = process.env.SALESFORCE_CLIENT_ID;
-// const client_secret = process.env.SALESFORCE_CLIENT_SECRET;
-// const username = process.env.SALESFORCE_USERNAME;
-// const password = process.env.SALESFORCE_PASSWORD;
-// const security_token = process.env.SALESFORCE_SECURITY_TOKEN;
+require('dotenv').config(); // Load environment variables from .env file
 
-// const instance_url = process.env.SALESFORCE_INSTANCE_URL;
-// const access_token = process.env.SALESFORCE_ACCESS_TOKEN;
-// const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
+const client_id = process.env.SALESFORCE_CLIENT_ID;
+const client_secret = process.env.SALESFORCE_CLIENT_SECRET;
+const username = process.env.SALESFORCE_USERNAME;
+const password = process.env.SALESFORCE_PASSWORD;
+const security_token = process.env.SALESFORCE_SECURITY_TOKEN;
 
-const client_id = "3MVG9uudbyLbNPZN8s8tSkgg9Sq2J3CNElUcXXf3QNVUMDbcYPYC2jfIV5OFqY6G8X71m49vqrTK7erZFlFvN";
-const client_secret = "9DE23A303F2FD5AC0BE3280701CD093809CC01E9B5B2DDB49B595271A00997FF";
-const username = "integration@firstteepittsburgh.org";
-const password = "firstTeeP1ttsburgh!";
-const security_token = "cb5BSAG0MM5yJoIJNFQUyxdWj";
-
-const instance_url = "https://firsttee.my.salesforce.com";
-const access_token = "00D36000000uXgY!AQQAQGSXNeayatrKLRCHtclYTQuJ9At6PJx5VDcpYnag6zUQJcN7PN98eRdF7AmQIGbk2VfHRlgTDQgAgkE.693hlJibvDix";
-const refresh_token = "5Aep861QbHyftz0nI9WixbcujBK.a4w09vFurPjPS97oi9Bp7z1a5tl8LoFnU7AQZfYfkJwBW5wpKIXBtdD5oo7";
+const instance_url = process.env.SALESFORCE_INSTANCE_URL;
+const access_token = process.env.SALESFORCE_ACCESS_TOKEN;
+const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
 
 var jsforce = require('jsforce');
 console.log("hi");
