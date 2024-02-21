@@ -125,10 +125,10 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-var test = true;
+// var test = true;
 
-if (test) {
-  console.log("Testing");
-  twilio.testMessage();
-  test = false;
-}
+// if (test) {
+//   console.log("Testing");
+//   twilio.testMessage();
+//   test = false;
+// }
