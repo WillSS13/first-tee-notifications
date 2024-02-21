@@ -100,6 +100,11 @@ app.post("/sendmessage", (req,res) => {
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
+// Twilio verification for clickable links in text messages
+app.get('/b38a6c86e62761d3561f58c0be47e378.html', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'b38a6c86e62761d3561f58c0be47e378.html'));
+});
+
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
