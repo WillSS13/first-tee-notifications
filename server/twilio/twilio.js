@@ -20,7 +20,8 @@ const testMessage = () => {
 
   client.messages
       .create({
-            body: '\n \n \n THIS IS A TEST \n \n https://www.google.com/ \n',
+          shortenUrls: true,
+          body: '\n \n \n THIS IS A TEST \n \n https://first-tee-notifications.herokuapp.com/b38a6c86e62761d3561f58c0be47e378.html \n',
           from: '+18335911404',
           to: '+14176316203'
       })
