@@ -15,17 +15,4 @@ const sendMessage = (phone, message) => {
     .then(message => console.log(message.sid));
 }
 
-const testMessage = () => {
-  const client = require('twilio')(accountSid, authToken);
-
-  client.messages
-      .create({
-          shortenUrls: true,
-          body: '\n \n \n THIS IS A TEST \n \n https://first-tee-notifications.herokuapp.com/b38a6c86e62761d3561f58c0be47e378.html \n',
-          from: '+18335911404',
-          to: '+14176316203'
-      })
-      .then(message => console.log(message.sid))
-}
-
-module.exports = {sendMessage, testMessage};
+module.exports = { sendMessage };
