@@ -105,6 +105,18 @@ app.get('/b38a6c86e62761d3561f58c0be47e378.html', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'b38a6c86e62761d3561f58c0be47e378.html'));
 });
 
+
+// TLS certificate verification for Let's Encrypt (1)
+app.get('/.well-known/acme-challenge/hoTSBWVtXQCHZUx5FNpFPUXhtb0v4IuNy453sT0_j_c.html', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/.well-known/acme-challenge/hoTSBWVtXQCHZUx5FNpFPUXhtb0v4IuNy453sT0_j_c'));
+});
+
+// TLS certificate verification for Let's Encrypt (2)
+app.get('/.well-known/acme-challenge/6L8LGGYEapU6ylGYSyeaid_Jd4634Ci1nJGHtmlsDhw', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/.well-known/acme-challenge/6L8LGGYEapU6ylGYSyeaid_Jd4634Ci1nJGHtmlsDhw'));
+});
+
+
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -114,10 +126,10 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-// var test = true;
+var test = true;
 
-// if (test) {
-//   console.log("Testing");
-//   twilio.testMessage();
-//   test = false;
-// }
+if (test) {
+  console.log("Testing");
+  twilio.testMessage();
+  test = false;
+}
