@@ -7,7 +7,7 @@ var sendgrid = require('./sendgrid/sendgrid');
 const express = require("express");
 const path = require('path');
 const { Knock } = require('@knocklabs/node');
-const { testKnock } = require('./knock/knock');
+const { testSMS, testEmail } = require('./knock/knock');
 
 const PORT = process.env.PORT || 3001;
 
@@ -131,7 +131,7 @@ app.listen(PORT, () => {
 
 // if (test) {
 //   console.log("Testing");
-//   // testKnock();
-//   // testEmail
+//   // testSMS();
+//   // testEmail();
 //   test = false;
 // }
