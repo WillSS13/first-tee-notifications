@@ -2,7 +2,7 @@ const { Knock } = require("@knocklabs/node");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
 const testSMS = () => {
-  knock.workflows.trigger("notification", {
+  knock.workflows.trigger("sms", {
     data: { message: "THIS IS A TEST MESSAGE" },
     recipients: [
       {
