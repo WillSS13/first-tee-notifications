@@ -6,6 +6,8 @@ var sendgrid = require('./sendgrid/sendgrid');
 
 const express = require("express");
 const path = require('path');
+const { Knock } = require('@knocklabs/node');
+const { testSMS, testEmail } = require('./knock/knock');
 
 const PORT = process.env.PORT || 3001;
 
@@ -42,7 +44,7 @@ app.post("/coachId",(req,res) => {
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
     console.log("second time through");
-    console.log(coachEmail);
+    // console.log(coachEmail);
     salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
 });
@@ -108,3 +110,12 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+// var test = true;
+
+// if (test) {
+//   console.log("Testing");
+//   // testSMS();
+//   // testEmail();
+//   test = false;
+// }
