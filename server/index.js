@@ -6,6 +6,7 @@ var sendgrid = require('./sendgrid/sendgrid');
 
 const express = require("express");
 const path = require('path');
+
 const { Knock } = require('@knocklabs/node');
 const { testSMS, testEmail } = require('./knock/knock');
 
@@ -44,7 +45,7 @@ app.post("/coachId",(req,res) => {
     // const coachId = '0033600001KJ05SAAT'
     // get coach sessions from id 
     console.log("second time through");
-    // console.log(coachEmail);
+    console.log(coachEmail);
     salesforce.getCoachId(coachEmail,res);
     // res.json(sessions);
 });
@@ -89,12 +90,12 @@ app.post("/sendmessage", (req,res) => {
     // const coachId = '0033600001KJ05SAAT'
 
     // send message to participants
-    salesforce.sessionNumbers(coachId, twilio.sendMessage, msg);
-    salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
+    salesforce.sessionNumbers(coachId, sendSMS, msg);
+    salesforce.sessionEmails(coachId, sendEmail, msg, subject)
 
     // send message to coaches
-    salesforce.coachNumbers(coachId, twilio.sendMessage, msg);
-    salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
+    salesforce.coachNumbers(coachId, sendSMS, msg);
+    salesforce.coachEmails(coachId, sendEmail, msg, subject)
 
     // res.json({ message: "Message Successfully Sent" });
     res.status(200).send('Status: OK')
@@ -115,7 +116,7 @@ app.listen(PORT, () => {
 
 // if (test) {
 //   console.log("Testing");
-//   // testSMS();
-//   // testEmail();
+//   // testSMS("23428347", "+14176316203", "TEST MESSAGE"); 
+//   // testEmail("1", "notifications@thefirstteepittsburgh.org", "TEST MESSAGE");
 //   test = false;
 // }

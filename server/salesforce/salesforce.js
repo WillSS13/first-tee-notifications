@@ -321,8 +321,10 @@ function sessionNumbers(id,res, msg){
             });
             if (final.length !== 0) {
                 console.log("can't be null here");
+                var id = 1;
                 final.forEach(element => {
-                    res(element,msg);
+                    res(id, element, msg);
+                    id++;
                 }) 
             }
         });
@@ -393,7 +395,7 @@ function coachNumbers(id,res, msg){
  */
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
-function sessionEmails(id,res, msg, subject){
+function sessionEmails(id,res, msg) {
     conn.sobject("Session_Registration__c")
         .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Contact_Type__c`)
         .where({
@@ -418,7 +420,7 @@ function sessionEmails(id,res, msg, subject){
                     unique.push(element);
                 }
             });
-            res(unique, msg, subject);
+            res(unique, msg);
         });
 }
 
