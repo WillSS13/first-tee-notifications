@@ -131,6 +131,7 @@ app.listen(PORT, () => {
 
 // if (test) {
 //   console.log("Testing");
-//   testKnock();
+//   // testKnock();
+//   // testEmail
 //   test = false;
 // }

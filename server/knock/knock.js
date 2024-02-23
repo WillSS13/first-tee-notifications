@@ -16,4 +16,19 @@ const testKnock = () => {
   .catch((error) => console.error(error));
 }
 
-module.exports = { testKnock };
+const testEmail = () => {
+  knock.workflows.trigger("email", {
+    data: { message: "THIS IS A TEST MESSAGE" },
+    recipients: [
+      {
+        id: "1",
+        name: "Will Squibb",
+        email: "notifications@thefirstteepittsburgh.org"
+      },
+    ],
+  })
+  .then((response) => console.log(response))
+  .catch((error) => console.error(error));
+}
+
+module.exports = { testKnock, testEmail };
