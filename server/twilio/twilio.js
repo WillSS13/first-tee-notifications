@@ -1,8 +1,9 @@
-// This file will eventually be deprecated once Knock can communciate with the frontend.
+// Connection to Twilio Programmable Messaging API
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const accountSid = "AC73a23557bc6b1d47f5a9cbebeeb25c02";
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+const authToken = "96569ea3128395035e364b8c5217150f";
 const sendMessage = (phone, message) => {
   const client = require('twilio')(accountSid, authToken);
   console.log(phone);

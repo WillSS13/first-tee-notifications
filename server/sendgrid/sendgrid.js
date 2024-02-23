@@ -1,4 +1,4 @@
-// This file will eventually be deprecated once Knock can communciate with the frontend.
+// Connection to Twilio SendGrid Email API
 
 const sendEmail = (emails, message, subject) => {
     // const sgMail = require('@sendgrid/mail')
