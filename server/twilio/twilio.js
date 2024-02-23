@@ -1,4 +1,4 @@
-// Connection to Twilio Programmable Messaging API
+// This file will eventually be deprecated once Knock can communciate with the frontend.
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
