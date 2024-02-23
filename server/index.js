@@ -9,6 +9,7 @@ const path = require('path');
 
 const { Knock } = require('@knocklabs/node');
 const { testSMS, testEmail } = require('./knock/knock');
+const { sendSMS, sendEmail } = require('./knock/knock');
 
 const PORT = process.env.PORT || 3001;
 
@@ -88,10 +89,14 @@ app.post("/sendmessage", (req,res) => {
     const coachId = body.coachId;
 
     // const coachId = '0033600001KJ05SAAT'
+    sendSMS("0033600001KJ05SAAT", "+14176316203", "/sendmessage CALLED"); 
+
 
     // send message to participants
     salesforce.sessionNumbers(coachId, sendSMS, msg);
     salesforce.sessionEmails(coachId, sendEmail, msg, subject)
+
+    sendSMS("0033600001KJ05SAAT", "+14176316203", "/sendmessage RECEIVED"); 
 
     // send message to coaches
     salesforce.coachNumbers(coachId, sendSMS, msg);
@@ -111,6 +116,8 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+sendSMS("0033600001KJ05SAAT", "+14176316203", "DEPLOYED");
 
 // var test = true;
 
