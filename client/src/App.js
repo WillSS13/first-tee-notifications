@@ -50,8 +50,6 @@ function App() {
       client_id: "577503408571-t7b1p7kh2rppnoeooagkti8t1hnqh3nc.apps.googleusercontent.com",
       callback: handleCallbackResponse
     });
-
-    console.log("hi");
     
     google.accounts.id.renderButton(
       document.getElementById("signInDiv"),
