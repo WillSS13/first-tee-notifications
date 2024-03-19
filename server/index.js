@@ -31,7 +31,7 @@ app.post("/coachId",(req,res) => {
     // get coach id from email 
 
     // add your email to the if statement below and alter your log in email to another coach's email
-    if (coachEmail == "edithtan777@gmail.com" || coachEmail == "nmaher@andrew.cmu.edu" || coachEmail == "alexanderma00@gmail.com"){
+    if (coachEmail == "bzchen@andrew.cmu.edu" || coachEmail == "wsquibb@andrew.cmu.edu" || coachEmail == "ypagarwa@andrew.cmu.edu"){
         coachEmail = 'pcoultas@thefirstteepittsburgh.org';
         // coachEmail = 'lrussell@firstteepittsburgh.org';
         // coachEmail = 'jroberts@thefirstteepittsburgh.org';
