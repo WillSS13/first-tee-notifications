@@ -22,7 +22,8 @@ var conn = new jsforce.Connection({
     oauth2: oauth2,
     instanceUrl: instance_url,
     accessToken: access_token,
-    refreshToken: refresh_token
+    refreshToken: refresh_token,
+    version: '52.0'
 });
 
 conn.on('refresh', function (accessToken, res) {
@@ -48,18 +49,56 @@ function delay(ms) {
 //   }
 // });
 
-var records = [];
-conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact", function(err, result) {
-  if (err) { return console.error(err); }
-  console.log("total : " + result.totalSize);
-  console.log("fetched : " + result.records.length);
-  for (var record of result.records) {
-    console.log(record.Id);
-    console.log(record.Name);
-    console.log(record.Email);
-    console.log(record.Contact_Type__c);
-  }
+// conn.describeGlobal(function(err, res) {
+//   if (err) { return console.error(err); }
+
+//   console.log('All available sObjects:');
+//   for (let i = 0; i < res.sobjects.length; i++) {
+//     console.log('- ' + res.sobjects[i].name);
+//   }
+// });
+
+conn.sobject("Parent_Contact__c")
+  .select('FIELDS(ALL)')
+  .limit(1)
+  // .where("email LIKE 'squibb%'")
+  .execute(function(err, records) {
+    if (err) { return console.error(err); }
+    console.log(records);
 });
+
+// conn.sobject("User")
+//   .select('FIELDS(ALL)')
+//   .limit(1)
+//   .where("Email LIKE 'pcoulta%'")
+//   .execute(function(err, records) {
+//     if (err) { return console.error(err); }
+//     console.log(records);
+// });
+
+
+// conn.query("SELECT FIELDS(ALL) FROM Listing_Session_c LIMIT 1", function(err, result) {
+//   if (err) { return console.error(err); }
+//   console.log("total : " + result.totalSize);
+//   console.log("fetched : " + result.records.length);
+//   // print the first 5 records
+//   for (var i=0; i<5; i++) {
+//     console.log(result.records[i]);
+//   }
+// });
+
+// var records = [];
+// conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact", function(err, result) {
+//   if (err) { return console.error(err); }
+//   console.log("total : " + result.totalSize);
+//   console.log("fetched : " + result.records.length);
+//   for (var record of result.records) {
+//     console.log(record.Id);
+//     console.log(record.Name);
+//     console.log(record.Email);
+//     console.log(record.Contact_Type__c);
+//   }
+// });
 
 // async function getCoachId(email, res){
 //     conn.sobject("Coach_Assignment__c")
@@ -90,6 +129,8 @@ conn.query("SELECT Id, Name, Email, Contact_Type__c FROM Contact", function(err,
 // }
 
 async function getCoachId(email, res){
+    console.log("getCoachId called");
+    console.log("Email" + email);
     conn.sobject("Contact")
         .select(`Id, Name, Email`)
         .where({
@@ -123,6 +164,7 @@ async function getCoachId(email, res){
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 
 function sessionParticipants(id,res){
+    console.log("sessionParticipants called");
     conn.sobject("Session_Registration__c")
         .select(`Id, Name, Status__c, Contact__c, Contact__r.Name, Contact__r.Primary_Contact_s_Email__c, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c, Contact__r.Participation_Status__c`)
         .where({
@@ -161,6 +203,7 @@ function sessionParticipants(id,res){
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 
 function sessionCoaches(id,res){
+    console.log("sessionCoaches called");
     conn.sobject("Coach_Assignment__c")
         .select(`Id, Coach__c, Coach__r.Name, Name, Listing_Session__c,Session_End_Date__c, Session_Start_Date__c, Listing_Session__r.Id, Listing_Session__r.Name, Coach__r.Email, Coach__r.MobilePhone, Coach__r.Contact_Type__c`)
         .execute(function(err,records){
@@ -182,18 +225,18 @@ function sessionCoaches(id,res){
         });
 }
 
-var records = [];
-conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
-  if (err) { return console.error(err); }
-  console.log("total : " + result.totalSize);
-  console.log("fetched : " + result.records.length);
-  for (var record of result.records) {
-    console.log(record.Id);
-    console.log(record.Coach__r.Name);
-    console.log(record.Coach__r.Email);
-    console.log(record.Coach__r.Contact_Type__c);
-  }
-});
+// var records = [];
+// conn.query("SELECT Id, Coach__r.Name, Coach__r.Email, Coach__r.Contact_Type__c FROM Coach_Assignment__c", function(err, result) {
+//   if (err) { return console.error(err); }
+//   console.log("total : " + result.totalSize);
+//   console.log("fetched : " + result.records.length);
+//   for (var record of result.records) {
+//     console.log(record.Id);
+//     console.log(record.Coach__r.Name);
+//     console.log(record.Coach__r.Email);
+//     console.log(record.Coach__r.Contact_Type__c);
+//   }
+// });
 
 // const temp = "a0H1R00001F6809UAB";
 // conn.sobject("Coach_Assignment__c")
@@ -273,6 +316,7 @@ function coachSessions(id,res) {
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 function sessionNumbers(id,res, msg){
+    console.log("sessionNumbers called");
     conn.sobject("Session_Registration__c")
         .select(`Id, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c`)
         .where({
@@ -338,6 +382,7 @@ function sessionNumbers(id,res, msg){
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 function coachNumbers(id,res, msg){
+    console.log("coachNumbers called");
     conn.sobject("Coach_Assignment__c")
         .select(`Id, Coach__r.MobilePhone, Listing_Session__r.Id`)
         .execute(function(err,records){
@@ -396,6 +441,7 @@ function coachNumbers(id,res, msg){
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 function sessionEmails(id,res, msg) {
+    console.log("sessionEmails called");
     conn.sobject("Session_Registration__c")
         .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Contact_Type__c`)
         .where({
@@ -432,6 +478,7 @@ function sessionEmails(id,res, msg) {
 // given session id, get participant information 
 // sample session id: a0H3600000UtSIBEA3, a0H3600000Cex7ZEAR, a0H1R00001F67OmUAJ, a0H1R000013eaoxUAA
 function coachEmails(id,res, msg, subject){
+    console.log("coachEmails called");
     conn.sobject("Coach_Assignment__c")
         .select(`Id, Coach__r.Email, Listing_Session__r.Id`)
         .execute(function(err,records){

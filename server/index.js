@@ -32,11 +32,26 @@ app.post("/coachId", (req,res) => {
     // Retrieve coach's email from the request query parameters 
     let coachEmail = req.body.email;
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     //! FOR DEV TESTING PURPOSES ONLY (REMOVE IN PRODUCTION)
     if (coachEmail == "bzchen@andrew.cmu.edu" 
      || coachEmail == "ypagarwa@andrew.cmu.edu" 
      || coachEmail == "wsquibb@andrew.cmu.edu"){
         coachEmail = 'pcoultas@thefirstteepittsburgh.org';
+=======
+=======
+>>>>>>> Stashed changes
+    // add your email to the if statement below and alter your log in email to another coach's email
+    if (coachEmail == "edithtan777@gmail.com" || coachEmail == "nmaher@andrew.cmu.edu" || coachEmail == "alexanderma00@gmail.com" || "wsquibb@andrew.cmu.edu"){
+        coachEmail = 'pcoultas@firstteepittsburgh.org';
+        // coachEmail = 'lrussell@firstteepittsburgh.org';
+        // coachEmail = 'jroberts@thefirstteepittsburgh.org';
+        // coachEmail = 'brettbossblackwood@gmail.com';
+        // coachEmail = 'rhawkins@firstteepittsburgh.org';
+        // coachEmail = 'alindauer@firstteepittsburgh.org';
+        // 
+>>>>>>> Stashed changes
     }
     console.log("Logged in as: ", coachEmail);
 
@@ -50,6 +65,8 @@ app.get("/sessions", (req,res) => {
     const coachEmail = req.query.session;
   
     // get coach sessions from id 
+    console.log("\x1b[31m%s\x1b[0m", "receiving session");
+    console.log(coachEmail);
     salesforce.coachSessions(coachEmail,res);
 });
 
@@ -98,4 +115,22 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 sendSMS("0033600001KJ05SAAT", "+14176316203", "DEPLOYED");
+=======
+=======
+>>>>>>> Stashed changes
+// sendSMS("0033600001KJ05SAAT", "+14176316203", "DEPLOYED");
+// sendSMS("1033600001KJ05SAAT", "+14699806998", "DEPLOYED");
+// sendSMS("2033600001KJ05SAAT", "+18624859128", "DEPLOYED");
+
+// var test = true;
+
+// if (test) {
+//   console.log("Testing");
+//   // testSMS("23428347", "+14176316203", "TEST MESSAGE"); 
+//   // testEmail("1", "notifications@thefirstteepittsburgh.org", "TEST MESSAGE");
+//   test = false;
+// }
+>>>>>>> Stashed changes
