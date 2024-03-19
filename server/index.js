@@ -32,7 +32,7 @@ app.post("/coachId", (req,res) => {
     // Retrieve coach's email from the request query parameters 
     let coachEmail = req.body.email;
 
-
+    // add your email to the if statement below and alter your log in email to another coach's email
     //! FOR DEV TESTING PURPOSES ONLY (REMOVE IN PRODUCTION)
     if (coachEmail == "bzchen@andrew.cmu.edu" 
      || coachEmail == "ypagarwa@andrew.cmu.edu" 
