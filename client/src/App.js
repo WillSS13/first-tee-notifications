@@ -1,10 +1,9 @@
-import logo from './logo.svg';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Checkbox } from '@mui/material';
 import jwt_decode from "jwt-decode";
 import './App.css';
-import { FaArrowLeft,FaEnvelopeOpenText } from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import { FaArrowLeft, FaEnvelopeOpenText } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const navigate = useNavigate();
@@ -25,17 +24,17 @@ function App() {
     var userObject = jwt_decode(response.credential);
     console.log(userObject);
     setUser(userObject);
-    localStorage.setItem('user',userObject);
+    localStorage.setItem('user', userObject);
     console.log('THIS THE USER: ' + user.given_name);
     setUserEmail(userObject.email);
     console.log(userEmail);
-    localStorage.setItem('userEmail',JSON.stringify(userObject.email));
+    localStorage.setItem('userEmail', JSON.stringify(userObject.email));
     // navigate("/classList", {state:{userEmail: userEmail, user: user}});
   }
 
 
-  if (userEmail !== ""){
-    navigate("/classList", {state:{userEmail: userEmail, user: user, name: user.given_name}});
+  if (userEmail !== "") {
+    navigate("/classList", { state: { userEmail: userEmail, user: user, name: user.given_name } });
   }
 
 
@@ -52,24 +51,24 @@ function App() {
     });
 
     console.log("hi");
-    
+
     google.accounts.id.renderButton(
       document.getElementById("signInDiv"),
-      {theme:"outline", size:"large"}
+      { theme: "outline", size: "large" }
     )
     // navigate("/classList", {state:{userEmail: userEmail, user: user}});
   }, []);
 
   useEffect(() => {
-    if(userEmail){
+    if (userEmail) {
       const emailArray = userEmail.split("@");
       // encode user email within the post request 
       const requestOptions = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email: userEmail})
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail })
       };
-      fetch('/coachId',requestOptions)
+      fetch('/coachId', requestOptions)
         .then((res) => res.json())
         .then((data) => localStorage.setItem('userId', JSON.stringify(data)));
     }
@@ -91,13 +90,13 @@ function App() {
   return (
     <div className="App gradient-bg">
       <div className="signInWrapper ">
-        <div className ="main-login-content">
+        <div className="main-login-content">
           <img src={require("./images/firstTeeLogo.png")} alt="FirstTeeLogo" />
-          <h1 className ="name-header poppins-bold">Coach Login</h1>
-          <h1 className ="your-class-header poppins-light font-size-large padding-bottom-small">If you are registered as a coach for First Tee Pittsburgh, login below to view your classes and notify students with updates!</h1>
+          <h1 className="name-header poppins-bold">Coach Login</h1>
+          <h1 className="your-class-header poppins-light font-size-large padding-bottom-small">If you are registered as a coach for First Tee Pittsburgh, login below to view your classes and notify students with updates!</h1>
           <div id="signInDiv"></div>
         </div>
-        <div className ="login-img">
+        <div className="login-img">
         </div>
       </div>
     </div>
