@@ -34,6 +34,8 @@ function Message() {
   }
   function handleSignOut(event) {
     navigate("../");
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   function ClearFields() {
