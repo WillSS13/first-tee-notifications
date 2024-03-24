@@ -16,7 +16,6 @@ function Message() {
   const [userEmail, setUserEmail] = useState([]);
   const [sessionId, setSessionId] = useState([]);
   const [sessionName, setSessionName] = useState([]);
-  const [userId, setUserId] = useState('');
   const [participant, setParticipant] = useState([{}]);
   const [coach, setCoach] = useState([{}]);
 
@@ -48,19 +47,16 @@ function Message() {
     const emails = JSON.parse(localStorage.getItem('userEmail'));
     const id = JSON.parse(localStorage.getItem('sessionId'));
     const name = JSON.parse(localStorage.getItem('sessionName'));
-    const userid = JSON.parse(localStorage.getItem('userId'));
 
     if (emails) setUserEmail(emails);
     if (id) setSessionId(id);
     if (name) setSessionName(name);
-    if (userid) setUserId(userid);
 
   }, []);
 
 
   useEffect(() => {
     if (sessionId) {
-      console.log(sessionId);
       fetch(`/participants?participant=${encodeURIComponent(JSON.parse(localStorage.getItem('sessionId')))}`)
         .then((res) => res.json())
         .then((data) => setParticipant(data))
@@ -70,8 +66,6 @@ function Message() {
 
   useEffect(() => {
     if (participant) {
-      console.log("trying");
-      console.log(sessionId);
       fetch(`/coaches?session=${encodeURIComponent(sessionId)}`)
         .then((res) => res.json())
         .then((data) => setCoach(data))

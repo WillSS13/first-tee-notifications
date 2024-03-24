@@ -160,7 +160,6 @@ function sessionNumbers(id, res, msg) {
         final.push(formattedNumber);
       });
       if (final.length !== 0) {
-        console.log("can't be null here");
         final.forEach(element => {
           res(element, msg);
         })
@@ -209,7 +208,6 @@ function coachNumbers(id, res, msg) {
       });
 
       if (final.length !== 0) {
-        console.log("can't be null here");
         final.forEach(element => {
           res(element, msg);
         })
