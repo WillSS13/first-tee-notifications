@@ -1,12 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Box, Button, Checkbox } from '@mui/material';
+import { Box } from '@mui/material';
 import '../App.css';
-import { FaArrowLeft, FaEnvelopeOpenText } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import {
   Link
 } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 
@@ -14,35 +13,15 @@ import { useNavigate } from "react-router-dom";
 function Message() {
   const navigate = useNavigate();
 
-  const { state } = useLocation();
-  // const { name } = state; // Read values passed on state
-
-  // const { userEmail, sessionId, sessionName} = state;
-  // if (state !== null) {
-  //     const {sessionId, sessionName} = state;
-  // } else {
-  //     const prevId, prevName = usePrevious(sessionId, sessionName);
-  // }
-
-  // function usePrevious(id, name)
-
   const [userEmail, setUserEmail] = useState([]);
   const [sessionId, setSessionId] = useState([]);
   const [sessionName, setSessionName] = useState([]);
+  const [userId, setUserId] = useState('');
   const [participant, setParticipant] = useState([{}]);
   const [coach, setCoach] = useState([{}]);
 
-  // useState for forms 
-  const [msgCoach, setMsgCoach] = useState(false);
-  const [msgParticipant, setMsgParticipant] = useState(false);
-  const [msgAll, setMsgAll] = useState(false);
   const [msgSubject, setMsgSubject] = useState("Class Cancelled");
   const [msgValue, setMsgValue] = useState("");
-  const [userId, setUserId] = useState("");
-
-  function toggle(value) {
-    return !value;
-  }
 
   function handleSubmit() {
     const requestOptions = {
@@ -58,10 +37,6 @@ function Message() {
     navigate("../");
   }
 
-  function backToHome(event) {
-    setParticipant([{}]);
-  }
-
   function ClearFields() {
     document.getElementById("subject-message").value = "";
     document.getElementById("text-message").value = "";
@@ -71,27 +46,14 @@ function Message() {
 
   useEffect(() => {
     const emails = JSON.parse(localStorage.getItem('userEmail'));
-    if (emails) {
-      setUserEmail(emails);
-    }
     const id = JSON.parse(localStorage.getItem('sessionId'));
-    if (id) {
-      setSessionId(id);
-      console.log(sessionId);
-    }
     const name = JSON.parse(localStorage.getItem('sessionName'));
-    if (name) {
-      setSessionName(name);
-      console.log(sessionName);
-    }
     const userid = JSON.parse(localStorage.getItem('userId'));
-    if (userid) {
-      setUserId(userid);
-    }
 
-    // fetch(`/coaches?session=${encodeURIComponent("a0H1R00001F6809UAB")}`)
-    //       .then((res) => res.json())
-    //       .then((data) => setCoach(data))
+    if (emails) setUserEmail(emails);
+    if (id) setSessionId(id);
+    if (name) setSessionName(name);
+    if (userid) setUserId(userid);
 
   }, []);
 
@@ -115,7 +77,7 @@ function Message() {
         .then((data) => setCoach(data))
     }
 
-  }, [participant]);
+  }, [participant, sessionId]);
 
   useEffect(() => {
     setMsgValue("Due to weather, today's class is cancelled.");
