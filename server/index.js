@@ -74,5 +74,3 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-sendEmail('wsquibb@andrew.cmu.edu', 'CMU TEST', 'This is a test');
