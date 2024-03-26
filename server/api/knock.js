@@ -1,14 +1,15 @@
 const { Knock } = require("@knocklabs/node");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
-const testSMS = () => {
+const sendSMS = (phone, msg) => {
   knock.workflows.trigger("twilio", {
-    data: { message: "THIS IS A TEST MESSAGE" },
+    data: {
+      message: msg,
+    },
     recipients: [
       {
-        id: "1",
-        name: "Will Squibb",
-        phone_number: "+14176316203",
+        id: phone,
+        phone_number: phone,
       },
     ],
   })
@@ -16,14 +17,16 @@ const testSMS = () => {
     .catch((error) => console.error(error));
 }
 
-const testEmail = () => {
+const sendEmail = (email, subject, msg) => {
   knock.workflows.trigger("mailersend", {
-    data: { message: "THIS IS A TEST MESSAGE" },
+    data: {
+      subject: subject,
+      message: msg,
+    },
     recipients: [
       {
-        id: "1",
-        name: "Will Squibb",
-        email: "wsquibb@andrew.cmu.edu"
+        id: email,
+        email: email,
       },
     ],
   })
@@ -31,4 +34,4 @@ const testEmail = () => {
     .catch((error) => console.error(error));
 }
 
-module.exports = { testSMS, testEmail };
+module.exports = { sendSMS, sendEmail };

@@ -2,7 +2,7 @@ var salesforce = require('./api/salesforce');
 
 const express = require("express");
 const path = require('path');
-const { testSMS, testEmail } = require('./api/knock');
+const { sendSMS, sendEmail } = require('./api/knock');
 
 const PORT = process.env.PORT || 3001;
 
@@ -56,11 +56,11 @@ app.post("/sendmessage", (req, res) => {
   const msg = body.message;
   const coachId = body.coachId;
 
-  salesforce.sessionNumbers(coachId, twilio.sendMessage, msg);
-  salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
+  salesforce.sessionNumbers(coachId, sendSMS, msg);
+  salesforce.sessionEmails(coachId, sendEmail, msg, subject)
 
-  salesforce.coachNumbers(coachId, twilio.sendMessage, msg);
-  salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
+  salesforce.coachNumbers(coachId, sendSMS, msg);
+  salesforce.coachEmails(coachId, sendEmail, msg, subject)
 
   res.status(200).send('Status: OK')
 })
@@ -74,3 +74,5 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+sendEmail('wsquibb@andrew.cmu.edu', 'CMU TEST', 'This is a test');

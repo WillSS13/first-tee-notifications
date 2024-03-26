@@ -18,7 +18,8 @@ var conn = new jsforce.Connection({
   oauth2: oauth2,
   instanceUrl: instance_url,
   accessToken: access_token,
-  refreshToken: refresh_token
+  refreshToken: refresh_token,
+  version: '52.0'
 });
 
 conn.on('refresh', function (accessToken, res) {
@@ -50,7 +51,7 @@ async function getCoachId(email, res) {
 
 function sessionParticipants(id, res) {
   conn.sobject("Session_Registration__c")
-    .select(`Id, Name, Status__c, Contact__c, Contact__r.Name, Contact__r.Primary_Contact_s_Email__c, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c, Contact__r.Participation_Status__c`)
+    .select(`Id, Name, Status__c, Contact__c, Contact__r.Name, Contact__r.Primary_Contact_s_Email__c, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c, Contact__r.Participation_Status__c`)
     .where({
       Listing_Session__c: id,
       Status__c: 'Registered'
@@ -64,7 +65,7 @@ function sessionParticipants(id, res) {
           name: record.Name,
           contact_name: record.Contact__r.Name,
           type: record.Contact__r.Contact_Type__c,
-          primary_contact_phone: record.Contact__r.Primary_Contact_s_Mobile__c,
+          primary_contact_phone: record.Contact__r.Emergency_Contact_Number__c,
           primary_contact_email: record.Contact__r.Primary_Contact_s_Email__c,
           status: record.Status__c
         });
@@ -119,7 +120,7 @@ function coachSessions(id, res) {
 
 function sessionNumbers(id, res, msg) {
   conn.sobject("Session_Registration__c")
-    .select(`Id, Contact__r.Primary_Contact_s_Mobile__c, Contact__r.Contact_Type__c`)
+    .select(`Id, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
     .where({
       Listing_Session__c: id,
       Status__c: 'Registered'
@@ -130,7 +131,7 @@ function sessionNumbers(id, res, msg) {
       for (var record of records) {
         if (record.Contact__r.Contact_Type__c == 'Participant') {
           participants.push(
-            record.Contact__r.Primary_Contact_s_Mobile__c
+            record.Contact__r.Emergency_Contact_Number__c
           );
         }
       }
@@ -152,16 +153,14 @@ function sessionNumbers(id, res, msg) {
           throw new Error('Invalid phone number');
         }
 
-        const areaCode = digits.substring(0, 3);
-        const prefix = digits.substring(3, 6);
-        const lineNum = digits.substring(6);
-        const formattedNumber = `(${areaCode}) ${prefix}-${lineNum}`;
+        const formattedNumber = `+1${digits}`;
 
         final.push(formattedNumber);
       });
+
       if (final.length !== 0) {
-        final.forEach(element => {
-          res(element, msg);
+        final.forEach(phone => {
+          res(phone, msg);
         })
       }
     });
@@ -199,17 +198,14 @@ function coachNumbers(id, res, msg) {
           throw new Error('Invalid phone number');
         }
 
-        const areaCode = digits.substring(0, 3);
-        const prefix = digits.substring(3, 6);
-        const lineNum = digits.substring(6);
-        const formattedNumber = `(${areaCode}) ${prefix}-${lineNum}`;
+        const formattedNumber = `+1${digits}`;
 
         final.push(formattedNumber);
       });
 
       if (final.length !== 0) {
-        final.forEach(element => {
-          res(element, msg);
+        final.forEach(phone => {
+          res(phone, msg);
         })
       }
     });
@@ -235,13 +231,17 @@ function sessionEmails(id, res, msg, subject) {
 
       let unique = [];
 
-      participants.forEach(element => {
-        if (!unique.includes(element)) {
-          unique.push(element);
+      participants.forEach(email => {
+        if (!unique.includes(email)) {
+          unique.push(email);
         }
       });
 
-      res(unique, msg, subject);
+      if (unique.length !== 0) {
+        unique.forEach(email => {
+          res(email, subject, msg);
+        })
+      }
     });
 }
 
@@ -261,13 +261,17 @@ function coachEmails(id, res, msg, subject) {
 
       let unique = [];
 
-      emails.forEach(element => {
-        if (!unique.includes(element)) {
-          unique.push(element);
+      emails.forEach(email => {
+        if (!unique.includes(email)) {
+          unique.push(email);
         }
       });
 
-      res(unique, msg, subject);
+      if (unique.length !== 0) {
+        unique.forEach(email => {
+          res(email, subject, msg);
+        })
+      }
     });
 }
 
