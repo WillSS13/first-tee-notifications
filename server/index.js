@@ -1,13 +1,8 @@
-// server/index.js
-// import { getCoachId, sessionParticipants, coachSessions } from "./salesforce/salesforce.js";
-var salesforce = require('./salesforce/salesforce');
-var twilio = require('./twilio/twilio');
-var sendgrid = require('./sendgrid/sendgrid');
+var salesforce = require('./api/salesforce');
 
 const express = require("express");
 const path = require('path');
-const { Knock } = require('@knocklabs/node');
-const { testSMS, testEmail } = require('./knock/knock');
+const { sendSMS, sendEmail } = require('./api/knock');
 
 const PORT = process.env.PORT || 3001;
 
@@ -16,93 +11,62 @@ const app = express();
 app.use(express.json());
 
 app.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
+  res.json({ message: "Hello from server!" });
 });
 
-// take the email of the coach and check if it's in the system 
-app.post("/checklogin",(req,res) => {
-    res.json({ message: "Hello from server!" });
+app.post("/checklogin", (req, res) => {
+  res.json({ message: "Hello from server!" });
 });
 
-// get all the sessions for a coach 
-app.post("/coachId",(req,res) => {
-    // retrieve coach's email from the request query parameters 
-    let coachEmail = req.body.email;
-    // get coach id from email 
+app.post("/coachId", (req, res) => {
+  let coachEmail = req.body.email;
 
-    // add your email to the if statement below and alter your log in email to another coach's email
-    if (coachEmail == "bzchen@andrew.cmu.edu" || coachEmail == "wsquibb@andrew.cmu.edu" || coachEmail == "ypagarwa@andrew.cmu.edu"){
-        coachEmail = 'pcoultas@thefirstteepittsburgh.org';
-        // coachEmail = 'lrussell@firstteepittsburgh.org';
-        // coachEmail = 'jroberts@thefirstteepittsburgh.org';
-        // coachEmail = 'brettbossblackwood@gmail.com';
-        // coachEmail = 'rhawkins@firstteepittsburgh.org';
-        // coachEmail = 'alindauer@firstteepittsburgh.org';
-        // 
-    }
-    tempEmail = 'pcoultas@firstteepittsburgh.org';
-    // const coachId = '0033600001KJ05SAAT'
-    // get coach sessions from id 
-    console.log("second time through");
-    // console.log(coachEmail);
-    salesforce.getCoachId(coachEmail,res);
-    // res.json(sessions);
+  // TESTING ONLY - BACKDOOR FOR CMU TEAM
+  const testingEmails = [
+    'wsquibb@andrew.cmu.edu',
+    'bzchen@andrew.cmu.edu',
+    'ypagarwa@andrew.cmu.edu'
+  ]
+
+  if (testingEmails.includes(coachEmail)) {
+    coachEmail = 'pcoultas@thefirstteepittsburgh.org';
+  }
+
+  salesforce.getCoachId(coachEmail, res);
 });
 
-// get all the sessions for a coach 
-app.get("/sessions",(req,res) => {
-    // retrieve coach's email from the request query parameters 
-    const coachEmail = req.query.session;
-    // console.log(coachEmail);
-    console.log("this should be the coach id");
-    // get coach id from email 
-    // const coachId = '0033600001KJ05SAAT'
-    // get coach sessions from id 
-    salesforce.coachSessions(coachEmail,res);
-    // res.json(sessions);
+app.get("/sessions", (req, res) => {
+  const coachEmail = req.query.session;
+  salesforce.coachSessions(coachEmail, res);
 });
 
-// get all the participants for a session 
-app.get("/participants",(req,res) => {
-    const sessionId = req.query.participant;
-    // const sessionId = 'a0H1R000013eaoxUAA';
-    salesforce.sessionParticipants(sessionId,res);
-    // res.json({ message: "Hello from server!" });
+app.get("/participants", (req, res) => {
+  const sessionId = req.query.participant;
+  salesforce.sessionParticipants(sessionId, res);
 });
 
-app.get("/coaches",(req,res) => {
-    const sessionId = req.query.session;
-    // const sessionId = 'a0H1R000013eaoxUAA';
-    console.log("retrieving coaches");
-    salesforce.sessionCoaches(sessionId,res);
-    // res.json({ message: "Hello from server!" });
+app.get("/coaches", (req, res) => {
+  const sessionId = req.query.session;
+  salesforce.sessionCoaches(sessionId, res);
 });
 
-// send the message after receiving list of phone numbers and emails 
-app.post("/sendmessage", (req,res) => {
-    // getting the body of post request 
-    const body = req.body;
-    const subject = body.subject;
-    const msg = body.message;
-    const coachId = body.coachId;
+app.post("/sendmessage", (req, res) => {
+  const body = req.body;
+  const subject = body.subject;
+  const msg = body.message;
+  const coachId = body.coachId;
 
-    // const coachId = '0033600001KJ05SAAT'
+  salesforce.sessionNumbers(coachId, sendSMS, msg);
+  salesforce.sessionEmails(coachId, sendEmail, msg, subject)
 
-    // send message to participants
-    salesforce.sessionNumbers(coachId, twilio.sendMessage, msg);
-    salesforce.sessionEmails(coachId, sendgrid.sendEmail, msg, subject)
+  salesforce.coachNumbers(coachId, sendSMS, msg);
+  salesforce.coachEmails(coachId, sendEmail, msg, subject)
 
-    // send message to coaches
-    salesforce.coachNumbers(coachId, twilio.sendMessage, msg);
-    salesforce.coachEmails(coachId, sendgrid.sendEmail, msg, subject)
-
-    // res.json({ message: "Message Successfully Sent" });
-    res.status(200).send('Status: OK')
+  res.status(200).send('Status: OK')
 })
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
@@ -110,12 +74,3 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-// var test = true;
-
-// if (test) {
-//   console.log("Testing");
-//   // testSMS();
-//   // testEmail();
-//   test = false;
-// }
