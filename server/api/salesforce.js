@@ -149,13 +149,11 @@ function sessionNumbers(id, res, msg) {
       unique.forEach(element => {
         const digits = element.replace(/\D/g, '');
 
-        if (digits.length !== 10) {
-          throw new Error('Invalid phone number');
+        if (digits.length === 10) {
+          const formattedNumber = `+1${digits}`;
+
+          final.push(formattedNumber);
         }
-
-        const formattedNumber = `+1${digits}`;
-
-        final.push(formattedNumber);
       });
 
       if (final.length !== 0) {
@@ -194,13 +192,11 @@ function coachNumbers(id, res, msg) {
       unique.forEach(element => {
         const digits = element.replace(/\D/g, '');
 
-        if (digits.length !== 10) {
-          throw new Error('Invalid phone number');
+        if (digits.length === 10) {
+          const formattedNumber = `+1${digits}`;
+
+          final.push(formattedNumber);
         }
-
-        const formattedNumber = `+1${digits}`;
-
-        final.push(formattedNumber);
       });
 
       if (final.length !== 0) {
