@@ -166,6 +166,11 @@
   font-weight: bold;
 }
 
+.unauthorized {
+  color: #14A849;
+  white-space: nowrap;
+}
+
 .your-class-header {
   font-weight: normal;
   color: gray;

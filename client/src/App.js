@@ -46,7 +46,12 @@ function App() {
       };
 
       fetch('/coachId', requestOptions)
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.status == 401) {
+            navigate("/unauthorized");
+          }
+          return res.json();
+        })
         .then((data) => localStorage.setItem('userId', JSON.stringify(data)));
     }
   }, [userEmail]);
