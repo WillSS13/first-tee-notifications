@@ -209,16 +209,17 @@ function coachNumbers(id, res, msg) {
 
 function sessionEmails(id, res, msg, subject) {
   conn.sobject("Session_Registration__c")
-    .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Contact_Type__c`)
+    .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
     .where({
       Listing_Session__c: id,
+      Email_Opt_In__c: true,
       Status__c: 'Registered'
     })
     .execute(function (err, records) {
       if (err) { return console.error(err); }
       var participants = [];
       for (var record of records) {
-        if (record.Contact__r.Contact_Type__c == 'Participant') {
+        if (record.Contact__r.Contact_Type__c == 'Participant' && !(/^\d{10}$/.test(record.Contact__r.Emergency_Contact_Number__c))) {
           participants.push(
             record.Contact__r.Primary_Contact_s_Email__c
           );
@@ -233,6 +234,8 @@ function sessionEmails(id, res, msg, subject) {
         }
       });
 
+      console.log(unique);
+      
       if (unique.length !== 0) {
         unique.forEach(email => {
           res(email, subject, msg);
