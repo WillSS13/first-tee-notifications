@@ -61,24 +61,25 @@ function Message() {
   }, []);
 
   async function getStatuses(type, data) {
-    let userIds = data.map(item => `${sessionId}_${item.id}`);
-    
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userIds: userIds })
-    };
+    if (sessionId && data.length > 0) {
+      let userIds = data.map(item => `${sessionId}_${item.id}`);
+      
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userIds: userIds })
+      };
 
-    fetch('/getStatuses', requestOptions)
-      .then(res => res.json())
-      .then(data => {
-        if (type === 'participant') 
-          setParticipantStatuses(data);
-        else 
-          setCoachStatuses(data);
-      })
-      .catch(err => console.log(err));
-
+      fetch('/getStatuses', requestOptions)
+        .then(res => res.json())
+        .then(data => {
+          if (type === 'participant') 
+            setParticipantStatuses(data);
+          else 
+            setCoachStatuses(data);
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   useEffect(() => {
