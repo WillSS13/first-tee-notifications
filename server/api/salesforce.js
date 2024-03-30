@@ -118,6 +118,33 @@ function coachSessions(id, res) {
     });
 }
 
+const { Knock } = require("@knocklabs/node");
+const knock = new Knock(process.env.KNOCK_API_KEY);
+
+// knock.users.getMessages("SMS_a0HUH000000Mf2v2AC_a0RUH000000NsVx2AK").then((response) => {
+//   console.log(response);
+// }).catch((error) => {
+//   console.error(error);
+// });
+
+// conn.sobject("Session_Registration__c")
+//   .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
+//   // .where("Name LIKE 'CMU%'")
+//   .limit(1)
+//   .execute(function (err, records) {
+//     if (err) { return console.error(err); }
+//     console.log(records);
+//   });
+
+// conn.sobject("Listing_Session__c")
+//   .select("FIELDS(ALL)")
+//   // .where("Name LIKE 'CMU%'")
+//   .limit(1)
+//   .execute(function (err, records) {
+//     if (err) { return console.error(err); }
+//     console.log(records);
+//   });
+
 function sessionNumbers(id, res, msg) {
   conn.sobject("Session_Registration__c")
     .select(`Id, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
@@ -130,35 +157,41 @@ function sessionNumbers(id, res, msg) {
       var participants = [];
       for (var record of records) {
         if (record.Contact__r.Contact_Type__c == 'Participant') {
-          participants.push(
-            record.Contact__r.Emergency_Contact_Number__c
-          );
+          participants.push({
+            id: record.Id,
+            phone: record.Contact__r.Emergency_Contact_Number__c
+          });
         }
       }
 
       let unique = [];
       participants.forEach(element => {
-        if (!unique.includes(element)) {
+        if (!unique.find(el => el.id === element.id && el.phone === element.phone)) {
           unique.push(element);
         }
       });
 
-      unique = unique.filter(e => (e !== null));
+      unique = unique.filter(e => (e.phone !== null));
 
       let final = [];
       unique.forEach(element => {
-        const digits = element.replace(/\D/g, '');
+        const digits = element.phone.replace(/\D/g, '');
 
         if (digits.length === 10) {
           const formattedNumber = `+1${digits}`;
 
-          final.push(formattedNumber);
+          final.push({
+            id: element.id,
+            phone: formattedNumber
+          });
+
         }
       });
 
       if (final.length !== 0) {
-        final.forEach(phone => {
-          res(phone, msg);
+        final.forEach(participant => {
+          var user_id = `${id}_${participant.id}`
+          res(user_id, participant.phone, msg);
         })
       }
     });
@@ -171,37 +204,40 @@ function coachNumbers(id, res, msg) {
       if (err) { return console.error(err); }
       var numbers = [];
       for (var record of records) {
-        if (record.Listing_Session__r.Id === id) {
-          numbers.push(
-            record.Coach__r.MobilePhone
-          );
-        }
+        numbers.push({
+          id: record.Id,
+          phone: record.Coach__r.MobilePhone
+        });
       }
 
       let unique = [];
 
       numbers.forEach(element => {
-        if (!unique.includes(element)) {
+        if (!unique.some(e => e.id === element.id && e.phone === element.phone)) {
           unique.push(element);
         }
       });
 
-      unique = unique.filter(e => (e !== null));
+      unique = unique.filter(e => (e !== null && e.phone !== null));
 
       let final = [];
       unique.forEach(element => {
-        const digits = element.replace(/\D/g, '');
+        const digits = element.phone.replace(/\D/g, '');
 
         if (digits.length === 10) {
           const formattedNumber = `+1${digits}`;
 
-          final.push(formattedNumber);
+          final.push({
+            id: element.id,
+            phone: formattedNumber
+          });
         }
       });
 
       if (final.length !== 0) {
-        final.forEach(phone => {
-          res(phone, msg);
+        final.forEach(coach => {
+          var user_id = `${id}_${coach.id}`
+          res(user_id, coach.phone, msg);
         })
       }
     });
@@ -220,24 +256,25 @@ function sessionEmails(id, res, msg, subject) {
       for (var record of records) {
         var stripped = record.Contact__r.Emergency_Contact_Number__c.replace(/\D/g, '');
         if (record.Contact__r.Contact_Type__c == 'Participant' && !(/^\d{10}$/.test(stripped))) {
-          participants.push(
-            record.Contact__r.Primary_Contact_s_Email__c
-          );
+          participants.push({
+            id: record.Id,
+            email: record.Contact__r.Primary_Contact_s_Email__c
+          });
         }
       }
 
       let unique = [];
 
-      participants.forEach(email => {
-        if (!unique.includes(email)) {
-          unique.push(email);
+      participants.forEach(participant => {
+        if (!unique.some(uniqueParticipant => uniqueParticipant.email === participant.email)) {
+          unique.push(participant);
         }
       });
       
       if (unique.length !== 0) {
-        console.log("HI");
-        unique.forEach(email => {
-          res(email, subject, msg);
+        unique.forEach(participant => {
+          var user_id = `${id}_${participant.id}`
+          res(user_id, participant.email, subject, msg);
         })
       }
     });
@@ -248,26 +285,28 @@ function coachEmails(id, res, msg, subject) {
     .select(`Id, Coach__r.Email, Listing_Session__r.Id`)
     .execute(function (err, records) {
       if (err) { return console.error(err); }
-      var emails = [];
+      var coaches = [];
       for (var record of records) {
         if (record.Listing_Session__r.Id == id) {
-          emails.push(
-            record.Coach__r.Email
-          );
+          coaches.push({
+            id: record.Id,
+            email: record.Coach__r.Email
+          });
         }
       }
 
       let unique = [];
 
-      emails.forEach(email => {
-        if (!unique.includes(email)) {
-          unique.push(email);
+      coaches.forEach(emailObj => {
+        if (!unique.some(uniqueObj => uniqueObj.email === emailObj.email)) {
+          unique.push(emailObj);
         }
       });
 
       if (unique.length !== 0) {
-        unique.forEach(email => {
-          res(email, subject, msg);
+        unique.forEach(coach => {
+          var user_id = `${id}_${coach.id}`
+          res(user_id, coach.email, subject, msg);
         })
       }
     });

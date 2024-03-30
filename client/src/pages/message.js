@@ -18,6 +18,8 @@ function Message() {
   const [sessionName, setSessionName] = useState([]);
   const [participant, setParticipant] = useState([{}]);
   const [coach, setCoach] = useState([{}]);
+  const [participantStatuses, setParticipantStatuses] = useState([{}]);
+  const [coachStatuses, setCoachStatuses] = useState([{}]);
 
   const [msgSubject, setMsgSubject] = useState("Class Cancelled");
   const [msgValue, setMsgValue] = useState("");
@@ -58,12 +60,35 @@ function Message() {
 
   }, []);
 
+  async function getStatuses(type, data) {
+    let userIds = data.map(item => `${sessionId}_${item.id}`);
+    
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userIds: userIds })
+    };
+
+    fetch('/getStatuses', requestOptions)
+      .then(res => res.json())
+      .then(data => {
+        if (type === 'participant') 
+          setParticipantStatuses(data);
+        else 
+          setCoachStatuses(data);
+      })
+      .catch(err => console.log(err));
+
+  }
 
   useEffect(() => {
     if (sessionId) {
       fetch(`/participants?participant=${encodeURIComponent(JSON.parse(localStorage.getItem('sessionId')))}`)
         .then((res) => res.json())
-        .then((data) => setParticipant(data))
+        .then((data) => {
+          setParticipant(data);
+          getStatuses('participant', data);
+        })
     }
 
   }, [sessionId]);
@@ -72,7 +97,10 @@ function Message() {
     if (participant) {
       fetch(`/coaches?session=${encodeURIComponent(sessionId)}`)
         .then((res) => res.json())
-        .then((data) => setCoach(data))
+        .then((data) => {
+          setCoach(data)
+          getStatuses('coach', data);
+        });
     }
 
   }, [participant, sessionId]);
@@ -147,6 +175,7 @@ function Message() {
                           <div className="class-text">
                             <p className="class-title poppins-medium">{data.name}</p>
                             <p className="student-num poppins-regular">{data.phone}</p>
+                            <p className="student-num poppins-regular">{coachStatuses[key] && coachStatuses[key].status} </p>
                           </div>
                           <div className="email-button">
                             <a href={"mailto:" + data.email} className="email-icon">
@@ -184,6 +213,7 @@ function Message() {
                           <div className="class-text">
                             <p className="class-title poppins-medium">{data.contact_name}</p>
                             <p className="student-num poppins-regular">{data.primary_contact_phone}</p>
+                            <p className="student-num poppins-regular">{participantStatuses[key] && participantStatuses[key].status}</p>
                           </div>
                           <div className="email-button">
                             <a href={"mailto:" + data.primary_contact_email} className="email-icon">

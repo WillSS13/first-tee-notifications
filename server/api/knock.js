@@ -1,14 +1,16 @@
 const { Knock } = require("@knocklabs/node");
+const { response } = require("express");
+const { user } = require("fontawesome");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
-const sendSMS = (phone, msg) => {
+const sendSMS = (user_id, phone, msg) => {
   knock.workflows.trigger("twilio", {
     data: {
       message: msg,
     },
     recipients: [
       {
-        id: phone,
+        id: user_id,
         phone_number: phone,
       },
     ],
@@ -17,7 +19,7 @@ const sendSMS = (phone, msg) => {
     .catch((error) => console.error(error));
 }
 
-const sendEmail = (email, subject, msg) => {
+const sendEmail = (user_id, email, subject, msg) => {
   knock.workflows.trigger("mailersend", {
     data: {
       subject: subject,
@@ -25,7 +27,7 @@ const sendEmail = (email, subject, msg) => {
     },
     recipients: [
       {
-        id: email,
+        id: user_id,
         email: email,
       },
     ],
@@ -34,4 +36,20 @@ const sendEmail = (email, subject, msg) => {
     .catch((error) => console.error(error));
 }
 
-module.exports = { sendSMS, sendEmail };
+async function getStatuses(userIds, res) {
+  let responses = [];
+  for (let userId of userIds) {
+    try {
+      let response = await knock.users.getMessages(userId);
+      responses.push({
+        id: userId.split("_")[1],
+        status: response.items[0].status
+      });
+    } catch (error) {
+      // do nothing
+    }
+  }
+  res.send(responses);
+}
+
+module.exports = { sendSMS, sendEmail, getStatuses };
