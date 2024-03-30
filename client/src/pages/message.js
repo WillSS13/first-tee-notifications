@@ -175,7 +175,8 @@ function Message() {
                         <div className="class-content">
                           <div className="class-text">
                             <p className="class-title poppins-medium">{data.name}</p>
-                            <p className="student-num poppins-regular">{data.phone}</p>
+                            <p className="student-num poppins-regular">{data.phone ? data.phone : "No phone number available"}</p>
+                            <p className="student-num poppins-regular">{data.email ? data.email : "No email available"}</p>
                             <p className="student-num poppins-regular">{coachStatuses[key] && coachStatuses[key].status} </p>
                           </div>
                           <div className="email-button">
@@ -213,7 +214,8 @@ function Message() {
                         <div className="class-content">
                           <div className="class-text">
                             <p className="class-title poppins-medium">{data.contact_name}</p>
-                            <p className="student-num poppins-regular">{data.primary_contact_phone}</p>
+                            <p className="student-num poppins-regular">{data.primary_contact_phone ? data.primary_contact_phone : "No phone number available"}</p>
+                            <p className="student-num poppins-regular">{data.primary_contact_email ? data.primary_contact_email : "No email available"}</p>
                             <p className="student-num poppins-regular">{participantStatuses[key] && participantStatuses[key].status}</p>
                           </div>
                           <div className="email-button">
