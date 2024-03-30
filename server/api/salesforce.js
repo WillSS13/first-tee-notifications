@@ -85,7 +85,7 @@ function sessionCoaches(id, res) {
           coaches.push({
             id: record.Id,
             name: record.Coach__r.Name,
-            email: record.Coach__r.Name,
+            email: record.Coach__r.Email,
             phone: record.Coach__r.MobilePhone
           });
         }
