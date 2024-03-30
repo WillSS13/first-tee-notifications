@@ -29,8 +29,10 @@ function Message() {
       body: JSON.stringify({ subject: msgSubject, message: msgValue, coachId: sessionId })
     };
     fetch('/sendmessage', requestOptions)
-      .then(res => res.json())
-      .then(data => alert("Message sent successfully!"));
+      .then(res => {
+        alert(`Message sent: \n\n Subject: ${msgSubject} \n\n Message: ${msgValue}`);
+        res.json();
+      })
   }
   function handleSignOut(event) {
     navigate("../");
@@ -76,7 +78,7 @@ function Message() {
   }, [participant, sessionId]);
 
   useEffect(() => {
-    setMsgValue("Due to weather, today's class is cancelled.");
+    setMsgValue("THIS IS A TEST!");
     setMsgSubject("Class Cancelled");
   }, []);
 
