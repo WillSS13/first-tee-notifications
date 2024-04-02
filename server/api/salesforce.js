@@ -118,33 +118,6 @@ function coachSessions(id, res) {
     });
 }
 
-const { Knock } = require("@knocklabs/node");
-const knock = new Knock(process.env.KNOCK_API_KEY);
-
-// knock.users.getMessages("SMS_a0HUH000000Mf2v2AC_a0RUH000000NsVx2AK").then((response) => {
-//   console.log(response);
-// }).catch((error) => {
-//   console.error(error);
-// });
-
-// conn.sobject("Session_Registration__c")
-//   .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
-//   // .where("Name LIKE 'CMU%'")
-//   .limit(1)
-//   .execute(function (err, records) {
-//     if (err) { return console.error(err); }
-//     console.log(records);
-//   });
-
-// conn.sobject("Listing_Session__c")
-//   .select("FIELDS(ALL)")
-//   // .where("Name LIKE 'CMU%'")
-//   .limit(1)
-//   .execute(function (err, records) {
-//     if (err) { return console.error(err); }
-//     console.log(records);
-//   });
-
 function sessionNumbers(id, res, msg) {
   conn.sobject("Session_Registration__c")
     .select(`Id, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
