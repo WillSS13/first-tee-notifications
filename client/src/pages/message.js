@@ -162,6 +162,37 @@ function Message() {
           </div>
         </div>
 
+        <div className="card-container margin-bottom-large">
+          <h2 className="your-class-header poppins-regular">Message Statuses</h2>
+          <hr></hr>
+          <div className="card message side-margins">
+            <div className="icon-row">
+              <div className="icon-text-container">
+                <Undelivered />
+                <span>Undelivered</span>
+              </div>
+              <div className="icon-text-container">
+                <Queued />
+                <span>Queued</span>
+              </div>
+              <div className="icon-text-container">
+                <Sent />
+                <span>Sent</span>
+              </div>
+              <div className="icon-text-container">
+                <Delivered />
+                <span>Delivered</span>
+              </div>
+              <div className="icon-text-container">
+                <LinkClicked />
+                <span>Read</span>
+              </div>
+            </div>
+            <p className="icon-description poppins-light">These are the icons you might see for notifications.</p>
+          </div>
+        </div>
+
+
         {/*  coach members */}
         <div className="card-container margin-bottom-large">
           <h2 className="your-class-header poppins-regular">Coaching Staff</h2>
