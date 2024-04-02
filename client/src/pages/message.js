@@ -7,8 +7,13 @@ import {
   Link
 } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from 'react';
 
-
+import Delivered from '../icons/delivered';
+import LinkClicked from '../icons/link_clicked';
+import Queued from '../icons/queued';
+import Sent from '../icons/sent';
+import Undelivered from '../icons/undelivered';
 
 function Message() {
   const navigate = useNavigate();
@@ -32,7 +37,7 @@ function Message() {
     };
     fetch('/sendmessage', requestOptions)
       .then(res => {
-        alert(`Message sent: \n\n Subject: ${msgSubject} \n\n Message: ${msgValue}`);
+        alert(`Message sent: \n\n Subject: ${msgSubject} \n\n Message: ${msgValue} \n\n See below for the status of each message.`);
         res.json();
       })
   }
@@ -60,27 +65,29 @@ function Message() {
 
   }, []);
 
-  async function getStatuses(type, data) {
+  const getStatuses = useCallback(async (type, data) => {
     if (sessionId && data.length > 0) {
       let userIds = data.map(item => `${sessionId}_${item.id}`);
-      
+  
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userIds: userIds })
       };
-
-      fetch('/getStatuses', requestOptions)
-        .then(res => res.json())
-        .then(data => {
-          if (type === 'participant') 
-            setParticipantStatuses(data);
-          else 
-            setCoachStatuses(data);
-        })
-        .catch(err => console.log(err));
+  
+      try {
+        const res = await fetch('/getStatuses', requestOptions);
+        const statusData = await res.json();
+        if (type === 'participant') {
+          setParticipantStatuses(statusData);
+        } else {
+          setCoachStatuses(statusData);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
+  }, [sessionId]);
 
   useEffect(() => {
     if (sessionId) {
@@ -91,8 +98,7 @@ function Message() {
           getStatuses('participant', data);
         })
     }
-
-  }, [sessionId]);
+  }, [sessionId, getStatuses]);
 
   useEffect(() => {
     if (participant) {
@@ -104,7 +110,7 @@ function Message() {
         });
     }
 
-  }, [participant, sessionId]);
+  }, [participant, sessionId, getStatuses]);
 
   useEffect(() => {
     setMsgValue("THIS IS A TEST!");
@@ -177,12 +183,19 @@ function Message() {
                             <p className="class-title poppins-medium">{data.name}</p>
                             <p className="student-num poppins-regular">{data.phone ? data.phone : "No phone number available"}</p>
                             <p className="student-num poppins-regular">{data.email ? data.email : "No email available"}</p>
-                            <p className="student-num poppins-regular">{coachStatuses[key] && coachStatuses[key].status} </p>
                           </div>
                           <div className="email-button">
-                            <a href={"mailto:" + data.email} className="email-icon">
-                              <i className="fa fa-envelope fa-2x" aria-hidden="true"></i>
-                            </a>
+                            {coachStatuses[key] && coachStatuses[key].link_clicked !== "null" ? (
+                              <>
+                                <StatusIcon status="link_clicked" />
+                                <p className="student-num poppins-regular">Read</p>
+                              </>                            
+                            ) : (
+                              <>
+                                <StatusIcon status={coachStatuses[key] && coachStatuses[key].status} />
+                                <p className="student-num poppins-regular">{coachStatuses[key] && coachStatuses[key].status}</p>
+                              </>
+                            )}
                           </div>
                         </div>
                       </Box>
@@ -216,12 +229,19 @@ function Message() {
                             <p className="class-title poppins-medium">{data.contact_name}</p>
                             <p className="student-num poppins-regular">{data.primary_contact_phone ? data.primary_contact_phone : "No phone number available"}</p>
                             <p className="student-num poppins-regular">{data.primary_contact_email ? data.primary_contact_email : "No email available"}</p>
-                            <p className="student-num poppins-regular">{participantStatuses[key] && participantStatuses[key].status}</p>
                           </div>
                           <div className="email-button">
-                            <a href={"mailto:" + data.primary_contact_email} className="email-icon">
-                              <i className="fa fa-envelope fa-2x" aria-hidden="true"></i>
-                            </a>
+                            {participantStatuses[key] && participantStatuses[key].link_clicked !== "null" ? (
+                              <>
+                                <StatusIcon status="link_clicked" />
+                                <p className="student-num poppins-regular">Read</p>
+                              </>                            
+                            ) : (
+                              <>
+                                <StatusIcon status={participantStatuses[key] && participantStatuses[key].status} />
+                                <p className="student-num poppins-regular">{participantStatuses[key] && participantStatuses[key].status}</p>
+                              </>
+                            )}
                           </div>
                         </div>
                       </Box>
@@ -244,6 +264,23 @@ function Message() {
       </div>
     </div>
   )
+}
+
+function StatusIcon({status}) {
+  switch (status) {
+    case "delivered":
+      return <Delivered />;
+    case "link_clicked":
+      return <LinkClicked />;
+    case "queued":
+      return <Queued />;
+    case "sent":
+      return <Sent />;
+    case "undelivered":
+      return <Undelivered />;
+    default:
+      return null;
+  }
 }
 
 export default Message
