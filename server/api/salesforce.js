@@ -99,7 +99,7 @@ function coachSessions(id, res) {
     .select(`Id, Coach__c, Coach__r.Name, Name, Listing_Session__c,Session_End_Date__c, Session_Start_Date__c,Listing_Session__r.Name`)
     .where({
       Coach__c: id,
-      Session_Start_Date__c: { $lt: jsforce.Date.TODAY },
+      // Session_Start_Date__c: { $lt: jsforce.Date.TODAY },
       Session_End_Date__c: { $gte: jsforce.Date.TODAY }
     })
     .execute(function (err, records) {
