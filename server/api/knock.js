@@ -43,7 +43,8 @@ async function getStatuses(userIds, res) {
       let response = await knock.users.getMessages(userId);
       responses.push({
         id: userId.split("_")[1],
-        status: response.items[0].status
+        status: response.items[0].status,
+        link_clicked: response.items[0].link_clicked_at ? response.items[0].link_clicked_at : "null"
       });
     } catch (error) {
       // do nothing
