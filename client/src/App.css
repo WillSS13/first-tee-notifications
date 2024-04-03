@@ -159,6 +159,7 @@
 .student-num {
   padding-left: 10px;
   padding-bottom: 7px;
+  padding-right: 2em;
 }
 
 .name-header {
@@ -177,14 +178,13 @@
 }
 
 .class-text {
-  float: left;
-  width: 50%;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .class-button {
-  position: absolute;
-  right: 0;
-  transform: translateX(-50%);
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .c-btn {
@@ -212,9 +212,9 @@
 
 .class-content {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
+  flex-wrap: wrap;
 }
 
 .margin-bottom-large {
@@ -325,10 +325,11 @@ form {
 }
 
 .email-button {
-  position: absolute;
-  right: 5vw;
-  transform: translateX(-50%);
-  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 5em;
 }
 
 .fa-envelope {
@@ -351,6 +352,23 @@ form {
   justify-content: flex-start;
 }
 
+.icon-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.icon-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.icon-text-container span {
+  margin-top: 8px;
+}
 
 
 @media only screen and (max-width: 800px) {
@@ -417,6 +435,22 @@ form {
 
   .view-button {
     font-size: 11px;
+  }
+
+  .card-container {
+    margin: 0; /* Remove any horizontal margins */
+    max-width: 100%; /* Allow the card to extend the full width of the screen */
+    width: 100%; /* Ensure it uses the full width */
+  }
+
+  .class-content {
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start on small screens */
+  }
+
+  .class-text, .email-button {
+    width: 100%; /* Full width on small screens */
+    margin-bottom: 1em; /* Adds some space between the text and status icon */
   }
 }
 

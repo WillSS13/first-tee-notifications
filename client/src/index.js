@@ -24,6 +24,10 @@ const router = createBrowserRouter([
     element: <Message />,
   },
   {
+    path: "/status",
+    element: <App />,
+  },
+  {
     path: "/unauthorized",
     element: <Unauthorized />,
   }
