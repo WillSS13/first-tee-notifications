@@ -134,7 +134,7 @@ function Message() {
           <h1 className="name-header poppins-medium">{sessionName}</h1>
         </div>
         <div className="card-container margin-bottom-large">
-          <h2 className="your-class-header poppins-regular">Send Notification</h2>
+          <h2 className="your-class-header-notification poppins-regular">Send Notification</h2>
           <hr></hr>
           <div className="card message side-margins">
             <div id="message-form">
