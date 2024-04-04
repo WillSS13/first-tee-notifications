@@ -28,11 +28,8 @@ conn.on('refresh', function (accessToken, res) {
 
 async function getCoachId(email, res) {
   conn.sobject("Contact")
-    .select(`Id, Name, Email`)
-    .where({
-      Email: email,
-      Contact_Type__c: 'Coach'
-    })
+    .select(`Id, Name, Email, Secondary_Email__c`)
+    .where(`(Email = '${email}' OR Secondary_Email__c = '${email}') AND Contact_Type__c = 'Coach'`)
     .execute(function (err, records) {
       if (err) { return console.error(err); }
       var participants = [];
