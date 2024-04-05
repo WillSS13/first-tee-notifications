@@ -27,12 +27,19 @@ conn.on('refresh', function (accessToken, res) {
 });
 
 async function getCoachId(email, res) {
+  const [localPart, domain] = email.split('@');
+
+  let emailConditions = `(Email = '${email}' OR Secondary_Email__c = '${email}')`;
+
+  if (domain.startsWith('thefirstteepittsburgh.')) {
+    const modifiedDomain = domain.replace('thefirsttee', 'firsttee');
+    const modifiedEmail = `${localPart}@${modifiedDomain}`;
+    emailConditions = `(Email = '${email}' OR Secondary_Email__c = '${email}' OR Email = '${modifiedEmail}' OR Secondary_Email__c = '${modifiedEmail}')`;
+  }
+
   conn.sobject("Contact")
-    .select(`Id, Name, Email`)
-    .where({
-      Email: email,
-      Contact_Type__c: 'Coach'
-    })
+    .select(`Id, Name, Email, Secondary_Email__c`)
+    .where(`${emailConditions} AND Contact_Type__c = 'Coach'`)
     .execute(function (err, records) {
       if (err) { return console.error(err); }
       var participants = [];
