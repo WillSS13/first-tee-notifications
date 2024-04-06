@@ -14,6 +14,7 @@ import LinkClicked from '../icons/link_clicked';
 import Queued from '../icons/queued';
 import Sent from '../icons/sent';
 import Undelivered from '../icons/undelivered';
+import SendMessageForm from '../components/SendMessageForm';
 
 function Message() {
   const navigate = useNavigate();
@@ -26,32 +27,10 @@ function Message() {
   const [participantStatuses, setParticipantStatuses] = useState([{}]);
   const [coachStatuses, setCoachStatuses] = useState([{}]);
 
-  const [msgSubject, setMsgSubject] = useState("Class Cancelled");
-  const [msgValue, setMsgValue] = useState("");
-
-  function handleSubmit() {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ subject: msgSubject, message: msgValue, coachId: sessionId })
-    };
-    fetch('/sendmessage', requestOptions)
-      .then(res => {
-        alert(`Message sent: \n\n Subject: ${msgSubject} \n\n Message: ${msgValue} \n\n See below for the status of each message.`);
-        res.json();
-      })
-  }
   function handleSignOut(event) {
     navigate("../");
     localStorage.clear();
     sessionStorage.clear();
-  }
-
-  function ClearFields() {
-    document.getElementById("subject-message").value = "";
-    document.getElementById("text-message").value = "";
-    setMsgValue("");
-    setMsgSubject("");
   }
 
   useEffect(() => {
@@ -112,11 +91,6 @@ function Message() {
 
   }, [participant, sessionId, getStatuses]);
 
-  useEffect(() => {
-    setMsgValue("THIS IS A TEST!");
-    setMsgSubject("Class Cancelled");
-  }, []);
-
   return (
     <div className="App">
       <div className="top-bar">
@@ -133,34 +107,8 @@ function Message() {
           <Link to="/classList" className="back-button poppins-light" state={{ userEmail: userEmail }}><FaArrowLeft /> &nbsp;Back to Classes</Link>
           <h1 className="name-header poppins-medium">{sessionName}</h1>
         </div>
-        <div className="card-container margin-bottom-large">
-          <h2 className="your-class-header-notification poppins-regular">Send Notification</h2>
-          <hr></hr>
-          <div className="card message side-margins">
-            <div id="message-form">
-              <p className="your-class-header poppins-light" style={{ color: 'black' }}>Notify all members of the class on important announcements <br />Your message will be emailed and text messaged to all members of the class</p>
 
-              <form onSubmit={handleSubmit}>
-                <label className="your-class-header poppins-regular">
-                  Subject <br></br>
-                  <input id="subject-message" type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{ width: '100%' }} onChange={(e) => setMsgSubject(e.target.value)} />
-                  <br></br><br></br>
-                </label>
-
-
-                <label className="your-class-header poppins-regular message-container">
-                  Message <br></br>
-                  <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)}></textarea><br></br><br></br>
-                  <input id="clear-button" type="button"
-                    value="Clear Text"
-                    onClick={ClearFields} />
-                </label>
-
-                <button variant="contained" type="submit" className="send-button poppins-regular">Send <i className="fa fa-paper-plane" aria-hidden="true"></i></button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <SendMessageForm sessionId={sessionId} />
 
         <div className="card-container margin-bottom-large">
           <h2 className="your-class-header poppins-regular">Message Statuses</h2>
