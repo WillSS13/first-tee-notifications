@@ -69,11 +69,17 @@ app.post("/sendmessage", (req, res) => {
   const msg = body.message;
   const coachId = body.coachId;
 
-  salesforce.sessionNumbers(coachId, knock.sendSMS, msg);
-  salesforce.sessionEmails(coachId, knock.sendEmail, msg, subject)
+  salesforce.sessionNumbers(coachId, null, msg);
+  salesforce.sessionEmails(coachId, null, msg, subject)
 
-  salesforce.coachNumbers(coachId, knock.sendSMS, msg);
-  salesforce.coachEmails(coachId, knock.sendEmail, msg, subject)
+  salesforce.coachNumbers(coachId, null, msg);
+  salesforce.coachEmails(coachId, null, msg, subject)
+
+  // salesforce.sessionNumbers(coachId, knock.sendSMS, msg);
+  // salesforce.sessionEmails(coachId, knock.sendEmail, msg, subject)
+
+  // salesforce.coachNumbers(coachId, knock.sendSMS, msg);
+  // salesforce.coachEmails(coachId, knock.sendEmail, msg, subject)
 
   res.status(200).send('Status: OK')
 })

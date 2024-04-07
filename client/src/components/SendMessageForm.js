@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 function SendMessageForm({ sessionId }) {
-  const [msgSubject, setMsgSubject] = useState("Class Cancelled");
-  const [msgValue, setMsgValue] = useState("THIS IS A TEST!");
+  const [msgSubject, setMsgSubject] = useState(localStorage.getItem('msgSubject') || "Class Cancelled");
+  const [msgValue, setMsgValue] = useState(localStorage.getItem('msgValue') || "THIS IS A TEST!");
+  const [isMessageSent, setIsMessageSent] = useState(localStorage.getItem('isMessageSent') === 'true');
 
   useEffect(() => {
-    setMsgValue("THIS IS A TEST!");
-    setMsgSubject("Class Cancelled");
-  }, []);
+    localStorage.setItem('msgSubject', msgSubject);
+    localStorage.setItem('msgValue', msgValue);
+    localStorage.setItem('isMessageSent', isMessageSent);
+    return () => {
+      localStorage.removeItem('isMessageSent');
+      localStorage.removeItem('msgSubject');
+      localStorage.removeItem('msgValue');
+    };
+  }, [msgSubject, msgValue, isMessageSent]);
 
   function ClearFields() {
-    document.getElementById("subject-message").value = "";
-    document.getElementById("text-message").value = "";
     setMsgValue("");
     setMsgSubject("");
+    localStorage.removeItem('msgSubject');
+    localStorage.removeItem('msgValue');
   }
 
   function handleSubmit() {
@@ -24,9 +31,30 @@ function SendMessageForm({ sessionId }) {
     };
     fetch('/sendmessage', requestOptions)
       .then(res => {
-        alert(`Message sent: \n\n Subject: ${msgSubject} \n\n Message: ${msgValue} \n\n See below for the status of each message.`);
-        res.json();
+        setIsMessageSent(true);
+        return res.json();
       })
+  }
+
+  function handleNewMessage() {
+    setIsMessageSent(false);
+    setMsgValue("THIS IS A TEST!");
+    setMsgSubject("Class Cancelled");
+    localStorage.setItem('isMessageSent', 'false');
+  }
+
+  if (isMessageSent) {
+    return (
+      <div className="card-container margin-bottom-large" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <h1 className="your-class-header-notification poppins-regular">Message Sent!</h1>
+        <p><strong>Subject:</strong> {msgSubject}</p>
+        <p><strong>Message:</strong> {msgValue}</p>
+        <br></br>
+        <button onClick={handleNewMessage} className="send-button poppins-regular">
+          New Message <i className="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -43,19 +71,19 @@ function SendMessageForm({ sessionId }) {
             }}>
             <label className="your-class-header poppins-regular">
               Subject <br></br>
-              <input id="subject-message" type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{ width: '100%' }} onChange={(e) => setMsgSubject(e.target.value)} />
+              <input id="subject-message" type='text' value={msgSubject} placeholder='Please enter a subject' className="poppins-light" style={{ width: '100%' }} onChange={(e) => setMsgSubject(e.target.value)} required/>
               <br></br><br></br>
             </label>
 
             <label className="your-class-header poppins-regular message-container">
               Message <br></br>
-              <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)}></textarea><br></br><br></br>
+              <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)} required></textarea><br></br><br></br>
               <input id="clear-button" type="button"
                 value="Clear Text"
                 onClick={ClearFields} />
             </label>
 
-            <button variant="contained" type="submit" className="send-button poppins-regular">Send <i className="fa fa-paper-plane" aria-hidden="true"></i></button>
+            <button variant="contained" type="submit" className="send-button poppins-regular">Send Message <i className="fa fa-paper-plane" aria-hidden="true"></i></button>
           </form>
         </div>
       </div>
