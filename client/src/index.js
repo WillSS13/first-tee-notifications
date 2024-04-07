@@ -5,6 +5,8 @@ import App from './App';
 import ClassList from './pages/classList';
 import Message from './pages/message';
 import Unauthorized from './pages/unauthorized';
+import Monitor from './pages/monitor';
+import ProtectedRoute from './components/ProtectedRoute';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,20 +19,32 @@ const router = createBrowserRouter([
   },
   {
     path: "/classList",
-    element: <ClassList />,
+    element: (
+      <ProtectedRoute>
+        <ClassList />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/message",
-    element: <Message />,
+    element: (
+      <ProtectedRoute>
+        <Message />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: "/status",
-    element: <App />,
+    path: "/monitor",
+    element: (
+      <ProtectedRoute>
+        <Monitor />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/unauthorized",
     element: <Unauthorized />,
-  }
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
