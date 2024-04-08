@@ -88,7 +88,8 @@ function sessionCoaches(id, res) {
       if (err) { return console.error(err); }
       var coaches = [];
       for (var record of records) {
-        if (record.Listing_Session__r.Id === id) {
+        if (record.Listing_Session__r.Id === id
+          && record.Coach__c !== null) {
           coaches.push({
             id: record.Id,
             name: record.Coach__r.Name,
