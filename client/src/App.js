@@ -20,10 +20,6 @@ function App() {
     localStorage.setItem('userEmail', JSON.stringify(userObject.email));
   }
 
-  if (userEmail !== "") {
-    navigate("/classList", { state: { userEmail: userEmail, user: user, name: user.given_name } });
-  }
-
   useEffect(() => {
     /* global google */ // NEEDED FOR GOOGLE API
     google.accounts.id.initialize({
@@ -48,14 +44,17 @@ function App() {
 
       fetch('/coachId', requestOptions)
         .then((res) => {
-          if (res.status == 401) {
+          if (res.status === 401) {
             navigate("/unauthorized");
           }
           return res.json();
         })
-        .then((data) => localStorage.setItem('userId', JSON.stringify(data)));
+        .then((data) => {
+          localStorage.setItem('userId', JSON.stringify(data))
+          navigate("/classList", { state: { userEmail: userEmail, user: user, name: user.given_name } });
+        });
     }
-  }, [userEmail]);
+  }, [userEmail, navigate, user]);
 
   return (
     <div className="App gradient-bg">
