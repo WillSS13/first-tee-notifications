@@ -111,6 +111,9 @@ function ClassList() {
         <div className="bottom-bar">
           <div className="bottom-bar-content">
             <img src={require("../images/FirstTeeMain.png")} alt="FirstTeeLogo" />
+            <a href="/monitor">
+              <span>Monitoring System</span>
+            </a>
             <a href="https://firsttee.my.site.com/parentRegistration/s/privacy-policy?language=en_US&website=www.firstteepittsburgh.org">
               <span>Privacy Policy</span>
             </a>
