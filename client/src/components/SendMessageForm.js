@@ -51,7 +51,7 @@ function SendMessageForm({ sessionId }) {
         <p><strong>Message:</strong> {msgValue}</p>
         <br></br>
         <button onClick={handleNewMessage} className="send-button poppins-regular">
-          New Message <i className="fa fa-paper-plane" aria-hidden="true"></i>
+          Send Another Message <i className="fa fa-paper-plane" aria-hidden="true"></i>
         </button>
       </div>
     );
