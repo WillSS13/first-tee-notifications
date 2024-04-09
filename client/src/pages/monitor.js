@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import ApiKeys from "../components/monitor/ApiKeys";
+import ApiKeys from "../components/monitor/APIKeys";
 
 const ControlCenterCard = () => {
   return (
