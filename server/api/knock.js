@@ -3,7 +3,7 @@ const { response } = require("express");
 const { user } = require("fontawesome");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
-const sendSMS = (user_id, phone, msg) => {
+const sendSMS = (user_id, details, phone, msg) => {
   knock.workflows.trigger("twilio", {
     data: {
       message: msg,
@@ -11,6 +11,7 @@ const sendSMS = (user_id, phone, msg) => {
     recipients: [
       {
         id: user_id,
+        details: details,
         phone_number: phone,
       },
     ],

@@ -127,7 +127,7 @@ function coachSessions(id, res) {
 
 function sessionNumbers(id, res, msg) {
   conn.sobject("Session_Registration__c")
-    .select(`Id, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
+    .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
     .where({
       Listing_Session__c: id,
       Status__c: 'Registered'
@@ -136,9 +136,15 @@ function sessionNumbers(id, res, msg) {
       if (err) { return console.error(err); }
       var participants = [];
       for (var record of records) {
-        if (record.Contact__r.Contact_Type__c == 'Participant') {
+        if (record.Id
+         && record.Contact__r
+         && record.Contact__r.Name
+         && record.Contact__r.Emergency_Contact_Number__c
+         && record.Contact__r.Contact_Type__c
+         && record.Contact__r.Contact_Type__c == 'Participant') {
           participants.push({
             id: record.Id,
+            details: record.Contact__r.Name,
             phone: record.Contact__r.Emergency_Contact_Number__c
           });
         }
@@ -162,6 +168,7 @@ function sessionNumbers(id, res, msg) {
 
           final.push({
             id: element.id,
+            details: element.details,
             phone: formattedNumber
           });
 
@@ -170,8 +177,8 @@ function sessionNumbers(id, res, msg) {
 
       if (final.length !== 0) {
         final.forEach(participant => {
-          var user_id = `${id}_${participant.id}`
-          res(user_id, participant.phone, msg);
+          const user_id = `${id}_${participant.id}`
+          res(user_id, participant.details, participant.phone, msg);
         })
       }
     });
@@ -179,15 +186,24 @@ function sessionNumbers(id, res, msg) {
 
 function coachNumbers(id, res, msg) {
   conn.sobject("Coach_Assignment__c")
-    .select(`Id, Coach__r.MobilePhone, Listing_Session__r.Id`)
+    .select(`Id, Coach__r.Name, Coach__r.MobilePhone`)
+    .where({
+      Listing_Session__c: id,
+    })
     .execute(function (err, records) {
       if (err) { return console.error(err); }
       var numbers = [];
       for (var record of records) {
-        numbers.push({
-          id: record.Id,
-          phone: record.Coach__r.MobilePhone
-        });
+        if (record.Id 
+         && record.Coach__r 
+         && record.Coach__r.Name
+         && record.Coach__r.MobilePhone) {
+          numbers.push({
+            id: record.Id,
+            details: record.Coach__r.Name,
+            phone: record.Coach__r.MobilePhone
+          });
+        }
       }
 
       let unique = [];
@@ -198,7 +214,7 @@ function coachNumbers(id, res, msg) {
         }
       });
 
-      unique = unique.filter(e => (e !== null && e.phone !== null));
+      unique = unique.filter(e => (e.phone !== null));
 
       let final = [];
       unique.forEach(element => {
@@ -209,6 +225,7 @@ function coachNumbers(id, res, msg) {
 
           final.push({
             id: element.id,
+            details: element.details,
             phone: formattedNumber
           });
         }
@@ -216,8 +233,8 @@ function coachNumbers(id, res, msg) {
 
       if (final.length !== 0) {
         final.forEach(coach => {
-          var user_id = `${id}_${coach.id}`
-          res(user_id, coach.phone, msg);
+          const user_id = `${id}_${coach.id}`
+          res(user_id, coach.details, coach.phone, msg);
         })
       }
     });
@@ -234,12 +251,27 @@ function sessionEmails(id, res, msg, subject) {
       if (err) { return console.error(err); }
       var participants = [];
       for (var record of records) {
-        var stripped = record.Contact__r.Emergency_Contact_Number__c.replace(/\D/g, '');
-        if (record.Contact__r.Contact_Type__c == 'Participant' && !(/^\d{10}$/.test(stripped))) {
-          participants.push({
-            id: record.Id,
-            email: record.Contact__r.Primary_Contact_s_Email__c
-          });
+        if (record.Id
+         && record.Contact__r.Primary_Contact_s_Email__c
+         && record.Contact__r.Contact_Type__c
+         && record.Contact__r.Contact_Type__c == 'Participant') {
+          // Case where Emergency Contact Number is empty
+          if (!record.Contact__r.Emergency_Contact_Number__c) {
+            participants.push({
+              id: record.Id,
+              email: record.Contact__r.Primary_Contact_s_Email__c
+            });
+          }
+          // Case where Emergency Contact Number is not empty but it's invalid
+          else {
+            var stripped = record.Contact__r.Emergency_Contact_Number__c.replace(/\D/g, '');
+            if (!(/^\d{10}$/.test(stripped))) {
+              participants.push({
+                id: record.Id,
+                email: record.Contact__r.Primary_Contact_s_Email__c
+              });
+            }
+          }
         }
       }
 
@@ -262,12 +294,17 @@ function sessionEmails(id, res, msg, subject) {
 
 function coachEmails(id, res, msg, subject) {
   conn.sobject("Coach_Assignment__c")
-    .select(`Id, Coach__r.Email, Listing_Session__r.Id`)
+    .select(`Id, Coach__r.Email`)
+    .where({
+      Listing_Session__c: id,
+    })
     .execute(function (err, records) {
       if (err) { return console.error(err); }
       var coaches = [];
       for (var record of records) {
-        if (record.Listing_Session__r.Id == id) {
+        if (record.Id
+         && record.Coach__r
+         && record.Coach__r.Email) {
           coaches.push({
             id: record.Id,
             email: record.Coach__r.Email
@@ -277,9 +314,9 @@ function coachEmails(id, res, msg, subject) {
 
       let unique = [];
 
-      coaches.forEach(emailObj => {
-        if (!unique.some(uniqueObj => uniqueObj.email === emailObj.email)) {
-          unique.push(emailObj);
+      coaches.forEach(email => {
+        if (!unique.some(uniqueObj => uniqueObj.email === email.email)) {
+          unique.push(email);
         }
       });
 

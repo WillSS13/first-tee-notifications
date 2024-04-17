@@ -56,7 +56,6 @@ app.get("/coaches", (req, res) => {
   salesforce.sessionCoaches(sessionId, res);
 });
 
-
 app.post("/getStatuses", (req, res) => {
   const userIds = req.body.userIds;
 
@@ -71,7 +70,7 @@ app.post("/sendmessage", (req, res) => {
 
   salesforce.sessionNumbers(coachId, knock.sendSMS, msg);
   salesforce.sessionEmails(coachId, knock.sendEmail, msg, subject)
-
+  
   salesforce.coachNumbers(coachId, knock.sendSMS, msg);
   salesforce.coachEmails(coachId, knock.sendEmail, msg, subject)
 
