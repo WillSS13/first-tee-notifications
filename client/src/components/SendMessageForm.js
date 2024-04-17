@@ -4,23 +4,27 @@ function SendMessageForm({ sessionId }) {
   const [msgSubject, setMsgSubject] = useState(localStorage.getItem('msgSubject') || "Class Cancelled");
   const [msgValue, setMsgValue] = useState(localStorage.getItem('msgValue') || "THIS IS A TEST!");
   const [isMessageSent, setIsMessageSent] = useState(localStorage.getItem('isMessageSent') === 'true');
+  const [dateSent, setDateSent] = useState('');
 
   useEffect(() => {
     localStorage.setItem('msgSubject', msgSubject);
     localStorage.setItem('msgValue', msgValue);
     localStorage.setItem('isMessageSent', isMessageSent);
+    localStorage.setItem('dateSent', dateSent);
     return () => {
       localStorage.removeItem('isMessageSent');
       localStorage.removeItem('msgSubject');
       localStorage.removeItem('msgValue');
+      localStorage.removeItem('dateSent');
     };
-  }, [msgSubject, msgValue, isMessageSent]);
+  }, [msgSubject, msgValue, isMessageSent, dateSent]);
 
   function ClearFields() {
     setMsgValue("");
     setMsgSubject("");
     localStorage.removeItem('msgSubject');
     localStorage.removeItem('msgValue');
+    localStorage.removeItem('dateSent');
   }
 
   function handleSubmit() {
@@ -32,6 +36,7 @@ function SendMessageForm({ sessionId }) {
     fetch('/sendmessage', requestOptions)
       .then(res => {
         setIsMessageSent(true);
+        setDateSent(new Date().toLocaleString()); 
         return res.json();
       })
   }
@@ -49,6 +54,7 @@ function SendMessageForm({ sessionId }) {
         <h1 className="your-class-header-notification poppins-regular">Message Sent!</h1>
         <p><strong>Subject:</strong> {msgSubject}</p>
         <p><strong>Message:</strong> {msgValue}</p>
+        <p><strong>Date Sent: {dateSent} </strong></p>
         <br></br>
         <button onClick={handleNewMessage} className="send-button poppins-regular">
           New Message <i className="fa fa-paper-plane" aria-hidden="true"></i>

@@ -12,7 +12,7 @@ function ClassList() {
   const navigate = useNavigate();
 
   const { state } = useLocation();
-  const { name } = state;
+  const [name, setName] = useState(state?.name || JSON.parse(localStorage.getItem('name')));
   const [session, setSession] = useState([{}]);
   const [test, setTest] = useState('');
 
@@ -40,7 +40,8 @@ function ClassList() {
   function getParticipants(sessionId, sessionName) {
     localStorage.setItem('sessionId', JSON.stringify(sessionId));
     localStorage.setItem('sessionName', JSON.stringify(sessionName));
-    setTest("hi");
+    localStorage.setItem('name', JSON.stringify(name));
+    setTest();
   }
 
   if (test !== "") {
