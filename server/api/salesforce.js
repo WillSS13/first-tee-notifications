@@ -233,7 +233,7 @@ function coachNumbers(id, res, msg) {
 
       if (final.length !== 0) {
         final.forEach(coach => {
-          const user_id = `${id}_${coach.id}`
+          var user_id = `${id}_${coach.id}`
           res(user_id, coach.details, coach.phone, msg);
         })
       }
@@ -314,9 +314,9 @@ function coachEmails(id, res, msg, subject) {
 
       let unique = [];
 
-      coaches.forEach(email => {
-        if (!unique.some(uniqueObj => uniqueObj.email === email.email)) {
-          unique.push(email);
+      coaches.forEach(emailObj => {
+        if (!unique.some(uniqueObj => uniqueObj.email === emailObj.email)) {
+          unique.push(emailObj);
         }
       });
 
