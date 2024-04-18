@@ -7,6 +7,7 @@ import Message from './pages/message';
 import Unauthorized from './pages/unauthorized';
 import Monitor from './pages/monitor';
 import ProtectedRoute from './components/ProtectedRoute';
+import Confirmed from './pages/confirmed';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
     path: "/unauthorized",
     element: <Unauthorized />,
   },
+  {
+    path: "/confirmed",
+    element: <Confirmed />,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
