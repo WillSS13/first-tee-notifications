@@ -8,8 +8,9 @@ function Confirmed() {
                 <div className="signInWrapper ">
                     <div className="main-login-content">
                     <img src={require("../images/firstTeeLogo.png")} alt="FirstTeeLogo" />
-                    <h1 className="name-header poppins-bold">First Tee Pittsburgh Notification Confirmation</h1>
-                    <h2 className="unauthorized poppins-light">Thank you for confirming you have read the notification! You may now exit this page.</h2>
+                    <h1 className="name-header poppins-bold">FTP Notification Confirmation</h1>
+                    <h2 className="unauthorized poppins-light">Thank you for confirming you have read the notification!</h2>
+                    <h2 className="unauthorized poppins-light">You may now exit this page.</h2>
                     </div>
                 </div>
             </div>
