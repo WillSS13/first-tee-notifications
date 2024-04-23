@@ -125,6 +125,14 @@ function coachSessions(id, res) {
     });
 }
 
+// conn.query("SELECT FIELDS(ALL) FROM Session_Registration__c WHERE Name = 'SR-1494829' LIMIT 1", function(err, result) {
+//   if (err) { return console.error(err); }
+//   for (var record of result.records) {
+//     console.log(record);
+//   }
+// });
+
+
 function sessionNumbers(id, res, msg) {
   conn.sobject("Session_Registration__c")
     .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
