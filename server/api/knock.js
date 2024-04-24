@@ -45,7 +45,9 @@ async function getStatuses(userIds, res) {
       responses.push({
         id: userId.split("_")[1],
         status: response.items[0].status,
-        link_clicked: response.items[0].link_clicked_at ? response.items[0].link_clicked_at : "null"
+        link_clicked: response.items[0].link_clicked_at ? response.items[0].link_clicked_at : "null",
+        created_at: response.items[0].updated_at,
+        workflow: response.items[0].workflow,
       });
     } catch (error) {
       // do nothing
