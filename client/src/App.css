@@ -390,6 +390,23 @@ html, body {
   box-sizing: border-box; /* Include padding and borders in the element's total width */
 }
 
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  overflow-x: hidden; /* Prevent any horizontal overflow in the main App component */
+}
+
+/* Ensure that all containers do not exceed the viewport width */
+.container, .card-container, .gradient-bg, .signInWrapper, .main-margin, .side-margins {
+  max-width: 100vw;
+  box-sizing: border-box; /* Include padding and borders in the element's total width */
+}
+
 
 @media only screen and (max-width: 800px) {
   html, body {
