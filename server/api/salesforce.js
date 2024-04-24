@@ -125,7 +125,7 @@ function coachSessions(id, res) {
     });
 }
 
-function sessionNumbers(id, res, msg) {
+function sessionNumbers(id, res, subject, msg, coach) {
   conn.sobject("Session_Registration__c")
     .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
     .where({
@@ -178,13 +178,13 @@ function sessionNumbers(id, res, msg) {
       if (final.length !== 0) {
         final.forEach(participant => {
           const user_id = `${id}_${participant.id}`
-          res(user_id, participant.details, participant.phone, msg);
+          res(user_id, participant.details, participant.phone, subject, msg, coach);
         })
       }
     });
 }
 
-function coachNumbers(id, res, msg) {
+function coachNumbers(id, res, subject, msg, coach) {
   conn.sobject("Coach_Assignment__c")
     .select(`Id, Coach__r.Name, Coach__r.MobilePhone`)
     .where({
@@ -234,13 +234,13 @@ function coachNumbers(id, res, msg) {
       if (final.length !== 0) {
         final.forEach(coach => {
           var user_id = `${id}_${coach.id}`
-          res(user_id, coach.details, coach.phone, msg);
+          res(user_id, coach.details, coach.phone, subject, msg, coach);
         })
       }
     });
 }
 
-function sessionEmails(id, res, msg, subject) {
+function sessionEmails(id, res, subject, msg, coach) {
   conn.sobject("Session_Registration__c")
     .select(`Id, Contact__r.Primary_Contact_s_Email__c, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
     .where({
@@ -286,13 +286,13 @@ function sessionEmails(id, res, msg, subject) {
       if (unique.length !== 0) {
         unique.forEach(participant => {
           var user_id = `${id}_${participant.id}`
-          res(user_id, participant.email, subject, msg);
+          res(user_id, participant.email, subject, msg, coach);
         })
       }
     });
 }
 
-function coachEmails(id, res, msg, subject) {
+function coachEmails(id, res, subject, msg, coach) {
   conn.sobject("Coach_Assignment__c")
     .select(`Id, Coach__r.Email`)
     .where({
@@ -323,7 +323,7 @@ function coachEmails(id, res, msg, subject) {
       if (unique.length !== 0) {
         unique.forEach(coach => {
           var user_id = `${id}_${coach.id}`
-          res(user_id, coach.email, subject, msg);
+          res(user_id, coach.email, subject, msg, coach);
         })
       }
     });

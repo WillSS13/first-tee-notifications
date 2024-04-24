@@ -3,10 +3,12 @@ const { response } = require("express");
 const { user } = require("fontawesome");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
-const sendSMS = (user_id, details, phone, msg) => {
+const sendSMS = (user_id, details, phone, subject, msg, coach) => {
   knock.workflows.trigger("twilio", {
     data: {
+      subject: subject,
       message: msg,
+      coach: coach,
     },
     recipients: [
       {
@@ -20,11 +22,12 @@ const sendSMS = (user_id, details, phone, msg) => {
     .catch((error) => console.error(error));
 }
 
-const sendEmail = (user_id, email, subject, msg) => {
+const sendEmail = (user_id, email, subject, msg, coach) => {
   knock.workflows.trigger("mailersend", {
     data: {
       subject: subject,
       message: msg,
+      coach: coach,
     },
     recipients: [
       {
