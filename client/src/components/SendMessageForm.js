@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 function SendMessageForm({ sessionId }) {
-  const [msgSubject, setMsgSubject] = useState(localStorage.getItem('msgSubject') || "Class Cancelled");
-  const [msgValue, setMsgValue] = useState(localStorage.getItem('msgValue') || "THIS IS A TEST!");
+  const className = JSON.parse(localStorage.getItem("sessionName"));
+  const defaultWeatherMessage = "Due to inclement weather, today's class has been cancelled.";
+  
+  const [msgSubject, setMsgSubject] = useState(localStorage.getItem('msgSubject') || className);
+  const [msgValue, setMsgValue] = useState(localStorage.getItem('msgValue') || defaultWeatherMessage);
   const [isMessageSent, setIsMessageSent] = useState(localStorage.getItem('isMessageSent') === 'true');
   const [dateSent, setDateSent] = useState(localStorage.getItem('dateSent') || '');
 
@@ -30,9 +33,14 @@ function SendMessageForm({ sessionId }) {
 
   function handleSubmit() {
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ subject: msgSubject, message: msgValue, sessionId: sessionId })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject: msgSubject,
+        message: msgValue,
+        coach: localStorage.getItem('coachName'),
+        sessionId: sessionId,
+      }),
     };
     fetch('/sendmessage', requestOptions)
       .then(res => {
@@ -44,8 +52,8 @@ function SendMessageForm({ sessionId }) {
 
   function handleNewMessage() {
     setIsMessageSent(false);
-    setMsgValue("THIS IS A TEST!");
-    setMsgSubject("Class Cancelled");
+    setMsgSubject(className);
+    setMsgValue(defaultWeatherMessage);
     localStorage.setItem('isMessageSent', 'false');
   }
 
@@ -55,6 +63,7 @@ function SendMessageForm({ sessionId }) {
         <h1 className="your-class-header-notification poppins-regular">Message Sent!</h1>
         <p><strong>Subject:</strong> {msgSubject}</p>
         <p><strong>Message:</strong> {msgValue}</p>
+        <p><strong>Signed:</strong> Coach {localStorage.getItem('coachName')}</p>
         <p><strong>Date Sent: {dateSent} </strong></p>
         <br></br>
         <button onClick={handleNewMessage} className="send-button poppins-regular">
@@ -84,7 +93,11 @@ function SendMessageForm({ sessionId }) {
 
             <label className="your-class-header poppins-regular message-container">
               Message <br></br>
-              <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)} required></textarea><br></br><br></br>
+              <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)} required></textarea><br></br>
+
+              <label className='your-class-header poppins-regular'>
+                <i>The message with be signed with Coach followed by your full name.</i><br></br><br></br>
+              </label>
               <input id="clear-button" type="button"
                 value="Clear Text"
                 onClick={ClearFields} />
