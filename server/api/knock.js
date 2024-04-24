@@ -1,6 +1,5 @@
 const { Knock } = require("@knocklabs/node");
 const { response } = require("express");
-const { user } = require("fontawesome");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
 const sendSMS = (user_id, details, phone, subject, msg, coach) => {
