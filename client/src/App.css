@@ -415,28 +415,21 @@ html, body {
   }
 
   .gradient-bg {
-    background-image: url("./images/CoachesFirstTee.png");
+    background: url("./images/CoachesFirstTee.png") no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    overflow: hidden;
   }
 
   .signInWrapper {
-    height: 65%;
-    width: 100%;
-    bottom: 0;
-    border-radius: 60px 60px 0px 0px;
-    top: initial;
-    left: 0;
-    transform: initial;
-    box-sizing: border-box;
-    padding: initial;
-    padding-top: 12vw;
-    justify-content: center;
+    position: fixed; /* Fixed position to "snap" it */
+    bottom: 0; /* Align it to the bottom */
+    left: 50%; /* Align it to the left */
+    width: 100%; /* Full width */
+    height: 65vh; /* 65% of the viewport height */
+    border-radius: 60px 60px 0 0;
+    padding: 4vw; /* Adjust padding */
+    box-sizing: border-box; /* Padding included in width */
+    overflow: hidden; /* Hide overflow */
   }
-
 
   .main-login-content h1 {
     margin-top: 0;
@@ -445,9 +438,15 @@ html, body {
 
   }
 
-  .main-login-content .your-class-header {
-    font-size: 4vw;
-    padding-top: 2.5vw;
+  .main-login-content, .main-login-content h1, .main-login-content .your-class-header {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 5vw; /* Adjust font size */
+  }
+
+  .main-login-content {
+    overflow-y: auto; /* Allow vertical scrolling within the content area if needed */
   }
 
   #signInDiv {
