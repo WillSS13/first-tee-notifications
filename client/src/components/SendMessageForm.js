@@ -44,8 +44,8 @@ function SendMessageForm({ sessionId }) {
 
   function handleNewMessage() {
     setIsMessageSent(false);
-    setMsgValue("THIS IS A TEST!");
     setMsgSubject("Class Cancelled");
+    setMsgValue("Due to weather, today's class is cancelled!");
     localStorage.setItem('isMessageSent', 'false');
   }
 
