@@ -393,101 +393,78 @@ html, body {
 
 @media only screen and (max-width: 800px) {
   html, body {
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
     margin: 0;
     padding: 0;
-  }
-
-  .main-margin, .side-margins {
-    margin-left: 2vw;
-    margin-right: 2vw;
-  }
-
-  /* Specific adjustments for mobile views */
-  .signInWrapper, .gradient-bg, .card-container {
-    padding-left: 2vw;
-    padding-right: 2vw;
-  }
-
-  .class-content, .main-login-content, .email-button {
-    padding-left: 2vw;
-    padding-right: 2vw;
+    height: 100vh; /* Force the body to the height of the viewport */
+    overflow-y: hidden; /* Prevent vertical scrolling */
   }
 
   .gradient-bg {
+    /* The background image should be contained within the signInWrapper height */
     background: url("./images/CoachesFirstTee.png") no-repeat center center fixed;
     background-size: cover;
   }
 
   .signInWrapper {
-    position: fixed; /* Fixed position to "snap" it */
-    bottom: 0; /* Align it to the bottom */
-    left: 50%; /* Align it to the left */
-    width: 100%; /* Full width */
-    height: 65vh; /* 65% of the viewport height */
+    position: fixed;
+    bottom: 0;
+    left: 50%; /* Correct the left position */
+    width: 100%;
+    height: 65vh; /* Set the height to be 65% of the viewport height */
     border-radius: 60px 60px 0 0;
-    padding: 4vw; /* Adjust padding */
-    box-sizing: border-box; /* Padding included in width */
-    overflow: hidden; /* Hide overflow */
+    padding: 4vw;
+    box-sizing: border-box;
+    display: flex; /* Use flex to layout the inner content */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Align children in the center horizontally */
+    justify-content: center; /* Center children vertically */
+    overflow: hidden; /* No scroll on the signInWrapper */
+  }
+
+  /* Ensure the logo scales down with the width of the screen */
+  .main-login-content img {
+    max-width: 80%; /* Adjust the width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Change display to block */
+    margin: 0 auto 2vw; /* Center the logo and add margin below */
   }
 
   .main-login-content h1 {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 8vw;
-
+    font-size: 6vw; /* Adjust font size */
+    text-align: left; /* Center the text */
+    margin: 1vw 0; /* Add margin to top and bottom */
   }
 
-  .main-login-content, .main-login-content h1, .main-login-content .your-class-header {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    font-size: 5vw; /* Adjust font size */
-  }
-
-  .main-login-content {
-    overflow-y: auto; /* Allow vertical scrolling within the content area if needed */
+  .main-login-content .your-class-header {
+    font-size: 4vw; /* Adjust font size */
+    text-align: left; /* Center the text */
+    margin: 1vw 0 2vw; /* Add margin to top and bottom */
   }
 
   #signInDiv {
-    padding-top: 4vw;
-    width: 100%;
+    width: 100%; /* Full width of the parent */
   }
 
   .login-img {
-    width: initial;
-    height: initial;
-    margin: initial;
-    border-radius: initial;
-    background-image: initial;
-    background-size: initial;
+    display: none; /* Hide the login image on small screens */
   }
 
-  .top-bar-content img,
-  .bottom-bar-content img {
-    width: 125px;
-  }
-
-  .view-button {
-    font-size: 11px;
-  }
-
-  .card-container {
-    margin: 0; /* Remove any horizontal margins */
-    max-width: 100%; /* Allow the card to extend the full width of the screen */
-    width: 100%; /* Ensure it uses the full width */
+  /* Remove unnecessary margins and paddings from other elements */
+  .main-margin, .class-content, .email-button, .view-button, .card-container {
+    margin: 0vw;
+    padding: 2vw;
   }
 
   .card p,
   .card label,
   .card button,
   .card-container h2 {
-    font-size: 4vw;
+    font-size: 4vw; /* Adjust font size */
   }
 
   .class-text, .email-button {
-    width: 100%; /* Full width on small screens */
-    margin-bottom: 1em; /* Adds some space between the text and status icon */
+    margin-bottom: 1em; /* Add some space at the bottom */
   }
 }
 
