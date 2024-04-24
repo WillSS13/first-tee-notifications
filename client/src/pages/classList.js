@@ -12,10 +12,9 @@ function ClassList() {
   const navigate = useNavigate();
 
   const { state } = useLocation();
-  const [name, setName] = useState(state?.name || JSON.parse(localStorage.getItem('name')));
+  const [name] = useState(state?.name || JSON.parse(localStorage.getItem('name')));
   const [session, setSession] = useState([{}]);
   const [test, setTest] = useState('');
-
 
   useEffect(() => {
     const dataFetch = async (id) => {

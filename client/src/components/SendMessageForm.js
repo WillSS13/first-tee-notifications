@@ -4,7 +4,7 @@ function SendMessageForm({ sessionId }) {
   const [msgSubject, setMsgSubject] = useState(localStorage.getItem('msgSubject') || "Class Cancelled");
   const [msgValue, setMsgValue] = useState(localStorage.getItem('msgValue') || "THIS IS A TEST!");
   const [isMessageSent, setIsMessageSent] = useState(localStorage.getItem('isMessageSent') === 'true');
-  const [dateSent, setDateSent] = useState('');
+  const [dateSent, setDateSent] = useState(localStorage.getItem('dateSent') || '');
 
   useEffect(() => {
     localStorage.setItem('msgSubject', msgSubject);
@@ -22,6 +22,7 @@ function SendMessageForm({ sessionId }) {
   function ClearFields() {
     setMsgValue("");
     setMsgSubject("");
+    setDateSent("");
     localStorage.removeItem('msgSubject');
     localStorage.removeItem('msgValue');
     localStorage.removeItem('dateSent');
@@ -31,7 +32,7 @@ function SendMessageForm({ sessionId }) {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ subject: msgSubject, message: msgValue, coachId: sessionId })
+      body: JSON.stringify({ subject: msgSubject, message: msgValue, sessionId: sessionId })
     };
     fetch('/sendmessage', requestOptions)
       .then(res => {
