@@ -375,6 +375,12 @@ form {
 
 
 @media only screen and (max-width: 800px) {
+  .main-margin {
+    margin-left: 1vw;
+    margin-right: 1vw;
+    width: full;
+  }
+
   .gradient-bg {
     background-image: url("./images/CoachesFirstTee.png");
     background-size: cover;
