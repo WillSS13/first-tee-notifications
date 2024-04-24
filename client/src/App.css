@@ -392,6 +392,12 @@ html, body {
 
 
 @media only screen and (max-width: 800px) {
+  html, body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
   .main-margin, .side-margins {
     margin-left: 2vw;
     margin-right: 2vw;
@@ -423,14 +429,12 @@ html, body {
     bottom: 0;
     border-radius: 60px 60px 0px 0px;
     top: initial;
-    left: initial;
+    left: 0;
     transform: initial;
     box-sizing: border-box;
     padding: initial;
     padding-top: 12vw;
     justify-content: center;
-    overflow: scroll;
-
   }
 
 
@@ -448,6 +452,7 @@ html, body {
 
   #signInDiv {
     padding-top: 4vw;
+    width: 100%;
   }
 
   .login-img {
