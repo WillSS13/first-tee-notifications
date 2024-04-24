@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import moment from "moment";
 
 import Delivered from "../icons/delivered";
 import LinkClicked from "../icons/link_clicked";
@@ -199,9 +200,17 @@ function Message() {
                           <>
                             <StatusIcon status={coachStatuses[key].link_clicked !== "null" ? "link_clicked" : coachStatuses[key].status} />
                             <p className="student-num poppins-regular">
-                              {coachStatuses[key].workflow === 'twilio' ? `Text ${coachStatuses[key].status}` :
-                              coachStatuses[key].workflow === 'mailersend' ? `Email ${coachStatuses[key].status}` :
-                              coachStatuses[key].status}
+                              {coachStatuses[key].link_clicked !== "null" ?
+                                (coachStatuses[key].workflow === 'twilio' ? "Text read" :
+                                coachStatuses[key].workflow === 'mailersend' ? "Email read" : "Read") :
+                                (coachStatuses[key].workflow === 'twilio' ? `Text ${coachStatuses[key].status}` :
+                                coachStatuses[key].workflow === 'mailersend' ? `Email ${coachStatuses[key].status}` :
+                                coachStatuses[key].status)}
+                            </p>
+                            <p className="date-time poppins-regular">
+                              {coachStatuses[key].link_clicked !== "null" ?
+                                moment(coachStatuses[key].link_clicked).format('MM/DD, hh:mm A') :
+                                moment(coachStatuses[key].created_at).format('MM/DD, hh:mm A')}
                             </p>
                           </>
                         )}
@@ -254,16 +263,24 @@ function Message() {
                           </p>
                         </div>
                         <div className="email-button">
-                        {participantStatuses[key] && (
-                          <>
-                            <StatusIcon status={participantStatuses[key].link_clicked !== "null" ? "link_clicked" : participantStatuses[key].status} />
-                            <p className="student-num poppins-regular">
-                              {participantStatuses[key].workflow === 'twilio' ? `Text ${participantStatuses[key].status}` :
-                              participantStatuses[key].workflow === 'mailersend' ? `Email ${participantStatuses[key].status}` :
-                              participantStatuses[key].status}
-                            </p>
-                          </>
-                        )}
+                          {participantStatuses[key] && (
+                            <>
+                              <StatusIcon status={participantStatuses[key].link_clicked !== "null" ? "link_clicked" : participantStatuses[key].status} />
+                              <p className="student-num poppins-regular">
+                                {participantStatuses[key].link_clicked !== "null" ?
+                                  (participantStatuses[key].workflow === 'twilio' ? "Text read" :
+                                  participantStatuses[key].workflow === 'mailersend' ? "Email read" : "Read") :
+                                  (participantStatuses[key].workflow === 'twilio' ? `Text ${participantStatuses[key].status}` :
+                                  participantStatuses[key].workflow === 'mailersend' ? `Email ${participantStatuses[key].status}` :
+                                  participantStatuses[key].status)}
+                              </p>
+                              <p className="date-time poppins-regular">
+                                {participantStatuses[key].link_clicked !== "null" ?
+                                  moment(participantStatuses[key].link_clicked).format('MM/DD, hh:mm A') :
+                                  moment(participantStatuses[key].created_at).format('MM/DD, hh:mm A')}
+                              </p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </Box>
