@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const { MailerSend } = require("mailersend");
 
+// TODO: CREATE DOCUMENTATION FOR EACH ENV VAR & WHAT HAPPENS IF THEY ARE NOT SET
 const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
 });
