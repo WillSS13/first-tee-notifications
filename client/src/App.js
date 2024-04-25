@@ -18,6 +18,7 @@ function App() {
 
     localStorage.setItem('user', userObject);
     localStorage.setItem('userEmail', JSON.stringify(userObject.email));
+    localStorage.setItem('coachName', userObject.name);
   }
 
   useEffect(() => {
