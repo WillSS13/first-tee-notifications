@@ -410,15 +410,14 @@ html, body {
 
 @media only screen and (max-width: 800px) {
   html, body {
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
     margin: 0;
     padding: 0;
-    height: 100vh; /* Force the body to the height of the viewport */
-    overflow-y: hidden; /* Prevent vertical scrolling */
+    height: 100vh;
   }
 
   .gradient-bg {
-    /* The background image should be contained within the signInWrapper height */
+  
     background: url("./images/CoachesFirstTee.png") no-repeat center center fixed;
     background-size: cover;
   }
@@ -426,48 +425,55 @@ html, body {
   .signInWrapper {
     position: fixed;
     bottom: 0;
-    left: 50%; /* Correct the left position */
+    left: 0;
+    transform: translateX(0%);
     width: 100%;
-    height: 65vh; /* Set the height to be 65% of the viewport height */
+    height: 75vh;
     border-radius: 60px 60px 0 0;
-    padding: 4vw;
+    padding: 4vw 2vw;
     box-sizing: border-box;
-    display: flex; /* Use flex to layout the inner content */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Align children in the center horizontally */
-    justify-content: center; /* Center children vertically */
-    overflow: hidden; /* No scroll on the signInWrapper */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -20px;
+    padding-top: 20vh;
+    padding-bottom: 50vh;
   }
 
-  /* Ensure the logo scales down with the width of the screen */
-  .main-login-content img {
-    max-width: 80%; /* Adjust the width of the logo */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Change display to block */
-    margin: 0 auto 2vw; /* Center the logo and add margin below */
+  .signInWrapper img {
+    max-width: 80%;
+    height: auto;
+    padding-top: 5vh;
+  }
+
+  .main-login-content {
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    margin-left: 15%;
   }
 
   .main-login-content h1 {
-    font-size: 6vw; /* Adjust font size */
-    text-align: left; /* Center the text */
-    margin: 1vw 0; /* Add margin to top and bottom */
+    font-size: 6vw;
+    text-align: left;
+    margin: 1vw 0;
   }
 
   .main-login-content .your-class-header {
-    font-size: 4vw; /* Adjust font size */
-    text-align: left; /* Center the text */
-    margin: 1vw 0 2vw; /* Add margin to top and bottom */
+    font-size: 4vw;
+    text-align: left;
+    margin: 1vw 0 2vw;
   }
 
   #signInDiv {
-    width: 100%; /* Full width of the parent */
+    width: 100%;
   }
 
   .login-img {
-    display: none; /* Hide the login image on small screens */
+    display: none;
   }
 
-  /* Remove unnecessary margins and paddings from other elements */
   .main-margin, .class-content, .email-button, .view-button, .card-container {
     margin: 0vw;
     padding: 2vw;
@@ -477,13 +483,10 @@ html, body {
   .card label,
   .card button,
   .card-container h2 {
-    font-size: 4vw; /* Adjust font size */
+    font-size: 4vw;
   }
 
   .class-text, .email-button {
-    margin-bottom: 1em; /* Add some space at the bottom */
+    margin-bottom: 1em;
   }
 }
-
-
-/* message style */
