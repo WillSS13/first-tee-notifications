@@ -2,7 +2,7 @@ const { Knock } = require("@knocklabs/node");
 const { response } = require("express");
 const knock = new Knock(process.env.KNOCK_API_KEY);
 
-const sendSMS = (user_id, details, phone, subject, msg, coach) => {
+const sendSMS = (user_id, phone, subject, msg, coach) => {
   knock.workflows.trigger("twilio", {
     data: {
       subject: subject,
@@ -12,7 +12,7 @@ const sendSMS = (user_id, details, phone, subject, msg, coach) => {
     recipients: [
       {
         id: user_id,
-        details: details,
+        name: phone,
         phone_number: phone,
       },
     ],

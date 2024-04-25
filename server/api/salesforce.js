@@ -50,6 +50,7 @@ async function getCoachId(email, res) {
       }
       if (participants.length !== 0) {
         res.send(JSON.stringify(participants[0].id));
+        console.log("Coach ID:", participants[0].id);
       } else {
         res.send(JSON.stringify("None"));
       }
@@ -181,7 +182,6 @@ function sessionNumbers(id, res, subject, msg, coach) {
 
           final.push({
             id: element.id,
-            details: element.details,
             phone: formattedNumber
           });
 
@@ -191,13 +191,13 @@ function sessionNumbers(id, res, subject, msg, coach) {
       if (final.length !== 0) {
         final.forEach(participant => {
           const user_id = `${id}_${participant.id}`
-          res(user_id, participant.details, participant.phone, subject, msg, coach);
+          res(user_id, participant.phone, subject, msg, coach);
         })
       }
     });
 }
 
-function coachNumbers(id, res, subject, msg, coach) {
+function coachNumbers(id, res, subject, msg, coachName) {
   conn.sobject("Coach_Assignment__c")
     .select(`Id, Coach__r.Name, Coach__r.MobilePhone`)
     .where({
@@ -213,7 +213,6 @@ function coachNumbers(id, res, subject, msg, coach) {
          && record.Coach__r.MobilePhone) {
           numbers.push({
             id: record.Id,
-            details: record.Coach__r.Name,
             phone: record.Coach__r.MobilePhone
           });
         }
@@ -238,7 +237,6 @@ function coachNumbers(id, res, subject, msg, coach) {
 
           final.push({
             id: element.id,
-            details: element.details,
             phone: formattedNumber
           });
         }
@@ -247,7 +245,7 @@ function coachNumbers(id, res, subject, msg, coach) {
       if (final.length !== 0) {
         final.forEach(coach => {
           var user_id = `${id}_${coach.id}`
-          res(user_id, coach.details, coach.phone, subject, msg, coach);
+          res(user_id, coach.phone, subject, msg, coachName);
         })
       }
     });
@@ -268,14 +266,14 @@ function sessionEmails(id, res, subject, msg, coach) {
          && record.Contact__r.Primary_Contact_s_Email__c
          && record.Contact__r.Contact_Type__c
          && record.Contact__r.Contact_Type__c == 'Participant') {
-          // Case where Emergency Contact Number is empty
+          // Case where the emergency contact number is empty
           if (!record.Contact__r.Emergency_Contact_Number__c) {
             participants.push({
               id: record.Id,
               email: record.Contact__r.Primary_Contact_s_Email__c
             });
           }
-          // Case where Emergency Contact Number is not empty but it's invalid
+          // Case where the emergency contact number is not empty but it's invalid
           else {
             var stripped = record.Contact__r.Emergency_Contact_Number__c.replace(/\D/g, '');
             if (!(/^\d{10}$/.test(stripped))) {
@@ -305,9 +303,9 @@ function sessionEmails(id, res, subject, msg, coach) {
     });
 }
 
-function coachEmails(id, res, subject, msg, coach) {
+function coachEmails(id, res, subject, msg, coachName) {
   conn.sobject("Coach_Assignment__c")
-    .select(`Id, Coach__r.Email`)
+    .select(`Id, Coach__r.Email, Coach__r.MobilePhone, Coach__r.Name`)
     .where({
       Listing_Session__c: id,
     })
@@ -317,11 +315,25 @@ function coachEmails(id, res, subject, msg, coach) {
       for (var record of records) {
         if (record.Id
          && record.Coach__r
-         && record.Coach__r.Email) {
-          coaches.push({
-            id: record.Id,
-            email: record.Coach__r.Email
-          });
+         && record.Coach__r.Email
+         && record.Coach__r.Name) {
+          // Case where a coach's number is empty (push the sender in too)
+          if (!record.Coach__r.MobilePhone || record.Coach__r.Name == coachName) {
+            coaches.push({
+              id: record.Id,
+              email: record.Coach__r.Email
+            });
+          }
+          // Case where a coach's number is not empty but it's invalid
+          else {
+            var stripped = record.Coach__r.MobilePhone.replace(/\D/g, '');
+            if (!(/^\d{10}$/.test(stripped))) {
+              coaches.push({
+                id: record.Id,
+                email: record.Coach__r.Email
+              });
+            }
+          }
         }
       }
 
@@ -336,7 +348,7 @@ function coachEmails(id, res, subject, msg, coach) {
       if (unique.length !== 0) {
         unique.forEach(coach => {
           var user_id = `${id}_${coach.id}`
-          res(user_id, coach.email, subject, msg, coach);
+          res(user_id, coach.email, subject, msg, coachName);
         })
       }
     });

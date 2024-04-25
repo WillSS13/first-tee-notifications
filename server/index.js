@@ -33,7 +33,7 @@ app.post("/coachId", (req, res) => {
   console.log("Email:", coachEmail);
 
   if (!coachEmail.endsWith('@thefirstteepittsburgh.org')) {
-    console.log('Unauthorized user');
+    console.log('Unauthorized user has logged in, redirecting to login page.');
     res.status(401).send('Unauthorized user');
   }
   else {
