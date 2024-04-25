@@ -39,7 +39,7 @@ function SendMessageForm({ sessionId }) {
         subject: msgSubject,
         message: msgValue,
         coach: localStorage.getItem('coachName'),
-        sessionId: sessionId,
+        sessionId: sessionId
       }),
     };
     fetch('/sendmessage', requestOptions)
