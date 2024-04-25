@@ -50,7 +50,6 @@ async function getCoachId(email, res) {
       }
       if (participants.length !== 0) {
         res.send(JSON.stringify(participants[0].id));
-        console.log("Coach ID:", participants[0].id);
       } else {
         res.send(JSON.stringify("None"));
       }

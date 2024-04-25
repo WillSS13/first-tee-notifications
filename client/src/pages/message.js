@@ -62,7 +62,7 @@ function Message() {
             setCoachStatuses(statusData);
           }
         } catch (err) {
-          console.log("Status indicator error", err);
+          console.log(err);
         }
       }
     },
