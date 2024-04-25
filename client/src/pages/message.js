@@ -5,7 +5,7 @@ import "../App.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback } from 'react';
 import moment from "moment";
 
 import Delivered from "../icons/delivered";
