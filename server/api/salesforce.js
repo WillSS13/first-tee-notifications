@@ -113,15 +113,28 @@ function coachSessions(id, res) {
       if (err) { return console.error(err); }
       var sessions = [];
       for (var record of records) {
-        sessions.push({
-          id: record.Listing_Session__c,
-          coach_assignment_name: record.Name,
-          start_date: record.Session_Start_Date__c,
-          end_date: record.Session_End_Date__c,
-          session_name: record.Listing_Session__r.Name
-        });
+        conn.sobject("Listing_Session__c")
+          .select("Id, Total_Registrations__c")
+          .where({
+            Id: record.Listing_Session__c
+          })
+          .execute(function (err, listingRecords) {
+            if (err) { return console.error(err); }
+            
+            listingRecords.forEach((listingRecord) => {
+              if (listingRecord.Total_Registrations__c > 0) {
+                sessions.push({
+                  id: record.Listing_Session__c,
+                  coach_assignment_name: record.Name,
+                  start_date: record.Session_Start_Date__c,
+                  end_date: record.Session_End_Date__c,
+                  session_name: record.Listing_Session__r.Name
+                });
+              }
+            });
+            res.send(sessions);
+          });
       }
-      res.send(sessions);
     });
 }
 
