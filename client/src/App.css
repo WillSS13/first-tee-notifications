@@ -489,4 +489,17 @@ html, body {
   .class-text, .email-button {
     margin-bottom: 1em;
   }
+
+  h2 {
+    margin: 10px 0;
+  }
+
+  /* Responsive Typography */
+  .poppins-bold {
+    font-size: 1.5rem; /* Responsive font size */
+  }
+
+  .poppins-light {
+    font-size: 1rem; /* Responsive font size */
+  }
 }

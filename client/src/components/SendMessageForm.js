@@ -96,7 +96,7 @@ function SendMessageForm({ sessionId }) {
               <textarea id="text-message" rows="5" cols="33" value={msgValue} placeholder='Please enter a message' style={{ width: '100%' }} className="poppins-light" onChange={(e) => setMsgValue(e.target.value)} required></textarea><br></br>
 
               <label className='your-class-header poppins-regular'>
-                <i>The message with be signed with Coach followed by your full name.</i><br></br><br></br>
+                <i>The message will be signed with Coach followed by your full name.</i><br></br><br></br>
               </label>
               <input id="clear-button" type="button"
                 value="Clear Text"
