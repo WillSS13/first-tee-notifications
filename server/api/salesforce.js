@@ -102,40 +102,41 @@ function sessionCoaches(id, res) {
     });
 }
 
-function coachSessions(id, res) {
-  conn.sobject("Coach_Assignment__c")
-    .select(`Id, Coach__c, Coach__r.Name, Name, Listing_Session__c,Session_End_Date__c, Session_Start_Date__c,Listing_Session__r.Name`)
-    .where({
-      Coach__c: id,
-      Session_End_Date__c: { $gte: jsforce.Date.TODAY }
-    })
-    .execute(function (err, records) {
-      if (err) { return console.error(err); }
-      var sessions = [];
-      for (var record of records) {
-        conn.sobject("Listing_Session__c")
-          .select("Id, Total_Registrations__c")
-          .where({
-            Id: record.Listing_Session__c
-          })
-          .execute(function (err, listingRecords) {
-            if (err) { return console.error(err); }
-            
-            listingRecords.forEach((listingRecord) => {
-              if (listingRecord.Total_Registrations__c > 0) {
-                sessions.push({
-                  id: record.Listing_Session__c,
-                  coach_assignment_name: record.Name,
-                  start_date: record.Session_Start_Date__c,
-                  end_date: record.Session_End_Date__c,
-                  session_name: record.Listing_Session__r.Name
-                });
-              }
-            });
-            res.send(sessions);
+async function coachSessions(id, res) {
+  try {
+    const records = await conn.sobject("Coach_Assignment__c")
+      .select(`Id, Coach__c, Coach__r.Name, Name, Listing_Session__c, Session_End_Date__c, Session_Start_Date__c, Listing_Session__r.Name`)
+      .where({
+        Coach__c: id,
+        Session_End_Date__c: { $gte: jsforce.Date.TODAY }
+      })
+      .execute();
+
+    var sessions = [];
+
+    for (let record of records) {
+      const listingRecords = await conn.sobject("Listing_Session__c")
+        .select("Id, Total_Registrations__c")
+        .where({ Id: record.Listing_Session__c })
+        .execute();
+
+      listingRecords.forEach(listingRecord => {
+        if (listingRecord.Total_Registrations__c > 0) {
+          sessions.push({
+            id: listingRecord.Id,
+            coach_assignment_name: record.Name,
+            start_date: record.Session_Start_Date__c,
+            end_date: record.Session_End_Date__c,
+            session_name: record.Listing_Session__r.Name
           });
-      }
-    });
+        }
+      });
+    }
+    res.send(sessions);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving sessions.');
+  }
 }
 
 function sessionNumbers(id, res, subject, msg, coach) {
