@@ -9,7 +9,7 @@ For Developers:
 - In a new terminal window, enter the client directory with `cd client` 
 - Start the client with `npm start` 
 
-MAKE SURE YOU HAVE THE CORRECT PACKAGES INSTALLED USING "NPM INSTALL"
+MAKE SURE YOU HAVE THE CORRECT PACKAGES INSTALLED USING `npm install`.
 
 ### If you are having issues with `npm start`, then try the following:
 - Create a new branch with `git checkout -b branchname`
