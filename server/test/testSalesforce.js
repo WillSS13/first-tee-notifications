@@ -1,4 +1,6 @@
 require('dotenv').config();
+var jsforce = require('jsforce');
+var knock = require ('../api/knock.js');
 
 // TODO: CREATE DOCUMENTATION FOR EACH ENV VAR & WHAT HAPPENS IF THEY ARE NOT SET
 const client_id = process.env.SALESFORCE_CLIENT_ID;
@@ -8,8 +10,6 @@ const access_token = process.env.SALESFORCE_ACCESS_TOKEN;
 const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
 
 var clc = require("cli-color");
-
-var jsforce = require('jsforce');
 
 function validateEnvVariables() {
   const requiredEnvVars = ['SALESFORCE_CLIENT_ID', 'SALESFORCE_CLIENT_SECRET', 'SALESFORCE_INSTANCE_URL', 'SALESFORCE_ACCESS_TOKEN', 'SALESFORCE_REFRESH_TOKEN'];
@@ -44,8 +44,17 @@ async function validateConnection() {
       await conn.query("SELECT Id FROM User LIMIT 1");
       return conn;
   } catch (err) {
-      console.error("Failed to connect to Salesforce: ", clc.redBright(err.message));
-      return null;
+    let errorMessage = (err.message || "Unknown error");
+    console.error("Failed to connect to Salesforce: ", clc.redBright(errorMessage));
+
+    knock.sendSystemAlertEmail(
+      "Salesforce", 
+      "Please email support & have them check the Salesforce credentials for integration@thefirstteepittsburgh.org", 
+      errorMessage, 
+      "N/A"
+    );
+
+    return null;
   }
 }
 
@@ -63,23 +72,10 @@ async function testSalesforce() {
   var salesforceColor = clc.xterm(75).bgXterm(236);
   var arrow = salesforceColor(">") + "   ";
 
-  await testConnection(conn, salesforceColor, arrow);
   await testContactTable(conn, salesforceColor, arrow);
   await testSessionRegistrationTable(conn, salesforceColor, arrow);
   await testCoachAssignmentTable(conn, salesforceColor, arrow);
   await testListingSessionTable(conn, salesforceColor, arrow);
-}
-
-async function testConnection(conn, salesforceColor, arrow) {
-  console.log(salesforceColor(">> Testing Connection\n"));
-  try {
-    const result = await conn.query("SELECT Id, Name FROM Account LIMIT 1");
-    console.log(arrow + "Successfully connected to Salesforce.");
-    console.log(arrow + "Sample Account Name: ", clc.bold(result.records[0].Name));
-  } catch (err) {
-    console.error(arrow + "Failed to connect to Salesforce:", clc.redBright(err.errorCode));
-    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
-  }
 }
 
 async function testContactTable(conn, salesforceColor, arrow) {
@@ -94,7 +90,20 @@ async function testContactTable(conn, salesforceColor, arrow) {
     console.log(arrow + "Sample Contact Email: ", clc.bold(result[0].Email));
   } catch (err) {
     console.error(arrow + "Failed to query Contact Table:", clc.redBright(err.errorCode));
-    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
+    
+    const detailedError = {
+      message: err.message,
+      errorCode: err.errorCode,
+      name: err.name,
+      stack: err.stack,
+    };
+
+    knock.sendSystemAlertEmail(
+      "Salesforce",
+      "Forward this email to support & have them check Salesforce to see if integration@thefirstteepittsburgh.org can access the Contact table.",
+      err.errorCode,
+      JSON.stringify(detailedError, null, 2)
+    );
   }
 }
 
@@ -110,7 +119,20 @@ async function testSessionRegistrationTable(conn, salesforceColor, arrow) {
     console.log(arrow + "Sample Session Registration Contact: ", clc.bold(result[0].Contact__c));
   } catch (err) {
     console.error(arrow + "Failed to query Session Registration Table:", clc.redBright(err.errorCode));
-    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
+    
+    const detailedError = {
+      message: err.message,
+      errorCode: err.errorCode,
+      name: err.name,
+      stack: err.stack,
+    };
+
+    knock.sendSystemAlertEmail(
+      "Salesforce",
+      "Forward this email to support & have them check Salesforce to see if integration@thefirstteepittsburgh.org can access the Session_Registration__c table.",
+      err.errorCode,
+      JSON.stringify(detailedError, null, 2)
+    );
   }
 }
 
@@ -126,7 +148,20 @@ async function testCoachAssignmentTable(conn, salesforceColor, arrow) {
     console.log(arrow + "Sample Coach Assignment Coach: ", clc.bold(result[0].Coach__c));
   } catch (err) {
     console.error(arrow + "Failed to query Coach Assignment Table:", clc.redBright(err.errorCode));
-    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
+    
+    const detailedError = {
+      message: err.message,
+      errorCode: err.errorCode,
+      name: err.name,
+      stack: err.stack,
+    };
+
+    knock.sendSystemAlertEmail(
+      "Salesforce",
+      "Forward this email to support & have them check Salesforce to see if integration@thefirstteepittsburgh.org can access the Coach_Assignment__c table.",
+      err.errorCode,
+      JSON.stringify(detailedError, null, 2)
+    );
   }
 }
 
@@ -141,7 +176,20 @@ async function testListingSessionTable(conn, salesforceColor, arrow) {
     console.log(arrow + "Sample Listing Session ID: ", clc.bold(result[0].Id));
   } catch (err) {
     console.error(arrow + "Failed to query Listing Session Table:", clc.redBright(err.errorCode));
-    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
+    
+    const detailedError = {
+      message: err.message,
+      errorCode: err.errorCode,
+      name: err.name,
+      stack: err.stack,
+    };
+
+    knock.sendSystemAlertEmail(
+      "Salesforce",
+      "Forward this email to support & have them check Salesforce to see if integration@thefirstteepittsburgh.org can access the Listing_Session__c table.",
+      err.errorCode,
+      JSON.stringify(detailedError, null, 2)
+    );
   }
 }
 
