@@ -42,7 +42,8 @@ async function testConnection() {
     
     knock.sendSystemAlertEmail(
       "Twilio",
-      "Please generate a new API key in Twilio and update the integration in Knock.",
+      "Please generate a new API key in Twilio and update the integration in Knock.\n" +
+      "You'll also need to update the environment variables in Heroku.",
       errorMessage,
       errorDetails
     );
