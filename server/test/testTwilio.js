@@ -1,5 +1,6 @@
 require("dotenv").config();
 const twilio = require("twilio");
+var knock = require ('../api/knock.js');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -14,7 +15,7 @@ function validateEnvVariables() {
 
   requiredEnvVars.forEach(varName => {
       if (!process.env[varName]) {
-          console.error(`Missing environment variable: ` + clc.redBright(varName));
+          console.error(arrow + `Missing environment variable: ` + clc.redBright(varName));
           isValid = false;
       }
   });
@@ -35,7 +36,16 @@ async function testConnection() {
     console.log(arrow + "Successfully connected to Twilio.");
     console.log(arrow + "Active messaging service: " + clc.bold(service.friendlyName));
   } catch (err) {
-    console.error("Failed to connect to Twilio", err);
+    let errorMessage = (err.message || "Unknown error");
+    let errorDetails = JSON.stringify(err, null, 2);
+    console.error(arrow + "Error: " + clc.redBright(errorMessage));
+    
+    knock.sendSystemAlertEmail(
+      "Twilio",
+      "Please generate a new API key in Twilio and update the integration in Knock.",
+      errorMessage,
+      errorDetails
+    );
   }
 }
 
