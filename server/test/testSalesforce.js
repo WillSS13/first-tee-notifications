@@ -8,30 +8,69 @@ const access_token = process.env.SALESFORCE_ACCESS_TOKEN;
 const refresh_token = process.env.SALESFORCE_REFRESH_TOKEN;
 
 var clc = require("cli-color");
-var salesforceColor = clc.xterm(75).bgXterm(236);
-var arrow = salesforceColor(">") + "   ";
 
 var jsforce = require('jsforce');
 
-var oauth2 = new jsforce.OAuth2({
-  clientId: client_id,
-  clientSecret: client_secret,
-  redirectUri: "/oauth2/auth"
-});
+function validateEnvVariables() {
+  const requiredEnvVars = ['SALESFORCE_CLIENT_ID', 'SALESFORCE_CLIENT_SECRET', 'SALESFORCE_INSTANCE_URL', 'SALESFORCE_ACCESS_TOKEN', 'SALESFORCE_REFRESH_TOKEN'];
+  let isValid = true;
 
-var conn = new jsforce.Connection({
-  oauth2: oauth2,
-  instanceUrl: instance_url,
-  accessToken: access_token,
-  refreshToken: refresh_token,
-  version: '52.0'
-});
+  requiredEnvVars.forEach(varName => {
+      if (!process.env[varName]) {
+          console.error(`Missing environment variable: ` + clc.redBright(varName));
+          isValid = false;
+      }
+  });
 
-conn.on('refresh', function (accessToken, res) {
-  console.log(salesforceColor(">> Refreshed Access Token\n"));
-});
+  return isValid;
+}
 
-async function testConnection() {
+async function validateSalesforceConnection() {
+  try {
+      var oauth2 = new jsforce.OAuth2({
+          clientId: client_id,
+          clientSecret: client_secret,
+          redirectUri: "/oauth2/auth"
+      });
+
+      var conn = new jsforce.Connection({
+          oauth2: oauth2,
+          instanceUrl: instance_url,
+          accessToken: access_token,
+          refreshToken: refresh_token,
+          version: '52.0'
+      });
+
+      await conn.query("SELECT Id FROM User LIMIT 1");
+      return conn;
+  } catch (err) {
+      console.error("Failed to connect to Salesforce: ", clc.redBright(err.message));
+      return null;
+  }
+}
+
+async function testSalesforce() {
+  if (!validateEnvVariables()) {
+    return;
+  }
+
+  var conn = await validateSalesforceConnection();
+  if (!conn) {
+      console.error('Invalid Salesforce connection. Please check the environment variables and credentials before proceeding.');
+      return;
+  }
+
+  var salesforceColor = clc.xterm(75).bgXterm(236);
+  var arrow = salesforceColor(">") + "   ";
+
+  await testConnection(conn, salesforceColor, arrow);
+  await testContactTable(conn, salesforceColor, arrow);
+  await testSessionRegistrationTable(conn, salesforceColor, arrow);
+  await testCoachAssignmentTable(conn, salesforceColor, arrow);
+  await testListingSessionTable(conn, salesforceColor, arrow);
+}
+
+async function testConnection(conn, salesforceColor, arrow) {
   console.log(salesforceColor(">> Testing Connection\n"));
   try {
     const result = await conn.query("SELECT Id, Name FROM Account LIMIT 1");
@@ -43,7 +82,7 @@ async function testConnection() {
   }
 }
 
-async function testContactTable() {
+async function testContactTable(conn, salesforceColor, arrow) {
   console.log(salesforceColor("\n>> Testing Access to Contact Table\n"));
   try {
     const result = await conn.sobject("Contact")
@@ -59,7 +98,7 @@ async function testContactTable() {
   }
 }
 
-async function testSessionRegistrationTable() {
+async function testSessionRegistrationTable(conn, salesforceColor, arrow) {
   console.log(salesforceColor("\n>> Testing Access to Session Registration Table\n"));
   try {
     const result = await conn.sobject("Session_Registration__c")
@@ -75,7 +114,7 @@ async function testSessionRegistrationTable() {
   }
 }
 
-async function testCoachAssignmentTable() {
+async function testCoachAssignmentTable(conn, salesforceColor, arrow) {
   console.log(salesforceColor("\n>> Testing Access to Coach Assignment Table\n"));
   try {
     const result = await conn.sobject("Coach_Assignment__c")
@@ -91,7 +130,7 @@ async function testCoachAssignmentTable() {
   }
 }
 
-async function testListingSessionTable() {
+async function testListingSessionTable(conn, salesforceColor, arrow) {
   console.log(salesforceColor("\n>> Testing Access to Listing Session Table\n"));
   try {
     const result = await conn.sobject("Listing_Session__c")
@@ -104,19 +143,6 @@ async function testListingSessionTable() {
     console.error(arrow + "Failed to query Listing Session Table:", clc.redBright(err.errorCode));
     // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
-}
-
-// TODO: TEST THAT WE CAN RETRIEVE EACH TABLE & FIELDS FOR EACH FUNCTION
-// E.G. Coach_Assignments__c, Listing_Session__c, etc.
-
-// async function testCoachAssignmentsTable() {
-
-async function testSalesforce() {
-  await testConnection();
-  await testContactTable();
-  await testSessionRegistrationTable();
-  await testCoachAssignmentTable();
-  await testListingSessionTable();
 }
 
 module.exports = { testSalesforce };
