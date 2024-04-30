@@ -38,7 +38,8 @@ async function testConnection() {
     console.log(arrow + "Successfully connected to Salesforce.");
     console.log(arrow + "Sample Account Name: ", clc.bold(result.records[0].Name));
   } catch (err) {
-    console.error(arrow + "Failed to connect to Salesforce:", err);
+    console.error(arrow + "Failed to connect to Salesforce:", clc.redBright(err.errorCode));
+    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
 }
 
@@ -53,7 +54,8 @@ async function testContactTable() {
     console.log(arrow + "Sample Contact Name: ", clc.bold(result[0].Name));
     console.log(arrow + "Sample Contact Email: ", clc.bold(result[0].Email));
   } catch (err) {
-    console.error(arrow + "Failed to query Contact Table:", err);
+    console.error(arrow + "Failed to query Contact Table:", clc.redBright(err.errorCode));
+    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
 }
 
@@ -68,7 +70,8 @@ async function testSessionRegistrationTable() {
     console.log(arrow + "Sample Session Registration Name: ", clc.bold(result[0].Name));
     console.log(arrow + "Sample Session Registration Contact: ", clc.bold(result[0].Contact__c));
   } catch (err) {
-    console.error(arrow + "Failed to query Session Registration Table:", err);
+    console.error(arrow + "Failed to query Session Registration Table:", clc.redBright(err.errorCode));
+    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
 }
 
@@ -83,7 +86,8 @@ async function testCoachAssignmentTable() {
     console.log(arrow + "Sample Coach Assignment Name: ", clc.bold(result[0].Name));
     console.log(arrow + "Sample Coach Assignment Coach: ", clc.bold(result[0].Coach__c));
   } catch (err) {
-    console.error(arrow + "Failed to query Coach Assignment Table:", err);
+    console.error(arrow + "Failed to query Coach Assignment Table:", clc.redBright(err.errorCode));
+    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
 }
 
@@ -97,7 +101,8 @@ async function testListingSessionTable() {
 
     console.log(arrow + "Sample Listing Session ID: ", clc.bold(result[0].Id));
   } catch (err) {
-    console.error(arrow + "Failed to query Listing Session Table:", err);
+    console.error(arrow + "Failed to query Listing Session Table:", clc.redBright(err.errorCode));
+    // console.error(clc.redBright("Error Message: " + clc.redBright(err)));
   }
 }
 
