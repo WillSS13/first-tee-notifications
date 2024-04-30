@@ -21,15 +21,7 @@ app.post("/checklogin", (req, res) => {
 
 app.post("/coachId", (req, res) => {
   let coachEmail = req.body.email;
-  const testingEmails = [
-    'wsquibb@andrew.cmu.edu',
-    'bzchen@andrew.cmu.edu',
-    'ypagarwa@andrew.cmu.edu'
-  ];
-
-  if (testingEmails.includes(coachEmail)) {
-    coachEmail = 'pcoultas@thefirstteepittsburgh.org';
-  }
+  
   console.log("Email:", coachEmail);
 
   if (!coachEmail.endsWith('@thefirstteepittsburgh.org')) {
