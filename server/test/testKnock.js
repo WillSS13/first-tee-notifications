@@ -1,17 +1,35 @@
 require('dotenv').config();
+const { Knock } = require("@knocklabs/node");
+
+const api_key = process.env.KNOCK_API_KEY;
 
 var clc = require("cli-color");
 var knockColor = clc.xterm(202).bgXterm(236);
 const arrow = knockColor(">") + "   ";
 
-const { Knock } = require("@knocklabs/node");
+function validateEnvVariables() {
+  const requiredEnvVars = ['KNOCK_API_KEY'];
+  let isValid = true;
 
-// TODO: CREATE DOCUMENTATION FOR EACH ENV VAR & WHAT HAPPENS IF THEY ARE NOT SET
-const knock = new Knock(process.env.KNOCK_API_KEY);
+  requiredEnvVars.forEach(varName => {
+      if (!process.env[varName]) {
+          console.error(`Missing environment variable: ` + clc.redBright(varName));
+          isValid = false;
+      }
+  });
+
+  return isValid;
+}
+
 
 async function testConnection() {
-  console.log(knockColor(">> Testing Connection\n"));
+  if (!validateEnvVariables()) {
+    return;
+  }
 
+  const knock = new Knock(process.env.KNOCK_API_KEY);
+
+  console.log(knockColor(">> Testing Connection\n"));
   try {
     const response = await knock.messages.list();
     console.log(arrow + "Successfully connected to Knock.");

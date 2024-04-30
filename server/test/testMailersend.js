@@ -1,17 +1,35 @@
 require("dotenv").config();
-
 const { MailerSend } = require("mailersend");
 
-// TODO: CREATE DOCUMENTATION FOR EACH ENV VAR & WHAT HAPPENS IF THEY ARE NOT SET
-const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY,
-});
+const api_key = process.env.MAILERSEND_API_KEY;
 
 var clc = require("cli-color");
 var mailersendColor = clc.xterm(93).bgXterm(236);
 var arrow = mailersendColor(">") + "   ";
 
+function validateEnvVariables() {
+  const requiredEnvVars = ["MAILERSEND_API_KEY"];
+  let isValid = true;
+
+  requiredEnvVars.forEach(varName => {
+      if (!process.env[varName]) {
+          console.error(`Missing environment variable: ` + clc.redBright(varName));
+          isValid = false;
+      }
+  });
+
+  return isValid;
+}
+
 async function testConnection() {
+  if (!validateEnvVariables()) {
+    return;
+  }
+
+  const mailerSend = new MailerSend({
+    apiKey: api_key,
+  });
+
   console.log(mailersendColor(">> Testing Connection\n"));
   try {
     const response = await mailerSend.email.domain.list();

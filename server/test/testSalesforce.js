@@ -25,7 +25,7 @@ function validateEnvVariables() {
   return isValid;
 }
 
-async function validateSalesforceConnection() {
+async function validateConnection() {
   try {
       var oauth2 = new jsforce.OAuth2({
           clientId: client_id,
@@ -54,9 +54,9 @@ async function testSalesforce() {
     return;
   }
 
-  var conn = await validateSalesforceConnection();
+  var conn = await validateConnection();
   if (!conn) {
-      console.error('Invalid Salesforce connection. Please check the environment variables and credentials before proceeding.');
+      console.error('Invalid connection. Please check the environment variables and credentials before proceeding.');
       return;
   }
 
