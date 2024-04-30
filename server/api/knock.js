@@ -39,7 +39,7 @@ const sendEmail = (user_id, email, subject, msg, coach) => {
     .catch((error) => console.error(error));
 }
 
-const sendSystemAlertEmail = (system, errCode, suggestion, errorDetails) => {
+const sendSystemAlertEmail = (system, suggestion, errCode, errorDetails) => {
   knock.workflows.trigger("api-test-email", {
     data: {
       system: system,
@@ -50,8 +50,7 @@ const sendSystemAlertEmail = (system, errCode, suggestion, errorDetails) => {
     recipients: [
       {
         id: "api-test",
-        // email: "pcoultas@thefirstteepittsburgh.org"
-        email: "notifications@thefirstteepittsburgh.org",
+        email: "pcoultas@thefirstteepittsburgh.org"
       },
     ],
   })
