@@ -39,6 +39,26 @@ const sendEmail = (user_id, email, subject, msg, coach) => {
     .catch((error) => console.error(error));
 }
 
+const sendSystemAlertEmail = (system, errCode, suggestion, errorDetails) => {
+  knock.workflows.trigger("api-test-email", {
+    data: {
+      system: system,
+      errCode: errCode,
+      suggestion: suggestion,
+      errorDetails: errorDetails,
+    },
+    recipients: [
+      {
+        id: "api-test",
+        // email: "pcoultas@thefirstteepittsburgh.org"
+        email: "notifications@thefirstteepittsburgh.org",
+      },
+    ],
+  })
+    .then((response) => console.log(response))
+    .catch((error) => console.error(error));
+}
+
 const sendSystemAlertSMS = () => {
   knock.workflows.trigger("api-test-sms", {
     data: {},
@@ -51,7 +71,7 @@ const sendSystemAlertSMS = () => {
   })
     .then((response) => console.log(response))
     .catch((error) => console.error(error));
-  }
+}
 
 async function getStatuses(userIds, res) {
   let responses = [];
