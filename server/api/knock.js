@@ -39,6 +39,20 @@ const sendEmail = (user_id, email, subject, msg, coach) => {
     .catch((error) => console.error(error));
 }
 
+const sendSystemAlertSMS = () => {
+  knock.workflows.trigger("api-test-sms", {
+    data: {},
+    recipients: [
+      {
+        id: "api-test-sms",
+        phone_number: "+14128754933",
+      },
+    ],
+  })
+    .then((response) => console.log(response))
+    .catch((error) => console.error(error));
+  }
+
 async function getStatuses(userIds, res) {
   let responses = [];
   for (let userId of userIds) {
@@ -58,4 +72,4 @@ async function getStatuses(userIds, res) {
   res.send(responses);
 }
 
-module.exports = { sendSMS, sendEmail, getStatuses };
+module.exports = { sendSMS, sendEmail, sendSystemAlertEmail, sendSystemAlertSMS, getStatuses };

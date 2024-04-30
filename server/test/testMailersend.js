@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { MailerSend } = require("mailersend");
+var knock = require ('../api/knock.js');
 
 const api_key = process.env.MAILERSEND_API_KEY;
 
@@ -36,7 +37,8 @@ async function testConnection() {
     console.log(arrow + "Successfully connected to MailerSend.");
     console.log(arrow + "Current domain is: ", clc.bold(response.body.data[0].name));
   } catch (err) {
-    console.error('Connection failed:', err);
+    console.error(arrow + "Error: " + clc.redBright("Bad API key"));
+    knock.sendSystemAlertSMS();
   }
 }
 
