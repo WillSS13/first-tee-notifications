@@ -27,6 +27,5 @@ async function runTests() {
   await testMailersend();
 }
 
-// TODO: SET UP A CRON JOB TO RUN THESE TESTS DAILY AT 8AM
-// TODO: ON FAILURE/ERROR, SEND PAUL A MESSAGE
+
 runTests();
