@@ -1,14 +1,15 @@
-# first_tee_notification_system
+# first_tee_pittsburgh_notification_system
 
-## Running the server
+For Developers:
+
+## Running the server locally
 - In the root directory, run `npm start` to start the server
 
-## Running the client 
+## Running the client locally
 - In a new terminal window, enter the client directory with `cd client` 
-- Start the client server with `npm start` 
+- Start the client with `npm start` 
 
-## Paul's Salesforce Id
-- '0033600001KJ05SAAT'
+MAKE SURE YOU HAVE THE CORRECT PACKAGES INSTALLED USING `npm install`.
 
 ### If you are having issues with `npm start`, then try the following:
 - Create a new branch with `git checkout -b branchname`
