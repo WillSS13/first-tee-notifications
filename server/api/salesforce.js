@@ -139,15 +139,31 @@ async function coachSessions(id, res) {
   }
 }
 
-function sessionNumbers(id, res, subject, msg, coach) {
-  conn.sobject("Session_Registration__c")
-    .select(`Id, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
-    .where({
-      Listing_Session__c: id,
-      Status__c: 'Registered'
-    })
-    .execute(function (err, records) {
-      if (err) { return console.error(err); }
+async function getQuestionResponse(sessionId) {
+  try {
+    const record = await conn.sobject("Question_Response__c")
+                              .select("Contact__r.Name, Contact_Response__c")
+                              .where({
+                                Session_Registration__c: sessionId,
+                                Name: "Text Message Question | FT Pittsburgh"
+                              })
+                              .limit(1)
+                              .execute();
+    return record[0];
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function sessionNumbers(id, res, subject, msg, coach) {
+  const records = await conn.sobject("Session_Registration__c")
+                            .select(`Id, Contact__c, Contact__r.Name, Contact__r.Emergency_Contact_Number__c, Contact__r.Contact_Type__c`)
+                            .where({
+                              Listing_Session__c: id,
+                              Status__c: 'Registered'
+                            })
+                            .execute();
+
       var participants = [];
       for (var record of records) {
         if (record.Id
@@ -156,11 +172,29 @@ function sessionNumbers(id, res, subject, msg, coach) {
          && record.Contact__r.Emergency_Contact_Number__c
          && record.Contact__r.Contact_Type__c
          && record.Contact__r.Contact_Type__c == 'Participant') {
-          participants.push({
-            id: record.Id,
-            details: record.Contact__r.Name,
-            phone: record.Contact__r.Emergency_Contact_Number__c
-          });
+          const response = await getQuestionResponse(record.Id);
+          // If the participant has a response to the text message question, use that number
+          if (response) {
+            var cleanNumber = response.Contact_Response__c.replace(/\D/g, '');
+            if (cleanNumber.length > 10 && cleanNumber.startsWith('1')) {
+              cleanNumber = cleanNumber.substring(1);
+            }
+            if ((/^\d{10}$/.test(cleanNumber))) {
+              participants.push({
+                id: record.Id,
+                details: record.Contact__r.Name,
+                phone: response.Contact_Response__c
+              });
+            }
+          }
+          // Otherwise, default to the emergency contact number
+          else {
+            participants.push({
+              id: record.Id,
+              details: record.Contact__r.Name,
+              phone: record.Contact__r.Emergency_Contact_Number__c
+            });
+          }
         }
       }
 
@@ -175,7 +209,11 @@ function sessionNumbers(id, res, subject, msg, coach) {
 
       let final = [];
       unique.forEach(element => {
-        const digits = element.phone.replace(/\D/g, '');
+        var digits = element.phone.replace(/\D/g, '');
+
+        if (digits.length > 10 && digits.startsWith('1')) {
+          digits = digits.substring(1);
+        }
 
         if (digits.length === 10) {
           const formattedNumber = `+1${digits}`;
@@ -194,8 +232,7 @@ function sessionNumbers(id, res, subject, msg, coach) {
           res(user_id, participant.phone, subject, msg, coach);
         })
       }
-    });
-}
+    };
 
 function coachNumbers(id, res, subject, msg, coachName) {
   conn.sobject("Coach_Assignment__c")
@@ -230,7 +267,11 @@ function coachNumbers(id, res, subject, msg, coachName) {
 
       let final = [];
       unique.forEach(element => {
-        const digits = element.phone.replace(/\D/g, '');
+        var digits = element.phone.replace(/\D/g, '');
+
+        if (digits.length > 10 && digits.startsWith('1')) {
+          digits = digits.substring(1);
+        }
 
         if (digits.length === 10) {
           const formattedNumber = `+1${digits}`;

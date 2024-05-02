@@ -5,7 +5,6 @@ import App from './App';
 import ClassList from './pages/classList';
 import Message from './pages/message';
 import Unauthorized from './pages/unauthorized';
-import Monitor from './pages/monitor';
 import ProtectedRoute from './components/ProtectedRoute';
 import Confirmed from './pages/confirmed';
 import {
@@ -31,14 +30,6 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Message />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/monitor",
-    element: (
-      <ProtectedRoute>
-        <Monitor />
       </ProtectedRoute>
     ),
   },
