@@ -19,3 +19,6 @@ MAKE SURE YOU HAVE THE CORRECT PACKAGES INSTALLED USING `npm install`.
 - install the dependencies again with `npm install`
 - now try `npm start`
 
+### To run API tests 
+- Run `node server/test/runTests.js` in the root directory
+
