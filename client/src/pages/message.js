@@ -227,6 +227,7 @@ function Message() {
         {/*  class members */}
         <div className="card-container margin-bottom-large">
           <h2 className="your-class-header poppins-regular">Class Members</h2>
+          <p className="your-class-header poppins-regular small-text"> Numbers listed are primary contact phone numbers. Please note that this may differ from the number parents provide in the weather-related listing question.</p>
           <hr></hr>
           <div className="card message side-margins">
             {participant && (
